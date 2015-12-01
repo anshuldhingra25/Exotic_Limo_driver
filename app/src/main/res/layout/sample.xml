@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true">
+
+        <com.cabily.cabilydriver.widgets.CustomTextView
+            android:id="@+id/pushnotification_alert_messge_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:text="@string/lbel_notification"
+            android:textColor="#F44336"
+            android:textSize="18sp" />
+
+
+        <com.cabily.cabilydriver.widgets.CustomTextView
+            android:id="@+id/pushnotification_alert_messge_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pushnotification_alert_messge_label"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="15dp"
+            android:text="fssfsfdgggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg"
+            android:textColor="#8a000000"
+            android:textSize="16dp" />
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/pushnotification_alert_messge_textview"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:background="#F44336">
+
+            <com.cabily.cabilydriver.widgets.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lbel_notification_ok"
+                android:id="@+id/pushnotification_alert_ok_textview"
+                android:layout_centerVertical="true"
+                android:textColor="#ffffff"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true" />
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+</RelativeLayout>

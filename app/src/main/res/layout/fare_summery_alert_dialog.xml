@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/layout_faredetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        >
+
+        <RelativeLayout
+            android:id="@+id/layout_fare_header"
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            android:layout_centerHorizontal="true"
+            android:background="#31c3e7">
+
+            <com.cabily.cabilydriver.widgets.CustomTextView
+                android:id="@+id/fare_summery_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="@string/lbel_fare_summery_header"
+                android:textColor="#ffffff"
+                android:textSize="18sp" />
+        </RelativeLayout>
+
+        <com.cabily.cabilydriver.widgets.CustomTextView
+            android:id="@+id/fare_summery_total_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_fare_header"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:text="1526"
+            android:textColor="#8acc13"
+            android:textSize="20sp" />
+
+
+        <RelativeLayout
+            android:id="@+id/fare_summery_ride_distane_details"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fare_summery_total_amount"
+            android:layout_marginTop="5dp">
+
+            <com.cabily.cabilydriver.widgets.CustomTextView
+                android:id="@+id/fare_summery_ride_distance_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:text="@string/lbel_fare_summery_ride_distance"
+                android:textColor="#4e4e4e"
+                android:textSize="13sp" />
+
+
+            <com.cabily.cabilydriver.widgets.CustomTextView
+                android:id="@+id/fare_summery_ride_distance_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                android:text="789"
+                android:textColor="#000000"
+                android:textSize="13sp" />
+
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/fare_summery_timetaken_details_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fare_summery_ride_distane_details"
+            android:layout_marginTop="5dp">
+
+            <com.cabily.cabilydriver.widgets.CustomTextView
+                android:id="@+id/fare_summery_ride_timetaken_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:text="@string/lbel_fare_summery_timetaken"
+                android:textColor="#4e4e4e"
+                android:textSize="13sp" />
+
+
+            <com.cabily.cabilydriver.widgets.CustomTextView
+                android:id="@+id/fare_summery_ride_timetaken_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                android:text="789"
+                android:textColor="#000000"
+                android:textSize="13sp" />
+
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/fare_summery_wait_time_details_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fare_summery_timetaken_details_layout"
+            android:layout_marginTop="5dp">
+
+            <com.cabily.cabilydriver.widgets.CustomTextView
+                android:id="@+id/fare_summery_wait_time_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:text="@string/lbel_fare_summery_wait_time"
+                android:textColor="#4e4e4e"
+                android:textSize="13sp" />
+
+
+            <com.cabily.cabilydriver.widgets.CustomTextView
+                android:id="@+id/fare_summery_wait_time_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                android:text="789"
+                android:textColor="#000000"
+                android:textSize="13sp" />
+
+
+        </RelativeLayout>
+
+
+
+        <LinearLayout
+            android:id="@+id/trip_details_view_details_time"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fare_summery_wait_time_details_layout"
+            android:layout_marginTop="10dp"
+            android:visibility="visible">
+
+
+            <RelativeLayout
+                android:id="@+id/layout_faresummery_requstpayment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/background_blue_border_layout">
+
+                <com.cabily.cabilydriver.widgets.CustomTextView
+                    android:id="@+id/requst"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/lbel_fare_summery_requestpayment"
+                    android:textColor="#31c3e7"
+                    android:textSize="12sp"
+                    />
+
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/fare_summery_receive_cash_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/fare_summery_wait_time_details_layout"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/background_blue_border_layout">
+
+                <com.cabily.cabilydriver.widgets.CustomTextView
+                    android:id="@+id/receive_cash"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/lbel_fare_summery_receive_cash"
+                    android:textColor="#31c3e7"
+                    android:textSize="12sp"
+                    />
+
+
+            </RelativeLayout>
+
+
+
+            </LinearLayout>
+
+
+
+
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

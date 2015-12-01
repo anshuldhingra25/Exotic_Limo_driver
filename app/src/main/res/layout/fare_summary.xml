@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="#ffffff">
+    <RelativeLayout
+        android:id="@+id/faresummary_top_layout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#2cc5ff">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fare Summary"
+            android:id="@+id/fare_summary_lable"
+            android:textColor="#ffffff"
+            android:textSize="30dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fare_summary_main_layout"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/fare_summary_ride_amount"
+        android:layout_marginTop="76dp"
+        android:textSize="30dp"
+        android:textColor="#016903"
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/fare_summary_ride_distance_lable"
+        android:layout_toEndOf="@+id/fare_summary_ride_distance_lable" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ride Distance:"
+            android:id="@+id/fare_summary_ride_distance_lable"
+            android:layout_below="@+id/fare_summary_ride_amount"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="20dp"
+            android:textSize="20dp"
+            android:layout_marginLeft="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/fare_summary_ride_distance"
+            android:layout_alignBottom="@+id/fare_summary_ride_distance_lable"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:textColor="#010101"
+            android:textSize="20dp"
+            android:layout_marginRight="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Time Taken:"
+            android:id="@+id/fare_summary_timetaken_lable"
+            android:layout_marginTop="20dp"
+            android:textSize="20dp"
+            android:layout_below="@+id/fare_summary_ride_distance_lable"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/fare_summary_timetaken"
+            android:layout_alignBottom="@+id/fare_summary_timetaken_lable"
+            android:layout_alignRight="@+id/fare_summary_ride_distance"
+            android:layout_alignEnd="@+id/fare_summary_ride_distance"
+            android:textColor="#010101"
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wait Time:"
+            android:id="@+id/fare_summary_waittime_lable"
+            android:layout_below="@+id/fare_summary_timetaken_lable"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="20dp"
+            android:textSize="20dp"
+            android:layout_marginLeft="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/fare_summary_waittime"
+            android:layout_alignBottom="@+id/fare_summary_waittime_lable"
+            android:layout_alignRight="@+id/fare_summary_timetaken"
+            android:layout_alignEnd="@+id/fare_summary_timetaken"
+            android:textSize="20dp"
+            android:textColor="#010101" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/fare_summary_waittime"
+            android:layout_marginTop="20dp">
+
+            <LinearLayout
+                android:id="@+id/fare_summary_repuest_payment_lable"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="@drawable/background_border_blue"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:text="Request Payment"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:textSize="14dp"
+                    android:textColor="#00B0FF"
+                    android:textStyle="bold"/>
+
+        </LinearLayout>
+            <LinearLayout
+                android:id="@+id/fare_summary_receive_cash_lable"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:background="@drawable/background_border_blue"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:text="Receive Cash"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:textSize="14dp"
+                    android:textColor="#00B0FF"
+                    android:textStyle="bold"/>
+
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

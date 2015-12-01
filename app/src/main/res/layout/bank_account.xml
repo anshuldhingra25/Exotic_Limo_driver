@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/bank_account_main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout_ankaccountheader"
+            android:layout_width="fill_parent"
+            android:layout_height="55dp"
+            android:layout_alignParentTop="true"
+            android:background="@color/app_color"
+            android:layout_centerHorizontal="true"
+            >
+
+            <ImageView
+                android:id="@+id/ham_home"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@drawable/ham_new"/>
+
+
+            <com.cabily.cabilydriver.widgets.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bank_lable_bankdetails"
+                android:id="@+id/textView"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:textColor="#ffffff"
+                android:textSize="16sp"/>
+        </RelativeLayout>
+
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="wrap_content"
+            android:layout_below="@+id/relativeLayout_ankaccountheader"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true">
+
+                <com.cabily.cabilydriver.widgets.CustomTextView
+                    android:id="@+id/bank_ac_bank_ac_holder_name_lable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="20dp"
+                    android:text="Account Holder Name"
+                    android:textColor="#000000"
+                    android:textSize="15dp" />
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/bank_ac_bank_ac_holder_address_lable"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toEndOf="@+id/imageView2"
+                    android:layout_toRightOf="@+id/imageView2"
+                    android:background="@drawable/star" />
+
+                <EditText
+                    android:id="@+id/bank_ac_holder_name"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_below="@+id/bank_ac_bank_ac_holder_name_lable"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="45dp"
+                    android:background="@drawable/edittext_background_border"
+                    android:ems="10"
+                    android:hint="Name"
+                    android:inputType="text"
+                    android:textColor="#000000"
+                    android:textColorHint="#4f4f4f"
+                    android:textSize="14sp"
+                    android:typeface="sans" />
+
+                <com.cabily.cabilydriver.widgets.CustomTextView
+                    android:id="@+id/bank_ac_bank_ac_holder_address_lable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/bank_ac_holder_name"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Account Holder Address"
+                    android:textColor="#000000"
+                    android:textSize="15dp" />
+
+                <ImageView
+                    android:id="@+id/imageView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/bank_ac_bank_ac_branch_address_label"
+                    android:layout_alignRight="@+id/bank_ac_bank_ac_branch_address_label"
+                    android:layout_alignTop="@+id/bank_ac_bank_ac_branch_name_label"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/star" />
+
+                <EditText
+                    android:id="@+id/bank_ac_holder_address"
+                    android:layout_width="fill_parent"
+                    android:layout_height="80dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/bank_ac_bank_ac_holder_address_lable"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/edittext_background_border"
+                    android:ems="10"
+                    android:hint="Addrerss"
+                    android:inputType="textMultiLine"
+                    android:textColor="#000000"
+                    android:textColorHint="#4f4f4f"
+                    android:textSize="14sp"
+                    android:typeface="sans" />
+
+                <com.cabily.cabilydriver.widgets.CustomTextView
+                    android:id="@+id/bank_ac_accountno_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/bank_ac_holder_address"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Account Number"
+                    android:textColor="#000000"
+                    android:textSize="15dp" />
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/bank_ac_bank_ac_holder_address_lable"
+                    android:layout_alignRight="@+id/bank_ac_bank_ac_holder_address_lable"
+                    android:layout_alignTop="@+id/bank_ac_bank_ac_holder_name_lable"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/star" />
+
+                <EditText
+                    android:id="@+id/bank_ac_account_number"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/bank_ac_accountno_label"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/edittext_background_border"
+                    android:ems="10"
+                    android:hint="Account Numbeer"
+                    android:inputType="text"
+                    android:textColor="#000000"
+                    android:textColorHint="#4f4f4f"
+                    android:textSize="14sp"
+                    android:typeface="sans" />
+
+                <com.cabily.cabilydriver.widgets.CustomTextView
+                    android:id="@+id/bank_ac_bank_ac_bank_name_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/bank_ac_account_number"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Bank Name"
+                    android:textColor="#000000"
+                    android:textSize="15dp" />
+
+                <ImageView
+                    android:id="@+id/imageView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/bank_ac_accountno_label"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toEndOf="@+id/bank_ac_bank_ac_branch_address_label"
+                    android:layout_toRightOf="@+id/bank_ac_bank_ac_branch_address_label"
+                    android:background="@drawable/star" />
+
+                <EditText
+                    android:id="@+id/bank_ac_bank_name"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/bank_ac_bank_ac_bank_name_label"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/edittext_background_border"
+                    android:ems="10"
+                    android:hint="Bank Name"
+                    android:inputType="text"
+                    android:textColor="#000000"
+                    android:textColorHint="#4f4f4f"
+                    android:textSize="14sp"
+                    android:typeface="sans" />
+
+                <com.cabily.cabilydriver.widgets.CustomTextView
+                    android:id="@+id/bank_ac_bank_ac_branch_name_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/bank_ac_bank_name"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Branch Name"
+                    android:textColor="#000000"
+                    android:textSize="15dp" />
+
+                <ImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/bank_ac_bank_ac_branch_name_label"
+                    android:layout_alignRight="@+id/bank_ac_bank_ac_branch_name_label"
+                    android:layout_alignTop="@+id/bank_ac_bank_ac_bank_name_label"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/star" />
+
+                <EditText
+                    android:id="@+id/bank_ac_branch_name"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/bank_ac_bank_ac_branch_name_label"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/edittext_background_border"
+                    android:ems="10"
+                    android:hint="Branch Name"
+                    android:inputType="text"
+                    android:textColor="#000000"
+                    android:textColorHint="#4f4f4f"
+                    android:textSize="14sp"
+                    android:typeface="sans" />
+
+                <com.cabily.cabilydriver.widgets.CustomTextView
+                    android:id="@+id/bank_ac_bank_ac_branch_address_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/bank_ac_branch_name"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Branch Address"
+                    android:textColor="#000000"
+                    android:textSize="15dp" />
+
+                <ImageView
+                    android:id="@+id/imageView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/bank_ac_bank_ac_ifsc_code_label"
+                    android:layout_alignRight="@+id/bank_ac_bank_ac_ifsc_code_label"
+                    android:layout_alignTop="@+id/bank_ac_bank_ac_branch_address_label"
+                    android:layout_marginLeft="15dp"
+                    android:background="@drawable/star" />
+
+                <EditText
+                    android:id="@+id/bank_ac_branch_address"
+                    android:layout_width="fill_parent"
+                    android:layout_height="80dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/bank_ac_bank_ac_branch_address_label"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/edittext_background_border"
+                    android:ems="10"
+                    android:hint="Branch Address"
+                    android:inputType="textMultiLine"
+                    android:textColor="#000000"
+                    android:textColorHint="#4f4f4f"
+                    android:textSize="14sp"
+                    android:typeface="sans" />
+
+                <com.cabily.cabilydriver.widgets.CustomTextView
+                    android:id="@+id/bank_ac_bank_ac_ifsc_code_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/bank_ac_branch_address"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="10dp"
+                    android:text="SWIFT/IFSC Code"
+                    android:textColor="#000000"
+                    android:textSize="14dp" />
+
+                <ImageView
+                    android:id="@+id/imageView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/bank_ac_bank_ac_ifsc_code_label"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toEndOf="@+id/bank_ac_routing_no_label"
+                    android:layout_toRightOf="@+id/bank_ac_routing_no_label"
+                    android:background="@drawable/star" />
+
+                <EditText
+                    android:id="@+id/bank_ac_ifsc_code"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/bank_ac_bank_ac_ifsc_code_label"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/edittext_background_border"
+                    android:ems="10"
+                    android:hint="IFSC Code"
+                    android:inputType="text"
+                    android:textColor="#000000"
+                    android:textColorHint="#4f4f4f"
+                    android:textSize="14sp"
+                    android:typeface="sans" />
+
+                <com.cabily.cabilydriver.widgets.CustomTextView
+                    android:id="@+id/bank_ac_routing_no_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/bank_ac_ifsc_code"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Routing Number"
+                    android:textColor="#000000"
+                    android:textSize="15dp" />
+
+                <EditText
+                    android:id="@+id/bank_ac_routing_number"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/bank_ac_routing_no_label"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/edittext_background_border"
+                    android:ems="10"
+                    android:hint="Routing Number"
+                    android:inputType="text"
+                    android:textColor="#000000"
+                    android:textColorHint="#4f4f4f"
+                    android:textSize="14sp"
+                    android:typeface="sans" />
+
+
+
+                <Button
+                    android:layout_width="180dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/bank_ac_save_button"
+                    android:layout_below="@+id/bank_ac_routing_number"
+                    android:text="SAVE"
+                    android:textColor="#ffffff"
+                    android:layout_centerInParent="true"
+                    android:layout_marginBottom="40dp"
+                    android:textSize="15sp"
+                    android:background="@drawable/button_curve_background_blue"
+                    android:layout_marginTop="25dp"
+                    android:textStyle="bold" />
+
+                <com.cabily.cabilydriver.widgets.CustomTextView
+                    android:id="@+id/bank_ac_dummyTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/bank_ac_save_button"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="15dp"
+                    android:text=""
+                    android:textColor="#000000"
+                    android:visibility="invisible"
+                    android:textSize="12dp" />
+
+
+
+            </RelativeLayout>
+        </ScrollView>
+
+    </RelativeLayout>
+
+</RelativeLayout>
+
+
+
+

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/layout_reviwes_header"
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/app_color">
+
+        <com.cabily.cabilydriver.widgets.CustomTextView
+            android:id="@+id/end_reviwes_nameTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/lbel_reviwe_header"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+
+        <com.cabily.cabilydriver.widgets.CustomTextView
+            android:id="@+id/review_skip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:text="@string/lbel_reviwe_skip"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+
+
+        <com.cabily.cabilydriver.widgets.CustomTextView
+            android:id="@+id/reviwes_skip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:text="@string/lbel_stopwait"
+            android:textColor="#cc0000"
+            android:textSize="14sp"
+            android:visibility="gone" />
+
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/rating_page_lable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_below="@+id/layout_reviwes_header"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:gravity="center_horizontal"
+        android:text="@string/lbel_rating_details"
+        android:textColor="#010101"
+        android:textSize="13dp"
+         />
+
+
+    <ListView
+        android:id="@+id/listView_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rating_page_lable"
+        android:dividerHeight="1dp"/>
+
+
+    <com.cabily.cabilydriver.widgets.CustomTextView
+        android:id="@+id/reviwes_no_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/listView_rating"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:text="@string/lbel_rate_nooptions"
+        android:visibility="gone" />
+
+
+
+
+    <RelativeLayout
+        android:id="@+id/layout_reviwesubmit_btn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="#80000000">
+
+
+        <Button
+            android:id="@+id/btn_submit_reviwes"
+            android:layout_width="200dp"
+            android:layout_height="35dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@color/app_color"
+            android:text="@string/lbel_rate_rider"
+            android:textColor="#ffffff"
+            android:textSize="15sp" />
+
+
+    </RelativeLayout>
+
+
+
+
+
+
+</RelativeLayout>

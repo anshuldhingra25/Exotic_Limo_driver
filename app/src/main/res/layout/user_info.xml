@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:id="@+id/layout_userinfo_header"
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/app_color">
+
+
+        <RelativeLayout
+            android:id="@+id/layout_user_info_back"
+            android:layout_width="fill_parent"
+            android:layout_height="55dp"
+            android:layout_centerHorizontal="true"
+            android:background="@color/app_color">
+
+
+            <ImageView
+                android:id="@+id/user_infoback_img"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
+                android:src="@drawable/back_arrow" />
+
+        </RelativeLayout>
+
+
+        <com.cabily.cabilydriver.widgets.CustomTextView
+            android:id="@+id/user_info_user_name_head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text=""
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/layout_userinfo_header">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <com.cabily.cabilydriver.Utils.RoundedImageView
+                android:id="@+id/userinfo_user_image"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="15dp"
+                android:src="@drawable/nouserimg" />
+
+
+            <RelativeLayout
+                android:id="@+id/user_informations"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/userinfo_user_image"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:id="@+id/userinfo_usernamedetail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="Anithaaaa"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+
+                    />
+
+
+                <TextView
+                    android:id="@+id/userinfo_user_mobileno"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/userinfo_usernamedetail"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:text="20312121"
+                    android:textColor="#74d600"
+                    android:textSize="20sp" />
+
+
+                <RatingBar
+                    android:id="@+id/user_ratings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/userinfo_user_mobileno"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp" />
+
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/userinfo_canceltrip"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/button_curve_background_blue"
+        android:text="@string/userinfo_cancel_label"
+        android:textColor="#ffffff"
+        android:textSize="15sp" />
+
+
+</RelativeLayout>

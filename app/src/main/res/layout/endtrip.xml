@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/layout_end_trip_header"
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/app_color">
+
+        <com.cabily.cabilydriver.widgets.CustomTextView
+            android:id="@+id/end_trip_nameTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/lbel_currentride"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+
+        <com.cabily.cabilydriver.widgets.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/lbel_wait"
+            android:id="@+id/begin_waitingtime_tv_start"
+            android:textColor="#cc0000"
+            android:textSize="14sp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:layout_alignParentRight="true" />
+
+
+        <com.cabily.cabilydriver.widgets.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/lbel_stopwait"
+            android:id="@+id/begin_waitingtime_tv_stop"
+            android:textColor="#cc0000"
+            android:textSize="14sp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:layout_alignParentRight="true"
+            android:visibility="gone"/>
+
+
+
+
+    </RelativeLayout>
+
+
+
+
+    <RelativeLayout
+        android:id="@+id/layout_end_trip_details"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_end_trip_header">
+
+
+        <RelativeLayout
+            android:id="@+id/layout_endtrip_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp">
+
+            <com.cabily.cabilydriver.Utils.RoundedImageView
+                android:id="@+id/profile_image_endtrip"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/nouserimg" />
+
+            <View
+                android:id="@+id/begin_trip_view"
+                android:layout_width="2px"
+                android:layout_height="80dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="15dp"
+                android:layout_toRightOf="@+id/profile_image_endtrip"
+                android:background="#b3b3b3" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/layout_endtrip_details">
+
+
+            <RelativeLayout
+
+                android:id="@+id/layout_end_trip_rideids"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+                <com.cabily.cabilydriver.widgets.CustomTextView
+                    android:id="@+id/endtrip_rideid_Tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/payment_list_ridesid"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+
+                <com.cabily.cabilydriver.widgets.CustomTextView
+                    android:id="@+id/beginendtrip_rideid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="5dp"
+                    android:layout_toRightOf="@+id/endtrip_rideid_Tv"
+                    android:text="2025154"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+
+            <com.cabily.cabilydriver.widgets.CustomTextView
+                android:id="@+id/end_trip_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/layout_end_trip_rideids"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="2dp"
+                android:text="Names"
+                android:textSize="18sp" />
+
+
+            <com.cabily.cabilydriver.widgets.CustomTextView
+                android:id="@+id/end_trip_mobilno"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/end_trip_name"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="2dp"
+                android:text="1454152121"
+                android:textColor="#8acc13"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/begintrip_call"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/end_trip_mobilno"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="15dp"
+                android:src="@drawable/cell" />
+
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+
+    <fragment
+        android:id="@+id/arrived_trip_view_map"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/layout_end_trip_details" />
+
+
+
+    <RelativeLayout
+        android:id="@+id/end_trip_alert_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="30dp"
+        android:background="#D9030303"
+        android:visibility="gone">
+
+        <com.cabily.cabilydriver.widgets.CustomTextView
+            android:id="@+id/end_trip_alert_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:text="hbvsvbjhjsnvbjhnnb"
+            android:textColor="#FCC900"
+            android:textSize="13sp" />
+    </RelativeLayout>
+
+
+
+
+
+    <RelativeLayout
+        android:id="@+id/beginend_trip_alert_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="30dp"
+        android:background="#D9030303"
+        android:visibility="gone">
+
+        <com.cabily.cabilydriver.widgets.CustomTextView
+            android:id="@+id/beginend_trip_alert_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:text="hbvsvbjhjsnvbjhnnb"
+            android:textColor="#FCC900"
+            android:textSize="13sp" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/layout_end_trip"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="#80000000">
+
+
+        <Button
+            android:id="@+id/btn_end_trip"
+            android:layout_width="200dp"
+            android:layout_height="35dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@color/app_color"
+            android:text="@string/lbel_endtrip"
+            android:textColor="#ffffff"
+            android:textSize="15sp" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_timer"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_below="@+id/layout_end_trip_details"
+        android:layout_centerHorizontal="true"
+        android:background="#80000000"
+        android:visibility="gone">
+        <TextView
+            android:id="@+id/timerValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textSize="40sp"
+            android:textColor="#ffffff"
+            android:text="458654" />
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

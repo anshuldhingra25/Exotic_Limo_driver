@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <RelativeLayout
+        android:id="@+id/map_top_layout"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_centerHorizontal="true"
+        android:background="#ffffff">
+        <com.github.siyamed.shapeimageview.CircularImageView
+            android:id="@+id/map_user_img"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/splash_image"
+            app:siBorderWidth="6dp"
+            app:siBorderColor="#000000"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="39dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:id="@+id/viewStub"
+            android:background="#b3b3b3"
+
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@+id/map_user_img"
+            android:layout_toEndOf="@+id/map_user_img"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ride Id:"
+            android:id="@+id/map_ride_id_lable"
+            android:layout_alignTop="@+id/viewStub"
+            android:layout_centerHorizontal="true"
+            android:textSize="18dp"
+            android:textColor="#010101" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/map_ride_id"
+            android:layout_alignBottom="@+id/map_ride_id_lable"
+            android:layout_toRightOf="@+id/map_ride_id_lable"
+            android:layout_toEndOf="@+id/map_ride_id_lable"
+            android:textSize="18dp"
+            android:textColor="#010101"
+            android:layout_marginLeft="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/map_user_name"
+            android:textSize="18dp"
+            android:layout_below="@+id/map_ride_id_lable"
+            android:layout_alignLeft="@+id/map_ride_id_lable"
+            android:layout_alignStart="@+id/map_ride_id_lable"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/map_user_phone_no"
+            android:textSize="18dp"
+            android:textColor="#016906"
+            android:layout_below="@+id/map_user_name"
+            android:layout_alignLeft="@+id/map_user_name"
+            android:layout_alignStart="@+id/map_user_name"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/phone_img"
+            android:background="@drawable/cell_phone"
+            android:layout_alignTop="@+id/map_user_phone_no"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="10dp" />
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/map_bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="#787479">
+        <Button
+            android:id="@+id/map_brgin_trip_button"
+            android:layout_width="250dp"
+            android:layout_height="55dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/button_curve_background_blue"
+            android:text="Begin Trip"
+            android:textColor="#ffffff"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            android:visibility="visible"/>
+        <Button
+            android:id="@+id/map_end_trip_button"
+            android:layout_width="250dp"
+            android:layout_height="55dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/button_curve_background_blue"
+            android:text="End Trip"
+            android:textColor="#ffffff"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="#ffffff" android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout_signinpage"
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/app_color"
+        android:layout_centerHorizontal="true"
+        >
+
+        <com.cabily.cabilydriver.widgets.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cabily_driver_main_lable_signin_Textview"
+            android:id="@+id/signin_header_Tv"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textColor="#ffffff"
+            android:textSize="16sp"/>
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:id="@+id/email_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="44dp"
+        android:background="@drawable/edittext_background_border"
+        android:layout_below="@+id/relativeLayout_signinpage"
+        android:layout_centerHorizontal="true">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:id="@+id/imageView"
+            android:layout_centerVertical="true"
+            android:background="@drawable/message" />
+
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:background="#ffffff"
+            android:ems="10"
+            android:layout_toRightOf="@+id/imageView"
+            android:hint="Email"
+            android:inputType="text"
+            android:textColor="#4f4f4f"
+            android:textColorHint="#4f4f4f"
+            android:textSize="14sp"
+            android:typeface="sans"
+            android:layout_marginLeft="10dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/password_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/edittext_background_border"
+        android:layout_below="@+id/email_layout"
+        android:layout_marginTop="20dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:id="@+id/imageView1"
+            android:layout_centerVertical="true"
+            android:background="@drawable/password"
+            />
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:background="#ffffff"
+            android:ems="10"
+            android:layout_toRightOf="@+id/imageView1"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:textColor="#4f4f4f"
+            android:textColorHint="#4f4f4f"
+
+            android:textSize="14sp"
+            android:typeface="sans"
+            android:layout_marginLeft="10dp" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/signin_main_button"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/password_layout"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/button_curve_background_blue"
+        android:text="Signin"
+        android:textColor="#ffffff"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp" />
+
+</RelativeLayout>

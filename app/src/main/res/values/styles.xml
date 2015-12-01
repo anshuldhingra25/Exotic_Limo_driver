@@ -1,0 +1,65 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="CircularBarPagerStyle">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
+
+        <item name="progress_arc_max">100</item>
+        <item name="arc_progress">0</item>
+
+
+        <item name="progress_arc_clockwise_outline_width">0.75dp</item>
+        <item name="progress_arc_counter_clockwise_outline_width">0.75dp</item>
+        <item name="progress_arc_clockwise_width">8dp</item>
+        <item name="progress_arc_counter_clockwise_width">8dp</item>
+
+        <item name="progress_start_line_enabled">true</item>
+        <item name="progress_pager_on_click_enabled">true</item>
+        <item name="progress_pager_fill_circle_color">#00000000</item>
+    </style>
+
+    <style name="CustomActionBarTheme" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+    </style>
+
+    <!-- ActionBar styles -->
+    <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@android:color/holo_blue_bright</item>
+    </style>
+
+
+    <style name="Animations_filter" parent="Theme.AppCompat.Light">
+        <item name="@android:windowEnterAnimation">@anim/pull_in_left</item>
+        <item name="@android:windowExitAnimation">@anim/push_out_right</item>
+    </style>
+
+    <style name="NoActionBar_Theme" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="colorPrimary">#6ad6ef</item>
+        <item name="colorPrimaryDark">#6ad6ef</item>
+    </style>
+
+
+
+    <style name="PushNotificaton_NoActionBar_Transparent_Theme" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">#000000</item>
+        <item name="colorPrimaryDark">#000000</item>
+        <item name="android:windowBackground">@color/pushnotification_custom_theme_color</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+
+    <style name="StarRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/star_ratingbar_full</item>
+        <item name="android:minHeight">80dp</item>
+        <item name="android:maxHeight">80dp</item>
+    </style>
+
+
+
+
+</resources>

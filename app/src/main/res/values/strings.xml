@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Cabily Partner</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_registraion">Registraion</string>
+    <string name="title_activity_home">Home</string>
+    <string name="title_activity_signin">Login</string>
+    <string name="action_loading">Loading</string>
+    <string name="go_offline">Go Offline</string>
+    <string name="trip_summary">Trip Summary</string>
+    <string name="home">Home</string>
+    <string name="dialog_app_exit">Are you sure you want to logout</string>
+    <string name="title_activity_driver_alert">Alert</string>
+    <string name="bank_account">Bank Account</string>
+    <string name="no_internet_connection">No Internet Connection</string>
+    <string name="no_trip_summary">Summary Not Available</string>
+    <string name="action_loading_error">Error</string>
+    <string name="action_loading_sucess">Success</string>
+    <string name="action_loading_cancel">Cancelling</string>
+    <string name="action_loading_rating">Ratting</string>
+
+
+
+    <!--MainPage-->
+    <string name="cabily_driver_main_lable_signin_Textview">SIGNIN</string>
+    <string name="cabily_driver_main_lable_register_Textview">REGISTER</string>
+    <string name="cabily_driver_main_lable_tripsummery_Textview">Trip Summery</string>
+
+
+
+
+    <!--Alert-->
+    <string name="cabily_driver_alert_lable_accept_Textview">ACCEPT</string>
+    <string name="cabily_driver_alet_lable_reject_Textview">REJECT</string>
+    <string name="dialog_go_offline">Are you sure you want to go offline?</string>
+    <string name="dialog_go_yes">Yes</string>
+    <string name="dialog_go_no">No</string>
+    <string name="dialog_gooffline_title">Go Offline</string>
+    <string name="dialog_go_on_line">Are you sure you want to go online?</string>
+    <string name="alert_tape_toaccept">Tape to accept the ride</string>
+
+    <!-- Alert Dialog -->
+    <string name="alert_label_title">Sorry!</string>
+    <string name="alert_label_ok">OK</string>
+    <string name="alert_label_content1">We could not accepte your request</string>
+    <string name="alert_label_content2">No cabs has been available at your place.Kindly try again after sometime</string>
+    <string name="alert_nointernet">No Internet Connection</string>
+    <string name="alert_servererror">Server Error</string>
+    <string name="alert_gpsEnable">Enable GPS to locate your location</string>
+    <string name="alert_nocar">Sorry! We do not provide services in your city yet.</string>
+    <string name="lablesigningin_Textview">signingin..</string>
+    <string name="label_gps_textview">Location Services Disabled Please enable location service</string>
+
+    <!--accept-->
+    <string name="accept_total_bill_txtview">Total Bill:</string>
+    <string name="accept_total_paid_bill_txtview">Total Paid:</string>
+    <string name="accept_total_completed_txtview">Completed</string>
+    <string name="accept_total_paid_txtview">Amount paid</string>
+    <string name="accept_total_rides">Rides</string>
+
+
+
+    <!-- My Profile layout -->
+    <string name="myprofile_label_firstname">First Name :</string>
+    <string name="myprofile_label_lastname">Last Name :</string>
+    <string name="myprofile_label_phone">Phone :</string>
+    <string name="myprofile_label_email">Email :</string>
+    <string name="myprofile_label_company">Company :</string>
+    <string name="myprofile_label_address1">Address 1 :</string>
+    <string name="myprofile_label_address2">Address 2 :</string>
+    <string name="myprofile_label_city">City :</string>
+    <string name="myprofile_label_country">Country :</string>
+    <string name="myprofile_label_state">State :</string>
+    <string name="myprofile_label_postcode">Post code :</string>
+    <string name="myprofile_label_save">SAVE</string>
+    <string name="myprofile_label_myprofile">My Profile</string>
+    <string name="myprofile_label_manditory">*</string>
+
+
+
+    <!--Bank-->
+    <string name="bank_lable_accountholder_name">Enter account holder name</string>
+    <string name="bank_lable_accountholder_address">Enter account holder Address</string>
+    <string name="bank_lable_account_number">Enter account Number</string>
+    <string name="bank_lable_bank_name">Enter Bank name</string>
+    <string name="bank_lable_branch_name">Enter branch name</string>
+    <string name="bank_lable_branch_address">Enter branchaddress</string>
+    <string name="bank_lable_ifsc_code">Enter Ifsc code</string>
+    <string name="bank_lable_routing_number">Enter routing number</string>
+    <string name="bank_lable_bankdetails">Bank Account</string>
+
+    <!--Payment-->
+    <string name="paymnet_lable_payment_text">Payment:</string>
+    <string name="paymnet_lable_amount_text">Amount :</string>
+    <string name="paymnet_lable_receivddate_text">Received Date:</string>
+    <string name="payment_statment">Payment Statments</string>
+    <string name="payment_details">Payment Details</string>
+    <string name="payment_list_ridesid">RideId:</string>
+    <string name="payment_no_payments">No Payments Available</string>
+
+
+
+    <!--Tripsummary-->
+    <string name="fetchdatatoast">Unable to fetch data from server</string>
+    <string name="tripsummery_details_list">Trip Summery Detail</string>
+    <string name="tripsummery_all_list">All</string>
+    <string name="tripsummery_onride_list">Onride</string>
+    <string name="tripsummery_complete_list">Completed</string>
+    <string name="tripsummery_setail_cancel_label">Cancel Ride</string>
+    <string name="tripsummery_setail_continue_label">Continue Ride</string>
+    <string name="tripsummery_rideid_label">ID :</string>
+    <string name="tripsummery_add_Ride_label">Ride</string>
+    <string name="tripsummery_add_Payment_label">Payment</string>
+    <string name="tripsummery_add_km_label">km</string>
+    <string name="tripsummery_add_mins_label">mins</string>
+    <string name="tripsummery_waittime_label">wait time</string>
+    <string name="tripsummery_timetaken_label">time taken</string>
+    <string name="tripsummery_ridedistance_label">ride distance</string>
+    <string name="tripsummery_pickup_label">Pick up :</string>
+    <string name="tripsummery_cancelreason_label">Why are you cancelling?</string>
+    <string name="tripsummery_noreason_label">No Reasons Available</string>
+    <string name="confirmdelete">Confirm Cancel</string>
+    <string name="surewanttodelete">Are you sure you want cancel the trip?</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
+
+
+    <!--UserInfo-->
+    <string name="userinfo_cancel_label">Cancel Trip</string>
+
+
+    <!--Arrived-->
+    <string name="arrivedtrip_info_label">Info</string>
+    <string name="arrivedtrip_id_label">ID :</string>
+    <string name="arrivedtrip_arrivedtriptv_label">Arrived</string>
+    <string name="alert_canceld_label_title">Cancelled</string>
+    <string name="alert_tripdetail_label_title">Trip Detail</string>
+    <string name="alert_tripdetail_droplocation_label_title">Drop Location</string>
+    <string name="alert_tripdetail_select_droplocation_label_title">Select Drop Location</string>
+    <string name="alert_tripdetail_droptime_label_title">Drop Time</string>
+    <string name="alert_tripdetail_select_droptime_label_title">Select Drop Time</string>
+    <string name="alert_tripdetail_waitingtime_label_title">Waiting Time</string>
+    <string name="alert_tripdetail_ridedistance_label_title">Ride Distance</string>
+    <string name="alert_tripdetail_enterdistance_label_hint">Enter Distance(eg:25)</string>
+    <string name="alert_tripdetail_endtrip_label">End Trip</string>
+    <string name="arrived_alert_content1">Unable to contact user.please try again after sometime</string>
+
+
+
+
+
+    <string name="please_collect_the_below_amount_from_the_customer">Please collect the below amount from the customer</string>
+    <string name="static_rupee">176</string>
+    <string name="rs_symbol">\u20B9</string>
+    <string name="dummy_amount">176</string>
+    <string name="title_activity_please_rate">Please Rate</string>
+    <string name="please_rate_the_customer">Please Rate the Customer.All fields are Mandatory</string>
+    <string name="label_behaviour">Behaviour</string>
+    <string name="label_way_of_apporach">Way of Approach</string>
+    <string name="label_rate_rider">Rate Rider</string>
+    <string name="label_cashreceived">Received</string>
+
+
+    <!--Begin Trip-->
+    <string name="lbel_begintrip_label_cancel">Cancel</string>
+    <string name="lbel_begintrip">Begin Trip</string>
+
+      <!--EndTrip-->
+    <string name="lbel_endtrip">End Trip</string>
+    <string name="lbel_currentride">Current Ride</string>
+    <string name="lbel_wait">Start wait</string>
+    <string name="lbel_stopwait">Stop wait</string>
+
+
+    <!--FareSummery details-->
+    <string name="lbel_fare_summery_header">Fare Summery</string>
+    <string name="lbel_fare_summery_ride_distance">Ride Distance:</string>
+    <string name="lbel_fare_summery_timetaken">Time Taken:</string>
+    <string name="lbel_fare_summery_wait_time">Wait Time:</string>
+    <string name="lbel_fare_summery_requestpayment">Request Payment</string>
+    <string name="lbel_fare_summery_receive_cash">Receive Cash</string>
+
+
+    <!--Drop Location-->
+    <string name="droplocatoopn_label_search">Enter Place to Search</string>
+    <string name="droplocation_label_place_notAvailable">No Search Found</string>
+
+
+    <!--Receivecash-->
+    <string name="lbel_received_receive_cash">Received</string>
+    <string name="lbel_received_received_cash">Receive Cash</string>
+
+    <!--Otp-->
+    <string name="lbel_otp">OTP</string>
+    <string name="lbel_otp_code">OTP CODE</string>
+    <string name="lbel_otp_code_confirm">Confirm</string>
+
+
+    <!--Alert-->
+    <string name="lbel_alert_inform">Cabily Partner</string>
+    <string name="lbel_alert_inform2">Please visit our website to register.Thank you</string>
+    <string name="label_sure_go_offline">Are you sure you want go offline?</string>
+    <string name="label_pushnotification_canceled">Sorry</string>
+    <string name="label_pushnotification_ride_completed">Thanks</string>
+    <string name="label_pushnotification_cashreceived">Success</string>
+
+
+
+
+        <!--Reviwes-->
+    <string name="lbel_reviwe_header">Please Rate</string>
+    <string name="lbel_rating_details">Please rate the customer. All fields are mandatory</string>
+    <string name="lbel_reviwe_skip">Skip</string>
+    <string name="lbel_rate_rider">Rate Rider</string>
+    <string name="lbel_rate_nooptions">No Options Available</string>
+
+
+    <string name="lbel_notification">Message</string>
+    <string name="lbel_notification_ok">Ok</string>
+    <string name="go_online_string">GO ONLINE</string>
+    <string name="not_available_text">Not Available</string>
+    <string name="dialog_message">Alert</string>
+    <string name="dialog_alert_title">Alert</string>
+    <string name="lbel_notification_selectrating">Select your rating</string>
+
+
+    <string name="map_lable_available_status">You have a pending trip / transaction.Please tap to view.Without resolving this you will not get ride requests</string>
+
+
+    <!-- RIDE LATER Alert Dialog -->
+    <string name="alert_label_trip_title">Invalid  time</string>
+    <string name="alert_label_trip_content">Please make sure that drop time is before atleast an hour from now</string>
+
+
+
+
+
+</resources>

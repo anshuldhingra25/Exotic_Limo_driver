@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff">
+
+
+    <RelativeLayout
+        android:id="@+id/layouts_cancel_reasons"
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/app_color">
+
+
+        <ImageView
+            android:id="@+id/cancel_reasons_back"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/back_arrow" />
+
+
+        <com.cabily.cabilydriver.widgets.CustomTextView
+            android:id="@+id/trip_rideidTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30dp"
+            android:text="@string/userinfo_cancel_label"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
+
+
+    </RelativeLayout>
+
+
+
+
+    <com.cabily.cabilydriver.widgets.CustomTextView
+        android:id="@+id/cancel_reasonTextview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:textSize="20sp"
+        android:layout_below="@+id/layouts_cancel_reasons"
+        android:text="@string/tripsummery_cancelreason_label" />
+
+
+
+
+
+
+    <ListView
+        android:id="@+id/cancelreason_listView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        android:layout_below="@+id/cancel_reasonTextview"></ListView>
+
+    <com.cabily.cabilydriver.widgets.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tripsummery_noreason_label"
+        android:id="@+id/emtpy_cancelreason"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:textColor="#000000"
+        android:visibility="gone"
+        android:layout_alignTop="@+id/cancelreason_listView" />
+
+</RelativeLayout>

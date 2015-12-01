@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <fragment
+        android:id="@+id/map2"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <RelativeLayout
+        android:id="@+id/map2_top_layout"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_centerHorizontal="true"
+        android:background="#ffffff">
+        <ImageView
+            android:id="@+id/home_user_img"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/splash_image"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="39dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:id="@+id/viewStub"
+            android:background="#b3b3b3"
+
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@+id/home_user_img"
+            android:layout_toEndOf="@+id/home_user_img"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Id:"
+            android:id="@+id/map2_id_lable"
+            android:layout_alignTop="@+id/viewStub"
+            android:layout_centerHorizontal="true"
+            android:textSize="18dp"
+            android:textColor="#010101"
+            android:layout_marginLeft="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/map2_id"
+            android:layout_alignBottom="@+id/map2_id_lable"
+            android:layout_toRightOf="@+id/map2_id_lable"
+            android:layout_toEndOf="@+id/map2_id_lable"
+            android:textSize="18dp"
+            android:textColor="#010101"
+            android:layout_marginLeft="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/map2_address"
+            android:textSize="18dp"
+            android:layout_below="@+id/map2_id_lable"
+            android:layout_alignLeft="@+id/map2_id_lable"
+            android:layout_alignStart="@+id/map2_id_lable"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/map2_date_time"
+            android:textSize="18dp"
+            android:layout_below="@+id/map2_address"
+            android:layout_alignLeft="@+id/map2_address"
+            android:layout_alignStart="@+id/map2_address"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:layout_marginRight="10dp" />
+
+
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/map2_bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="#787479">
+        <Button
+            android:id="@+id/map2_arrived_button"
+            android:layout_width="250dp"
+            android:layout_height="55dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/button_curve_background_blue"
+            android:text="Arrived"
+            android:textColor="#ffffff"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            android:visibility="visible"/>
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

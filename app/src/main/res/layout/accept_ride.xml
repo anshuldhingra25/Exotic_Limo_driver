@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <com.github.OrangeGangsters.circularbarpager.library.CircularBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/view"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="174dp"
+        app:progress_arc_clockwise_color="#ff846e"
+        app:progress_arc_clockwise_width="10dp"
+        app:progress_pager_on_click_enabled="true"
+        app:progress_pager_fill_circle_color="#ffffff"/>
+
+
+</RelativeLayout>

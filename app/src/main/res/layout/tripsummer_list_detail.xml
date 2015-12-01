@@ -1,0 +1,589 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff">
+
+
+    <RelativeLayout
+        android:id="@+id/tripsummry_layouts"
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/app_color">
+
+
+        <ImageView
+            android:id="@+id/tripsummry_back"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/back_arrow" />
+
+
+        <com.cabily.cabilydriver.widgets.CustomTextView
+            android:id="@+id/trip_rideidTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30dp"
+            android:layout_toRightOf="@+id/tripsummry_back"
+            android:text="@string/tripsummery_rideid_label"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
+
+
+        <com.cabily.cabilydriver.widgets.CustomTextView
+            android:id="@+id/tripsummry_rideidTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/trip_rideidTv"
+            android:text=""
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView_tripsummry"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/layout_tripbtns"
+        android:layout_below="@+id/tripsummry_layouts">
+
+        <RelativeLayout
+            android:id="@+id/layout_scroll"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+
+            <RelativeLayout
+                android:id="@+id/layout_trip_summery_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible">
+
+                <fragment
+                    android:id="@+id/tripsummery_view_map"
+                    android:name="com.google.android.gms.maps.MapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:clickable="false" />
+
+
+                <RelativeLayout
+                    android:id="@+id/layout_rideaddress_and_locarions_details"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tripsummery_view_map"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="#ffffff">
+
+                    <RelativeLayout
+                        android:id="@+id/relativeLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:background="#ffffff">
+
+
+                        <RelativeLayout
+                            android:id="@+id/layout_trip_summery_details_address"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp">
+
+
+                            <ImageView
+                                android:id="@+id/mapicon"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_alignParentLeft="true"
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="10dp"
+                                android:src="@drawable/maplocation" />
+
+
+                            <RelativeLayout
+                                android:id="@+id/layout_tripsummery_detail_address"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="30dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_toRightOf="@+id/mapicon">
+
+                                <com.cabily.cabilydriver.widgets.CustomTextView
+                                    android:id="@+id/Tv_tripsummery_view_address"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_centerHorizontal="true"
+                                    android:text=""
+                                    android:textColor="#4e4e4e"
+                                    android:textSize="13sp" />
+                            </RelativeLayout>
+
+                        </RelativeLayout>
+
+
+                        <View
+                            android:id="@+id/ride_request_view1"
+                            android:layout_width="fill_parent"
+                            android:layout_height="1px"
+                            android:layout_below="@+id/layout_trip_summery_details_address"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginTop="10dp"
+                            android:background="#9b9b9b" />
+
+
+                        <RelativeLayout
+                            android:id="@+id/tripsummery_detail_view_dates"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/ride_request_view1"
+                            android:layout_marginTop="5dp">
+
+                            <ImageView
+                                android:id="@+id/clock_icon"
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:layout_alignParentLeft="true"
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="15dp"
+                                android:src="@drawable/clockhash" />
+
+
+                            <RelativeLayout
+                                android:id="@+id/layout_tripsummery_pickup"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="30dp"
+                                android:layout_toRightOf="@+id/clock_icon">
+
+
+                                <com.cabily.cabilydriver.widgets.CustomTextView
+                                    android:id="@+id/trip_pickup_date_txt"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginTop="5dp"
+                                    android:text="@string/tripsummery_pickup_label"
+                                    android:textColor="#000000"
+                                    android:textSize="13sp" />
+
+
+                                <com.cabily.cabilydriver.widgets.CustomTextView
+                                    android:id="@+id/trip_view_pickupdates"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_toRightOf="@+id/trip_pickup_date_txt"
+                                    android:text=""
+                                    android:textColor="#4e4e4e"
+                                    android:textSize="13sp" />
+                            </RelativeLayout>
+
+
+                        </RelativeLayout>
+
+
+                        <View
+                            android:id="@+id/trip_detail_view2"
+                            android:layout_width="fill_parent"
+                            android:layout_height="1px"
+                            android:layout_below="@+id/tripsummery_detail_view_dates"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginTop="5dp"
+                            android:background="#9b9b9b"
+                            android:visibility="visible" />
+
+                    </RelativeLayout>
+
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/layoutsummery_and_bill_details"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/layout_rideaddress_and_locarions_details"
+                    android:layout_marginTop="4dp"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:id="@+id/trip_details_view_details_time"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:visibility="visible">
+
+
+                        <RelativeLayout
+                            android:id="@+id/tripsummery_view_details"
+                            android:layout_width="120dp"
+                            android:layout_height="50dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:background="#ffffff"
+                            android:textColor="#000000"
+                            android:textSize="15sp">
+
+                            <com.cabily.cabilydriver.widgets.CustomTextView
+                                android:id="@+id/trip_detail_distancekm"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:text=""
+                                android:textColor="#000000"
+                                android:textSize="13sp" />
+
+
+                            <com.cabily.cabilydriver.widgets.CustomTextView
+                                android:id="@+id/trip_detail_distances_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/trip_detail_distancekm"
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true"
+                                android:text="@string/tripsummery_ridedistance_label"
+                                android:textColor="#b0b0b1"
+                                android:textSize="12sp" />
+
+
+                        </RelativeLayout>
+
+
+                        <RelativeLayout
+                            android:id="@+id/trip_detail_view_between2"
+                            android:layout_width="120dp"
+                            android:layout_height="50dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerInParent="true"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:background="#ffffff"
+                            android:textColor="#000000"
+                            android:textSize="15sp">
+
+
+                            <com.cabily.cabilydriver.widgets.CustomTextView
+                                android:id="@+id/tripdetail_timetaken_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:text=""
+                                android:textColor="#000000"
+                                android:textSize="13sp" />
+
+
+                            <com.cabily.cabilydriver.widgets.CustomTextView
+                                android:id="@+id/requst_ride_time_taken_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/tripdetail_timetaken_value"
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true"
+                                android:text="@string/tripsummery_timetaken_label"
+                                android:textColor="#b0b0b1"
+                                android:textSize="12sp" />
+
+
+                        </RelativeLayout>
+
+
+                        <RelativeLayout
+                            android:id="@+id/trip_detail_maximum_button2"
+                            android:layout_width="120dp"
+                            android:layout_height="50dp"
+                            android:layout_centerInParent="true"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_toRightOf="@+id/cabilymoney_button2"
+                            android:layout_weight="1"
+                            android:background="#ffffff"
+                            android:textColor="#000000"
+                            android:textSize="15sp">
+
+
+                            <com.cabily.cabilydriver.widgets.CustomTextView
+                                android:id="@+id/tripdetail_wait_time_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:text=""
+                                android:textColor="#000000"
+                                android:textSize="13sp" />
+
+
+                            <com.cabily.cabilydriver.widgets.CustomTextView
+                                android:id="@+id/requst_wait_time_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/tripdetail_wait_time_value"
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true"
+                                android:text="@string/tripsummery_waittime_label"
+                                android:textColor="#b0b0b1"
+                                android:textSize="12sp" />
+
+
+                        </RelativeLayout>
+
+
+                    </LinearLayout>
+
+
+                    <View
+                        android:id="@+id/tripdetail_request_view3"
+                        android:layout_width="fill_parent"
+                        android:layout_height="1px"
+                        android:layout_below="@+id/trip_details_view_details_time"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginTop="3dp"
+                        android:background="#9b9b9b"
+                        android:visibility="visible" />
+
+
+                    <RelativeLayout
+                        android:id="@+id/trip_detail_bill_details"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tripdetail_request_view3"
+                        android:layout_marginTop="4dp"
+                        android:visibility="visible">
+
+                        <ImageView
+                            android:id="@+id/bill_icon_trip"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="15dp"
+                            android:src="@drawable/bill" />
+
+
+                        <RelativeLayout
+                            android:id="@+id/layout_totalbill_details_tripdetail_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="30dp"
+                            android:layout_toRightOf="@+id/bill_icon_trip">
+
+                            <com.cabily.cabilydriver.widgets.CustomTextView
+                                android:id="@+id/trip_detail_view_request_total_bill"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_marginTop="5dp"
+                                android:text="@string/accept_total_bill_txtview"
+                                android:textColor="#000000"
+                                android:textSize="12sp" />
+
+
+                            <com.cabily.cabilydriver.widgets.CustomTextView
+                                android:id="@+id/trip_detail_view_total_amount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginRight="18dp"
+                                android:layout_marginTop="10dp"
+                                android:text=""
+                                android:textColor="#000000"
+                                android:textSize="12sp" />
+
+                        </RelativeLayout>
+
+
+                        <RelativeLayout
+                            android:id="@+id/layout_totalbill_paid_details_tripdetail_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/layout_totalbill_details_tripdetail_view"
+                            android:layout_marginLeft="30dp"
+                            android:layout_toRightOf="@+id/bill_icon_trip">
+
+                            <com.cabily.cabilydriver.widgets.CustomTextView
+                                android:id="@+id/tripdetail_view_total_paid_bill"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_marginTop="3dp"
+                                android:text="@string/accept_total_paid_bill_txtview"
+                                android:textColor="#000000"
+                                android:textSize="13sp" />
+
+
+                            <com.cabily.cabilydriver.widgets.CustomTextView
+                                android:id="@+id/tripdetail_view_total_paid_amount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginRight="18dp"
+                                android:layout_marginTop="10dp"
+                                android:text=""
+                                android:textColor="#000000"
+                                android:textSize="13sp" />
+
+                        </RelativeLayout>
+
+
+                    </RelativeLayout>
+
+
+                    <View
+                        android:id="@+id/tripdetail_request_view4"
+                        android:layout_width="fill_parent"
+                        android:layout_height="1px"
+                        android:layout_below="@+id/trip_detail_bill_details"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginTop="10dp"
+                        android:background="#9b9b9b"
+                        android:visibility="visible" />
+
+
+                </RelativeLayout>
+
+
+                <TextView
+                    android:id="@+id/wallet_usage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/layoutsummery_and_bill_details"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:text="wallet"
+                    android:textColor="#000000"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+
+
+                <TextView
+                    android:id="@+id/coupon_discount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/layoutsummery_and_bill_details"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:text="couponn"
+                    android:textColor="#000000"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+
+                <RelativeLayout
+                    android:id="@+id/layout_trip_summery_details_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/tripsummery_view_map"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/button_background_black"
+                    android:visibility="gone">
+
+
+                    <com.cabily.cabilydriver.widgets.CustomTextView
+                        android:id="@+id/tripdetail_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text=""
+                        android:textColor="#cc0000"
+                        android:textSize="12sp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/layout_tripdetail_payment_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/layout_trip_summery_details_status"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/button_background_black"
+                    android:visibility="gone">
+
+
+                    <com.cabily.cabilydriver.widgets.CustomTextView
+                        android:id="@+id/payment_paid_Textview_tripdetail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text=""
+                        android:textColor="#00bb27"
+                        android:textSize="12sp" />
+
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/layout_tripbtns"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="17dp">
+
+        <Button
+            android:id="@+id/trip_summerydetail_cancelride_button"
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/button_background_red_curve"
+            android:text="@string/tripsummery_setail_cancel_label"
+            android:textColor="#ffffff"
+            android:textSize="15sp"
+            android:visibility="gone" />
+
+
+        <Button
+            android:id="@+id/trip_summerydetail_continue_ride_button"
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            android:layout_below="@+id/trip_summerydetail_cancelride_button"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button_background_curve_green"
+            android:text="@string/tripsummery_setail_continue_label"
+            android:textColor="#ffffff"
+            android:textSize="15sp"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
+

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.github.siyamed.shapeimageview.CircularImageView
+        android:id="@+id/user_detail_user_img"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:src="@drawable/splash_image"
+        app:siBorderWidth="6dp"
+        app:siBorderColor="#000000"
+        android:layout_marginTop="38dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:layout_below="@+id/user_detail_user_img"
+        android:id="@+id/user_detail_username"
+        android:textSize="20dp"
+        android:textColor="#3d3d3d"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/user_detail_phno"
+        android:layout_below="@+id/user_detail_username"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:textSize="20dp"
+        android:textColor="#15820c" />
+
+    <android.support.v7.widget.AppCompatRatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/user_detail_ratingbar"
+        android:layout_below="@+id/user_detail_phno"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp" />
+    <Button
+        android:id="@+id/user_detail_canceltrip_btn"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:background="@drawable/button_curve_background_blue"
+        android:text="cancel trip"
+        android:textColor="#ffffff"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="41dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/user_detail_user_img"
+        android:layout_alignEnd="@+id/user_detail_user_img"
+        android:layout_marginLeft="20dp" />
+
+</RelativeLayout>

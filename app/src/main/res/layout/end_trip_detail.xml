@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:id="@+id/layout_arrived_tripdetail_list_header"
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/app_color">
+
+
+        <RelativeLayout
+            android:id="@+id/layout_arrivd_detail_back"
+            android:layout_width="fill_parent"
+            android:layout_height="55dp"
+            android:layout_centerHorizontal="true"
+            android:background="@color/app_color">
+
+
+            <ImageView
+                android:id="@+id/payment_list_back_img"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
+                android:src="@drawable/back_arrow" />
+
+        </RelativeLayout>
+
+
+        <com.cabily.cabilydriver.widgets.CustomTextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/alert_tripdetail_label_title"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView_arrived_tripdetail"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/layout_triparrived_btn"
+        android:layout_below="@+id/layout_arrived_tripdetail_list_header">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+
+            <RelativeLayout
+                android:id="@+id/layout_arrived_trip_droplocation_detail"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <com.cabily.cabilydriver.widgets.CustomTextView
+                    android:id="@+id/arrived_drop_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/alert_tripdetail_droplocation_label_title"
+                    android:textColor="#000000"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/arrived_drop_location_star"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_toRightOf="@+id/arrived_drop_location"
+                    android:text="*"
+                    android:textColor="#cc0000"
+                    android:textSize="20sp" />
+
+
+                <EditText
+                    android:id="@+id/arrived_tripdetail_droplocation_Et"
+                    android:layout_width="fill_parent"
+                    android:layout_height="45dp"
+                    android:layout_below="@+id/arrived_drop_location"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/grey_border_background"
+                    android:hint="@string/alert_tripdetail_select_droplocation_label_title"
+                    android:imeOptions="actionDone"
+                    android:paddingLeft="8dp"
+                    android:textColor="#000000"
+                    android:textColorHint="#4e4e4e"
+                    android:textSize="13sp" />
+                <ProgressBar
+                    style="?android:attr/progressBarStyleSmall"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:id="@+id/locationplace_progressBar"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:visibility="invisible"/>
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/layout_arrived_trip_droptime_detail"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_below="@+id/layout_arrived_trip_droplocation_detail">
+
+                <com.cabily.cabilydriver.widgets.CustomTextView
+                    android:id="@+id/arrived_drop_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/alert_tripdetail_droptime_label_title"
+                    android:textColor="#000000"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/arrived_drop_time_star"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_toRightOf="@+id/arrived_drop_time"
+                    android:text="*"
+                    android:textColor="#cc0000"
+                    android:textSize="20sp" />
+
+
+                <EditText
+                    android:id="@+id/arrived_tripdetail_droptime_Et"
+                    android:layout_width="fill_parent"
+                    android:layout_height="45dp"
+                    android:layout_below="@+id/arrived_drop_time"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/grey_border_background"
+                    android:hint="@string/alert_tripdetail_select_droptime_label_title"
+                    android:imeOptions="actionDone"
+                    android:paddingLeft="8dp"
+                    android:textColor="#000000"
+                    android:textColorHint="#4e4e4e"
+                    android:textSize="13sp" />
+
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/arrived_drop_time_star"
+                    android:layout_marginLeft="149dp"
+                    android:layout_marginStart="149dp"
+                    android:visibility="gone"
+                    android:layout_toRightOf="@+id/arrived_drop_time_star" />
+
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/layout_arrived_trip_waittime_detail"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_below="@+id/layout_arrived_trip_droptime_detail">
+
+                <com.cabily.cabilydriver.widgets.CustomTextView
+                    android:id="@+id/arrived_wait_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/alert_tripdetail_waitingtime_label_title"
+                    android:textColor="#000000"
+                    android:textSize="13sp" />
+
+                <com.cabily.cabilydriver.widgets.CustomTextView
+                    android:id="@+id/arrived_waittime_star"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_toRightOf="@+id/arrived_wait_time"
+                    android:text="*"
+                    android:textColor="#cc0000"
+                    android:textSize="20sp" />
+
+
+                <EditText
+                    android:id="@+id/arrived_tripdetail_waittime_Et_hours"
+                    android:layout_width="120dp"
+                    android:layout_height="45dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/arrived_wait_time"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/grey_border_background"
+                    android:hint="Hours"
+                    android:imeOptions="actionDone"
+                    android:paddingLeft="8dp"
+                    android:textColor="#000000"
+                    android:textColorHint="#4e4e4e"
+                    android:textSize="13sp" />
+
+
+                <com.cabily.cabilydriver.widgets.CustomTextView
+                    android:id="@+id/arrived_waittime_colonTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    android:layout_toRightOf="@+id/arrived_tripdetail_waittime_Et_hours"
+                    android:text=":"
+                    android:textColor="#cc0000"
+                    android:textSize="20sp" />
+
+
+                <EditText
+                    android:id="@+id/arrived_tripdetail_waittime_Et_mins"
+                    android:layout_width="120dp"
+                    android:layout_height="45dp"
+                    android:layout_below="@+id/arrived_wait_time"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_toRightOf="@+id/arrived_waittime_colonTv"
+                    android:background="@drawable/grey_border_background"
+                    android:hint="Minuts"
+                    android:imeOptions="actionDone"
+                    android:paddingLeft="8dp"
+                    android:textColor="#000000"
+                    android:textColorHint="#4e4e4e"
+                    android:textSize="13sp" />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/layout_arrived_trip_ridedistance_detail"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_below="@+id/layout_arrived_trip_waittime_detail">
+
+                <com.cabily.cabilydriver.widgets.CustomTextView
+                    android:id="@+id/arrived_ridedistance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/alert_tripdetail_ridedistance_label_title"
+                    android:textColor="#000000"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/arrived_ridedistance_star"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_toRightOf="@+id/arrived_ridedistance"
+                    android:text="*"
+                    android:textColor="#cc0000"
+                    android:textSize="20sp" />
+
+
+                <EditText
+                    android:id="@+id/arrived_ridedistance_Et"
+                    android:layout_width="fill_parent"
+                    android:layout_height="45dp"
+                    android:layout_below="@+id/arrived_ridedistance"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/grey_border_background"
+                    android:hint="@string/alert_tripdetail_enterdistance_label_hint"
+                    android:imeOptions="actionDone"
+                    android:paddingLeft="8dp"
+                    android:textColor="#000000"
+                    android:textColorHint="#4e4e4e"
+                    android:textSize="13sp" />
+
+
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+
+    </ScrollView>
+
+
+    <RelativeLayout
+        android:id="@+id/layout_end_triparrived_btn"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="#80000000">
+
+
+        <Button
+            android:id="@+id/btn_endtrip"
+            android:layout_width="200dp"
+            android:layout_height="45dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@color/app_color"
+            android:text="@string/alert_tripdetail_endtrip_label"
+            android:textColor="#ffffff"
+            android:textSize="15sp" />
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:id="@+id/layout_paymentdetails_payment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true">
+
+        <com.cabily.cabilydriver.widgets.CustomTextView
+            android:id="@+id/pmt_stmt_pmt_stmt_payment_lable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/paymnet_lable_payment_text"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
+            android:textColor="#b0b0b1"
+            android:textSize="15dp"
+            />
+
+        <com.cabily.cabilydriver.widgets.CustomTextView
+            android:id="@+id/pmt_stmt_payment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="dates"
+            android:textColor="#4c4c4c"
+            android:textSize="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/pmt_stmt_pmt_stmt_payment_lable"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:id="@+id/layout_paymentdetails_amount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_below="@+id/layout_paymentdetails_payment"
+        android:layout_centerHorizontal="true">
+
+        <com.cabily.cabilydriver.widgets.CustomTextView
+            android:id="@+id/pmt_stmt_pmt_stmt_amount_lable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/paymnet_lable_amount_text"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
+            android:textColor="#b0b0b1"
+            android:textSize="15dp"
+            />
+
+        <com.cabily.cabilydriver.widgets.CustomTextView
+            android:id="@+id/pmt_stmt_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="dates"
+            android:textColor="#cc0000"
+            android:textSize="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/pmt_stmt_pmt_stmt_amount_lable"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
+
+
+
+
+
+    <RelativeLayout
+        android:id="@+id/layout_paymentdetails_receivedate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_below="@+id/layout_paymentdetails_amount"
+        android:layout_centerHorizontal="true">
+
+        <com.cabily.cabilydriver.widgets.CustomTextView
+            android:id="@+id/pmt_stmt_receiveddate_lable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/paymnet_lable_receivddate_text"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
+            android:textColor="#b0b0b1"
+            android:textSize="15dp"
+            />
+
+        <com.cabily.cabilydriver.widgets.CustomTextView
+            android:id="@+id/pmt_stmt_received_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="dates"
+            android:textColor="#1d7c34"
+            android:textSize="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/pmt_stmt_receiveddate_lable"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
+
+
+
+
+
+
+
+
+
+</RelativeLayout>

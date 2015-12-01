@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:id="@+id/layout_payment_list_header"
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/app_color">
+
+
+        <RelativeLayout
+            android:id="@+id/layout_payment_list_back"
+            android:layout_width="fill_parent"
+            android:layout_height="55dp"
+            android:layout_centerHorizontal="true"
+            android:background="@color/app_color">
+
+
+            <ImageView
+                android:id="@+id/payment_list_back_img"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
+                android:src="@drawable/back_arrow" />
+
+
+        </RelativeLayout>
+
+
+        <com.cabily.cabilydriver.widgets.CustomTextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/payment_details"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/layout_payment_details_list_header"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_payment_list_header"
+        android:layout_centerHorizontal="true">
+
+        <RelativeLayout
+            android:id="@+id/layout_paymentdetails_list_payment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp">
+
+            <com.cabily.cabilydriver.widgets.CustomTextView
+                android:id="@+id/pmt_detail_payment_lable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="10dp"
+                android:text="@string/paymnet_lable_payment_text"
+                android:textColor="#b0b0b1"
+                android:textSize="15dp" />
+
+            <com.cabily.cabilydriver.widgets.CustomTextView
+                android:id="@+id/pmt_detail_payment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:layout_toRightOf="@+id/pmt_detail_payment_lable"
+                android:text=""
+                android:textColor="#000000"
+                android:textSize="15dp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_paymentdetails_list_amounts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_paymentdetails_list_payment"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp">
+
+            <com.cabily.cabilydriver.widgets.CustomTextView
+                android:id="@+id/pmt_detail_amount_lable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="10dp"
+                android:text="@string/paymnet_lable_amount_text"
+                android:textColor="#b0b0b1"
+                android:textSize="15dp" />
+
+            <com.cabily.cabilydriver.widgets.CustomTextView
+                android:id="@+id/pmt_detail_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:layout_toRightOf="@+id/pmt_detail_amount_lable"
+                android:text=""
+                android:textColor="#000000"
+                android:textSize="15dp" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/layout_paymentdetails_list_received_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_paymentdetails_list_amounts"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp">
+
+            <com.cabily.cabilydriver.widgets.CustomTextView
+                android:id="@+id/pmt_detail_receiveddate_lable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="10dp"
+                android:text="@string/paymnet_lable_receivddate_text"
+                android:textColor="#b0b0b1"
+                android:textSize="15dp" />
+
+            <com.cabily.cabilydriver.widgets.CustomTextView
+                android:id="@+id/pmt_detail_receiveddate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:layout_toRightOf="@+id/pmt_detail_receiveddate_lable"
+                android:text=""
+                android:textColor="#4c4c4c"
+                android:textSize="15dp" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/payment_details_list_view"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/layout_payment_details_list_header"
+        android:layout_marginTop="10dp"
+        android:background="#b3b3b3" />
+
+
+    <ListView
+        android:id="@+id/pmt_detail_listview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/payment_details_list_view"
+        android:dividerHeight="1dp">
+
+    </ListView>
+
+
+    <com.cabily.cabilydriver.widgets.CustomTextView
+        android:id="@+id/payment_lists_no_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/payment_no_payments"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:visibility="gone"
+        android:layout_alignTop="@+id/pmt_detail_listview"
+        />
+
+
+
+</RelativeLayout>
