@@ -93,8 +93,6 @@ public class ContinuousRequestAdapter {
         holder.circularProgressBar.setEnabled(false);
         String position = getDataForPosition(i, KEY3,data);
         holder.circularProgressBar.setFocusable(false);
-        holder.circularProgressBar.setMaxValue(15);
-        holder.circularProgressBar.setValueAnimated(0);
         holder.circularProgressBar.setTextSize(12);
         holder.circularProgressBar.setAutoTextSize(true);
         holder.circularProgressBar.setTextScale(0.6f);
@@ -102,12 +100,11 @@ public class ContinuousRequestAdapter {
         mHandler.post(new CircularHandler(holder));
         return view;
     }
-
     private Handler mHandler = new Handler();
 
     private class CircularHandler implements Runnable {
         ViewHolder holder;
-        float value = 15;
+        int value = 15;
         boolean isRunning;
 
         public CircularHandler(ViewHolder holder) {
@@ -119,7 +116,7 @@ public class ContinuousRequestAdapter {
         public void run() {
             if (isRunning) {
                 value = value - 1;
-                holder.circularProgressBar.setValue(value);
+                holder.circularProgressBar.setValueAnimated(value,500);
                 mHandler.postDelayed(this, 1000);
                 if (value == 0) {
                     mHandler.removeCallbacks(this);
