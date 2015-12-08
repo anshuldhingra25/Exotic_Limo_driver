@@ -60,9 +60,6 @@ import java.util.Map;
 
 import me.drakeet.materialdialog.MaterialDialog;
 
-/**
- * Created by user88 on 10/28/2015.
- */
 public class ArrivedTrip extends SubclassActivity {
     private Context context;
     private SessionManager session;
@@ -82,13 +79,13 @@ public class ArrivedTrip extends SubclassActivity {
     // List<Overlay> mapOverlays;
     private Barcode.GeoPoint point1, point2;
     private LocationManager locManager;
-    Drawable drawable;
-    Document document;
-    GMapV2GetRouteDirection v2GetRouteDirection;
+    private Drawable drawable;
+    private Document document;
+    private GMapV2GetRouteDirection v2GetRouteDirection;
     LatLng fromPosition;
     LatLng toPosition;
     MarkerOptions markerOptions;
-    Location location;
+    private Location location;
     private StringRequest postrequest;
     private Dialog dialog;
     private Boolean isInternetPresent = false;
