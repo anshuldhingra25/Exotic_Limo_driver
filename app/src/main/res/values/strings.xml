@@ -228,7 +228,7 @@
     <!-- RIDE LATER Alert Dialog -->
     <string name="alert_label_trip_title">Invalid  time</string>
     <string name="alert_label_trip_content">Please make sure that drop time is before atleast an hour from now</string>
-    <string name="crash_toast_text">Crash - Send Reports to androiddev@teamtweaks.com</string>
 
+    <string name="crash_toast_text">Crash - Send Reports to androiddev@teamtweaks.com</string>
 
 </resources>
