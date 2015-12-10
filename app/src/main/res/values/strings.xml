@@ -224,17 +224,11 @@
     <string name="dialog_message">Alert</string>
     <string name="dialog_alert_title">Alert</string>
     <string name="lbel_notification_selectrating">Select your rating</string>
-
-
     <string name="map_lable_available_status">You have a pending trip / transaction.Please tap to view.Without resolving this you will not get ride requests</string>
-
-
     <!-- RIDE LATER Alert Dialog -->
     <string name="alert_label_trip_title">Invalid  time</string>
     <string name="alert_label_trip_content">Please make sure that drop time is before atleast an hour from now</string>
-
-
-
+    <string name="crash_toast_text">Crash - Send Reports to androiddev@teamtweaks.com</string>
 
 
 </resources>
