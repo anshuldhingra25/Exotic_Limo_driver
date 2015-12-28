@@ -25,6 +25,7 @@ import com.cabily.cabilydriver.Utils.ConnectionDetector;
 import com.cabily.cabilydriver.Utils.SessionManager;
 import com.cabily.cabilydriver.Utils.VolleyErrorResponse;
 import com.cabily.cabilydriver.adapter.PaymentDetailsListAdapter;
+import com.cabily.cabilydriver.widgets.PkDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -102,27 +103,25 @@ public class PaymentDetailsList extends ActivityHockeyApp {
             paymentRequest(ServiceConstant.paymentdetails_lis_url);
             System.out.println("paymentlists------------------" + ServiceConstant.paymentdetails_lis_url);
         } else {
-
-            Alert(getResources().getString(R.string.alert_label_title), getResources().getString(R.string.alert_nointernet));
+            Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
 
         }
     }
 
     //--------------Alert Method-----------
-    private void Alert(String title, String alert) {
-        final MaterialDialog dialog = new MaterialDialog(PaymentDetailsList.this);
-        dialog.setTitle(title)
-                .setMessage(alert)
-                .setPositiveButton(
-                        "OK", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                            }
-                        }
-                )
-                .show();
+    private void Alert(String title, String message) {
+        final PkDialog mDialog = new PkDialog(PaymentDetailsList.this);
+        mDialog.setDialogTitle(title);
+        mDialog.setDialogMessage(message);
+        mDialog.setPositiveButton(getResources().getString(R.string.alert_label_ok), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+            }
+        });
+        mDialog.show();
     }
+
 
     private void paymentRequest(String Url) {
         dialog = new Dialog(PaymentDetailsList.this);

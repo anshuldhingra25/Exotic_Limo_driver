@@ -32,6 +32,7 @@ import com.cabily.cabilydriver.Utils.AppController;
 import com.cabily.cabilydriver.Utils.ConnectionDetector;
 import com.cabily.cabilydriver.Utils.SessionManager;
 import com.cabily.cabilydriver.Utils.VolleyErrorResponse;
+import com.cabily.cabilydriver.widgets.PkDialog;
 import com.special.ResideMenu.ResideMenu;
 
 import org.json.JSONException;
@@ -91,21 +92,21 @@ public class BankDetails extends FragmentHockeyApp {
             public void onClick(View v) {
 
                 if (holder_name.length() == 0) {
-                    erroredit(holder_name, getResources().getString(R.string.bank_lable_accountholder_name));
+                    erroredit(holder_name,getResources().getString(R.string.action_alert_bank_Username));
                 } else if (holder_address.length() == 0) {
-                    erroredit(holder_address, getResources().getString(R.string.bank_lable_accountholder_address));
+                    erroredit(holder_address, getResources().getString(R.string.action_alert_bank_address));
                 } else if (account_no.length() == 0) {
-                    erroredit(account_no, getResources().getString(R.string.bank_lable_account_number));
+                    erroredit(account_no, getResources().getString(R.string.action_alert_bank_accountno));
                 } else if (bankname.length() == 0) {
-                    erroredit(bankname, getResources().getString(R.string.bank_lable_bank_name));
+                    erroredit(bankname,getResources().getString(R.string.action_alert_bank_name));
                 } else if (branchname.length() == 0) {
-                    erroredit(branchname, getResources().getString(R.string.bank_lable_branch_name));
+                    erroredit(branchname, getResources().getString(R.string.action_alert_branch_name));
                 } else if (branchaddress.length() == 0) {
-                    erroredit(branchaddress, getResources().getString(R.string.bank_lable_branch_address));
+                    erroredit(branchaddress,getResources().getString(R.string.action_alert_branch_address));
                 } else if (ifsccode.length() == 0) {
-                    erroredit(ifsccode, getResources().getString(R.string.bank_lable_ifsc_code));
+                    erroredit(ifsccode, getResources().getString(R.string.action_alert_bank_ifs_code));
                 } else if (routingno.length() == 0) {
-                    erroredit(routingno, getResources().getString(R.string.bank_lable_routing_number));
+                    erroredit(routingno, getResources().getString(R.string.action_alert_bank_routingno));
                 } else {
                     cd = new ConnectionDetector(getActivity());
                     isInternetPresent = cd.isConnectingToInternet();
@@ -113,7 +114,7 @@ public class BankDetails extends FragmentHockeyApp {
                         postRequest_savebank(ServiceConstant.saveBankDetails);
                         System.out.println("bank------------------" + ServiceConstant.saveBankDetails);
                     } else {
-                        Toast.makeText(getActivity(), "no inter net", Toast.LENGTH_SHORT).show();
+                        Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
                     }
                 }
 
@@ -127,6 +128,23 @@ public class BankDetails extends FragmentHockeyApp {
         NavigationDrawer parentActivity = (NavigationDrawer) getActivity();
         resideMenu = parentActivity.getResideMenu();
     }
+
+    //--------------Alert Method-----------
+    private void Alert(String title, String message) {
+        final PkDialog mDialog = new PkDialog(getActivity());
+        mDialog.setDialogTitle(title);
+        mDialog.setDialogMessage(message);
+        mDialog.setPositiveButton(getResources().getString(R.string.alert_label_ok), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+            }
+        });
+        mDialog.show();
+    }
+
+
+
 
     private void initialize(View rootview) {
         session = new SessionManager(getActivity());
@@ -148,30 +166,14 @@ public class BankDetails extends FragmentHockeyApp {
         isInternetPresent = cd.isConnectingToInternet();
 
         if (isInternetPresent) {
-            postRequest_savebank(ServiceConstant.getBankDetails);
+            postRequest_getbank(ServiceConstant.getBankDetails);
             System.out.println("bankget------------------" + ServiceConstant.getBankDetails);
         } else {
-
-            Alert(getResources().getString(R.string.alert_label_title), getResources().getString(R.string.alert_nointernet));
+            Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
         }
 
     }
 
-    //--------------Alert Method-----------
-    private void Alert(String title, String alert) {
-        final MaterialDialog dialog = new MaterialDialog(getActivity());
-        dialog.setTitle(title)
-                .setMessage(alert)
-                .setPositiveButton(
-                        "OK", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                            }
-                        }
-                )
-                .show();
-    }
 
 
     private void erroredit(EditText editname, String msg) {
@@ -198,33 +200,38 @@ public class BankDetails extends FragmentHockeyApp {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        String Strstatus = "", Smessage = "", Str_accountholder_name = "", Str_accountholder_address = "", Str_account_number = "", Str_bank_name = "",
+                        String Strstatus = "", Sresponse = "", Str_accountholder_name = "", Str_accountholder_address = "", Str_account_number = "", Str_bank_name = "",
                                 Str_branch_name = "", Str_branch_address = "", Str_swift_code = "", Str_routing_number = "";
+
                         System.out.println("bank-----------------" + response);
 
                         try {
                             JSONObject object = new JSONObject(response);
                             Strstatus = object.getString("status");
 
-                            JSONObject jsonObject = object.getJSONObject("response");
-                            JSONObject jobjct = jsonObject.getJSONObject("banking");
+                            if (Strstatus.equalsIgnoreCase("1")){
 
-                            Str_accountholder_name = jobjct.getString("acc_holder_name");
-                            Str_accountholder_address = jobjct.getString("acc_holder_address");
-                            Str_account_number = jobjct.getString("acc_number");
-                            Str_bank_name = jobjct.getString("bank_name");
-                            Str_branch_name = jobjct.getString("branch_name");
-                            Str_branch_address = jobjct.getString("branch_address");
-                            Str_swift_code = jobjct.getString("swift_code");
-                            Str_routing_number = jobjct.getString("routing_number");
+                                JSONObject jsonObject = object.getJSONObject("response");
+                                JSONObject jobjct = jsonObject.getJSONObject("banking");
 
+                                Str_accountholder_name = jobjct.getString("acc_holder_name");
+                                Str_accountholder_address = jobjct.getString("acc_holder_address");
+                                Str_account_number = jobjct.getString("acc_number");
+                                Str_bank_name = jobjct.getString("bank_name");
+                                Str_branch_name = jobjct.getString("branch_name");
+                                Str_branch_address = jobjct.getString("branch_address");
+                                Str_swift_code = jobjct.getString("swift_code");
+                                Str_routing_number = jobjct.getString("routing_number");
+                            }else{
+                                Sresponse = object.getString("response");
+                            }
                         } catch (JSONException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
 
                         if (Strstatus.equalsIgnoreCase("1")) {
-
+                            Toast.makeText(getActivity(), getResources().getString(R.string.alertsaved_label_title), Toast.LENGTH_LONG).show();
                             holder_name.setText(Str_accountholder_name);
                             holder_address.setText(Str_accountholder_address);
                             account_no.setText(Str_account_number);
@@ -234,23 +241,8 @@ public class BankDetails extends FragmentHockeyApp {
                             routingno.setText(Str_routing_number);
 
                         } else {
-
-                            final MaterialDialog alertDialog = new MaterialDialog(getActivity());
-                            alertDialog.setTitle("Error");
-                            alertDialog
-                                    .setMessage(Smessage)
-                                    .setCanceledOnTouchOutside(false)
-                                    .setPositiveButton(
-                                            "OK", new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    alertDialog.dismiss();
-                                                }
-                                            }
-                                    ).show();
-
+                            Alert(getResources().getString(R.string.alert_sorry_label_title), Sresponse);
                         }
-
 
                         dialog.dismiss();
                     }
@@ -330,17 +322,23 @@ public class BankDetails extends FragmentHockeyApp {
                             JSONObject object = new JSONObject(response);
                             Strstatus = object.getString("status");
 
-                            JSONObject jsonObject = object.getJSONObject("response");
-                            JSONObject jobjct = jsonObject.getJSONObject("banking");
+                            if (Strstatus.equalsIgnoreCase("1")){
+                                JSONObject jsonObject = object.getJSONObject("response");
+                                JSONObject jobjct = jsonObject.getJSONObject("banking");
 
-                            Str_accountholder_name = jobjct.getString("acc_holder_name");
-                            Str_accountholder_address = jobjct.getString("acc_holder_address");
-                            Str_account_number = jobjct.getString("acc_number");
-                            Str_bank_name = jobjct.getString("bank_name");
-                            Str_branch_name = jobjct.getString("branch_name");
-                            Str_branch_address = jobjct.getString("branch_address");
-                            Str_swift_code = jobjct.getString("swift_code");
-                            Str_routing_number = jobjct.getString("routing_number");
+                                Str_accountholder_name = jobjct.getString("acc_holder_name");
+                                Str_accountholder_address = jobjct.getString("acc_holder_address");
+                                Str_account_number = jobjct.getString("acc_number");
+                                Str_bank_name = jobjct.getString("bank_name");
+                                Str_branch_name = jobjct.getString("branch_name");
+                                Str_branch_address = jobjct.getString("branch_address");
+                                Str_swift_code = jobjct.getString("swift_code");
+                                Str_routing_number = jobjct.getString("routing_number");
+
+                            }else{
+                                Smessage = object.getString("response");
+
+                            }
 
                         } catch (JSONException e) {
                             // TODO Auto-generated catch block
@@ -348,20 +346,6 @@ public class BankDetails extends FragmentHockeyApp {
                         }
 
                         if (Strstatus.equalsIgnoreCase("1")) {
-                            final MaterialDialog alertDialog = new MaterialDialog(getActivity());
-                            alertDialog.setTitle("Alert");
-                            alertDialog
-                                    .setMessage("Bank details Saved Successfully")
-                                    .setCanceledOnTouchOutside(false)
-                                    .setPositiveButton(
-                                            "OK", new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    alertDialog.dismiss();
-                                                }
-                                            }
-                                    ).show();
-
                             holder_name.setText(Str_accountholder_name);
                             holder_address.setText(Str_accountholder_address);
                             account_no.setText(Str_account_number);
@@ -369,24 +353,11 @@ public class BankDetails extends FragmentHockeyApp {
                             branchname.setText(Str_branch_name);
                             ifsccode.setText(Str_swift_code);
                             routingno.setText(Str_routing_number);
+                            branchaddress.setText(Str_branch_address);
+
                         } else {
-
-                            final MaterialDialog alertDialog = new MaterialDialog(getActivity());
-                            alertDialog.setTitle("Error");
-                            alertDialog
-                                    .setMessage(Smessage)
-                                    .setCanceledOnTouchOutside(false)
-                                    .setPositiveButton(
-                                            "OK", new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    alertDialog.dismiss();
-                                                }
-                                            }
-                                    ).show();
-
+                            Alert(getResources().getString(R.string.alert_sorry_label_title), Smessage);
                         }
-
 
                         dialog.dismiss();
                     }

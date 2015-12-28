@@ -29,6 +29,7 @@ import com.cabily.cabilydriver.Utils.ConnectionDetector;
 import com.cabily.cabilydriver.Utils.SessionManager;
 import com.cabily.cabilydriver.Utils.VolleyErrorResponse;
 import com.cabily.cabilydriver.adapter.PlaceSearchAdapter;
+import com.cabily.cabilydriver.widgets.PkDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,8 +50,6 @@ public class GooglePlaceSearch extends Activity {
     ArrayList<String> itemList_placeId=new ArrayList<String>();
     PlaceSearchAdapter adapter;
     private boolean isdataAvailable=false;
-    private boolean isEstimateAvailable=false;
-    private String Address="";
 
     private RelativeLayout alert_layout;
     private TextView alert_textview;
@@ -160,19 +159,17 @@ public class GooglePlaceSearch extends Activity {
 
 
     //--------------Alert Method-----------
-    private void Alert(String title, String alert) {
-        final MaterialDialog dialog = new MaterialDialog(GooglePlaceSearch.this);
-        dialog.setTitle(title)
-                .setMessage(alert)
-                .setPositiveButton(
-                        "OK", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                            }
-                        }
-                )
-                .show();
+    private void Alert(String title, String message) {
+        final PkDialog mDialog = new PkDialog(GooglePlaceSearch.this);
+        mDialog.setDialogTitle(title);
+        mDialog.setDialogMessage(message);
+        mDialog.setPositiveButton(getResources().getString(R.string.alert_label_ok), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+            }
+        });
+        mDialog.show();
     }
 
 
@@ -336,7 +333,7 @@ public class GooglePlaceSearch extends Activity {
 
                 } else {
                     mdialog.dismiss();
-                    Alert(getResources().getString(R.string.alert_label_title), status);
+                    Alert(getResources().getString(R.string.alert_sorry_label_title), status);
                 }
             }
         }, new Response.ErrorListener() {

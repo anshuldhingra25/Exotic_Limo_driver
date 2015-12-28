@@ -37,7 +37,7 @@
                 android:layout_centerVertical="true"
                 android:text="@string/lbel_received_received_cash"
                 android:textColor="#ffffff"
-                android:textSize="15sp" />
+                android:textSize="18sp" />
 
 
         </RelativeLayout>
@@ -74,12 +74,14 @@
 
     <Button
         android:id="@+id/Receive_cash_receive_btn"
-        android:layout_width="300dp"
+        android:layout_width="fill_parent"
         android:layout_height="50dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/button_curve_background_blue"
         android:text="@string/lbel_received_receive_cash"
         android:textColor="#ffffff"

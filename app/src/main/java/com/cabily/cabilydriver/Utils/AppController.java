@@ -6,16 +6,7 @@ import android.text.TextUtils;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.cabily.cabilydriver.R;
 
-import org.acra.ACRA;
-import org.acra.ReportingInteractionMode;
-import org.acra.annotation.ReportsCrashes;
-
-@ReportsCrashes(
-        mailTo = "androiddev@teamtweaks.com ",
-        mode = ReportingInteractionMode.TOAST,
-        resToastText = R.string.crash_toast_text)
 public class AppController extends Application {
 
     public static final String TAG = AppController.class.getSimpleName();
@@ -26,7 +17,6 @@ public class AppController extends Application {
     public void onCreate() {
         super.onCreate();
         mInstance = this;
-        ACRA.init(this);
     }
 
     public static synchronized AppController getInstance() {
@@ -37,7 +27,6 @@ public class AppController extends Application {
         if (mRequestQueue == null) {
             mRequestQueue = Volley.newRequestQueue(getApplicationContext());
         }
-
         return mRequestQueue;
     }
 

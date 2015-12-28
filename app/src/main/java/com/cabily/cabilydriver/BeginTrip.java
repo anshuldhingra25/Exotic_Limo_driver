@@ -31,6 +31,7 @@ import com.cabily.cabilydriver.Utils.SessionManager;
 import com.cabily.cabilydriver.Utils.VolleyErrorResponse;
 import com.cabily.cabilydriver.googlemappath.GMapV2GetRouteDirection;
 import com.cabily.cabilydriver.subclass.SubclassActivity;
+import com.cabily.cabilydriver.widgets.PkDialog;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
@@ -127,7 +128,7 @@ public class BeginTrip extends SubclassActivity implements com.google.android.gm
                     System.out.println("begin------------------" + ServiceConstant.begintrip_url);
                 } else {
 
-                    Alert(getResources().getString(R.string.alert_label_title), getResources().getString(R.string.alert_nointernet));
+                    Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
                 }
             }
         });
@@ -144,7 +145,7 @@ public class BeginTrip extends SubclassActivity implements com.google.android.gm
                 }
                 else
                 {
-                    Alert(BeginTrip.this.getResources().getString(R.string.alert_label_title), BeginTrip.this.getResources().getString(R.string.arrived_alert_content1));
+                    Alert(BeginTrip.this.getResources().getString(R.string.alert_sorry_label_title), BeginTrip.this.getResources().getString(R.string.arrived_alert_content1));
                 }
             }
         });
@@ -229,7 +230,7 @@ public class BeginTrip extends SubclassActivity implements com.google.android.gm
             googleMap = ((MapFragment) BeginTrip.this.getFragmentManager().findFragmentById(R.id.arrived_trip_view_map)).getMap();
             // check if map is created successfully or not
             if (googleMap == null) {
-                Toast.makeText(BeginTrip.this, "Sorry! unable to create maps", Toast.LENGTH_SHORT).show();
+                Toast.makeText(BeginTrip.this, getResources().getString(R.string.action_alert_unabletocreatemap), Toast.LENGTH_SHORT).show();
             }
         }
         // Changing map type
@@ -274,19 +275,17 @@ public class BeginTrip extends SubclassActivity implements com.google.android.gm
     }
 
     //--------------Alert Method-----------
-    private void Alert(String title, String alert) {
-        final MaterialDialog dialog = new MaterialDialog(BeginTrip.this);
-        dialog.setTitle(title)
-                .setMessage(alert)
-                .setPositiveButton(
-                        "OK", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                            }
-                        }
-                )
-                .show();
+    private void Alert(String title, String message) {
+        final PkDialog mDialog = new PkDialog(BeginTrip.this);
+        mDialog.setDialogTitle(title);
+        mDialog.setDialogMessage(message);
+        mDialog.setPositiveButton(getResources().getString(R.string.alert_label_ok), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+            }
+        });
+        mDialog.show();
     }
 
     @Override
@@ -363,19 +362,8 @@ public class BeginTrip extends SubclassActivity implements com.google.android.gm
                             startActivity(intent);
                             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         } else {
-                            final MaterialDialog alertDialog = new MaterialDialog(BeginTrip.this);
-                            alertDialog.setTitle("Error");
-                            alertDialog
-                                    .setMessage(Str_response)
-                                    .setCanceledOnTouchOutside(false)
-                                    .setPositiveButton(
-                                            "OK", new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    alertDialog.dismiss();
-                                                }
-                                            }
-                                    ).show();
+                            Alert(getResources().getString(R.string.alert_sorry_label_title), Str_response);
+
 
                         }
                     }

@@ -20,18 +20,33 @@
     <string name="action_loading_sucess">Success</string>
     <string name="action_loading_cancel">Cancelling</string>
     <string name="action_loading_rating">Ratting</string>
+    <string name="action_label_forgotpassword">Forgot password?</string>
+    <string name="action_label_forgotpassword_header">Forgot password</string>
+    <string name="forgotpassword">Please enter the email address of your account</string>
+    <string name="action_label_changepassword">Change Password</string>
+    <string name="enteremail">Enter your email address</string>
+    <string name="forgotpasswordlink">Send me a password reset link</string>
+
+    <string name="action_label_currentpassword">current password</string>
+    <string name="action_label_newassword">new password</string>
+    <string name="action_label_confirmnewpassword">confirm new password</string>
+
+    <string name="action_label_signin">SignIn</string>
+    <string name="action_label_done">Done</string>
+
+           <!--Driver dashboard-->
+    <string name="lasttrip_label">Last Trip</string>
+    <string name="todayearnings_label">Today earnings</string>
+    <string name="todaytips_label">Today tips</string>
+    <string name="lasttrip_emtpy_label">No Tips</string>
+    <string name="todayearning_no_online_label">No Online</string>
+    <string name="todayearning_no_trips_label">No Trip</string>
 
 
 
-    <!--MainPage-->
-    <string name="cabily_driver_main_lable_signin_Textview">SIGNIN</string>
-    <string name="cabily_driver_main_lable_register_Textview">REGISTER</string>
-    <string name="cabily_driver_main_lable_tripsummery_Textview">Trip Summery</string>
 
 
-
-
-    <!--Alert-->
+     <!--ALerts-->
     <string name="cabily_driver_alert_lable_accept_Textview">ACCEPT</string>
     <string name="cabily_driver_alet_lable_reject_Textview">REJECT</string>
     <string name="dialog_go_offline">Are you sure you want to go offline?</string>
@@ -41,8 +56,7 @@
     <string name="dialog_go_on_line">Are you sure you want to go online?</string>
     <string name="alert_tape_toaccept">Tape to accept the ride</string>
 
-    <!-- Alert Dialog -->
-    <string name="alert_label_title">Sorry!</string>
+    <string name="alert_sorry_label_title">Sorry!</string>
     <string name="alert_label_ok">OK</string>
     <string name="alert_label_content1">We could not accepte your request</string>
     <string name="alert_label_content2">No cabs has been available at your place.Kindly try again after sometime</string>
@@ -50,8 +64,40 @@
     <string name="alert_servererror">Server Error</string>
     <string name="alert_gpsEnable">Enable GPS to locate your location</string>
     <string name="alert_nocar">Sorry! We do not provide services in your city yet.</string>
-    <string name="lablesigningin_Textview">signingin..</string>
+    <string name="lablesigningin_Textview">Signing In</string>
     <string name="label_gps_textview">Location Services Disabled Please enable location service</string>
+
+    <string name="action_login_validate">Ratting</string>
+    <string name="action_alert_header">Ratting</string>
+    <string name="action_alert_invalid_email">Email address is invalid</string>
+    <string name="action_alert_invalid_password">Password is invalid</string>
+    <string name="action_alert_SigninFaild">Signin Faild</string>
+    <string name="action_alert_signinfaildmsg">Invalid username or  password </string>
+    <string name="action_alert_unabletocreatemap"> Sorry! unable to create maps </string>
+
+    <string name="action_alert_bank_Username">Username can\'t be empty</string>
+    <string name="action_alert_bank_accountno">Accountno can\'t be empty</string>
+    <string name="action_alert_bank_address">Address can\'t be empty</string>
+    <string name="action_alert_bank_name">Bankname can\'t be empty</string>
+    <string name="action_alert_branch_name">Branchname can\'t be empty </string>
+    <string name="action_alert_branch_address">BranchAddress can\'t be empty </string>
+    <string name="action_alert_bank_ifs_code">Ifsc code can\'t be empty</string>
+    <string name="action_alert_bank_routingno">Routingno can\'t be empty</string>
+    <string name="action_alert_bankinfo_invails">Invalid Bank Details</string>
+    <string name="alertsaved_label_title">Saved successfully</string>
+    <string name="drivernotlogged_label_title">Driver not logged in</string>
+    <string name="waitfortransaction_label_title">please wait until the transaction in complete</string>
+
+
+
+
+
+    <!--MainPage-->
+    <string name="cabily_driver_main_lable_signin_Textview">SIGNIN</string>
+    <string name="cabily_driver_main_lable_register_Textview">REGISTER</string>
+    <string name="cabily_driver_main_lable_tripsummery_Textview">Trip Summery</string>
+    <string name="cabily_driver_tip_amount">Your Tip Amount :</string>
+
 
     <!--accept-->
     <string name="accept_total_bill_txtview">Total Bill:</string>
@@ -123,13 +169,13 @@
     <string name="tripsummery_noreason_label">No Reasons Available</string>
     <string name="confirmdelete">Confirm Cancel</string>
     <string name="surewanttodelete">Are you sure you want cancel the trip?</string>
-    <string name="yes">YES</string>
-    <string name="no">NO</string>
+    <string name="label_yes">YES</string>
+    <string name="label_no">NO</string>
 
 
     <!--UserInfo-->
     <string name="userinfo_cancel_label">Cancel Trip</string>
-
+    <string name="goonline_label">Go Online</string>
 
     <!--Arrived-->
     <string name="arrivedtrip_info_label">Info</string>
@@ -224,11 +270,17 @@
     <string name="dialog_message">Alert</string>
     <string name="dialog_alert_title">Alert</string>
     <string name="lbel_notification_selectrating">Select your rating</string>
+
+
     <string name="map_lable_available_status">You have a pending trip / transaction.Please tap to view.Without resolving this you will not get ride requests</string>
+
+
     <!-- RIDE LATER Alert Dialog -->
     <string name="alert_label_trip_title">Invalid  time</string>
     <string name="alert_label_trip_content">Please make sure that drop time is before atleast an hour from now</string>
 
-    <string name="crash_toast_text">Crash - Send Reports to androiddev@teamtweaks.com</string>
+
+
+
 
 </resources>

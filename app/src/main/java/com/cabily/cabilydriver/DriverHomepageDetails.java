@@ -148,7 +148,7 @@ public class DriverHomepageDetails extends FragmentHockeyApp implements View.OnC
             session.createSessionOnline("1");
 
             ChatingService.startDriverAction(getContext());
-            showDialog("Loading..");
+            showDialog(getResources().getString(R.string.action_loading));
             HashMap<String, String> jsonParams = new HashMap<String, String>();
             HashMap<String, String> userDetails = session.getUserDetails();
             HashMap<String,String>onlinedetails = session.getOnlineDetails();

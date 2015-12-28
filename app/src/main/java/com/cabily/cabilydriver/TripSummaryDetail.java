@@ -29,6 +29,7 @@ import com.cabily.cabilydriver.Utils.SessionManager;
 import com.cabily.cabilydriver.Utils.VolleyErrorResponse;
 import com.cabily.cabilydriver.adapter.CancelReasonAdapter;
 import com.cabily.cabilydriver.subclass.SubclassActivity;
+import com.cabily.cabilydriver.widgets.PkDialog;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -98,6 +99,8 @@ public class TripSummaryDetail extends SubclassActivity {
     private StringRequest canceltrip_postrequest;
 
     private String Str_currency="";
+
+    private TextView Tv_driverTip;
 
 
     @Override
@@ -213,6 +216,7 @@ public class TripSummaryDetail extends SubclassActivity {
         layout_address_and_loction_details = (RelativeLayout)findViewById(R.id.layout_rideaddress_and_locarions_details);
         Rl_layout_pickup_details = (RelativeLayout)findViewById(R.id.layout_tripsummery_pickup);
        // Rl_layout_drop_details = (RelativeLayout)findViewById(R.id.trip_summery_layout_drop_details);
+        Tv_driverTip=(TextView )findViewById(R.id.driver_tip_tv);
 
 
         cd = new ConnectionDetector(TripSummaryDetail.this);
@@ -221,7 +225,7 @@ public class TripSummaryDetail extends SubclassActivity {
         if (isInternetPresent) {
             postRequest_tripdetail(ServiceConstant.tripsummery_view_url);
         } else {
-            Alert(getResources().getString(R.string.alert_label_title), getResources().getString(R.string.alert_nointernet));
+            Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
         }
     }
 
@@ -252,22 +256,20 @@ public class TripSummaryDetail extends SubclassActivity {
 
     }
 
-
     //--------------Alert Method-----------
-    private void Alert(String title, String alert) {
-        final MaterialDialog dialog = new MaterialDialog(TripSummaryDetail.this);
-        dialog.setTitle(title)
-                .setMessage(alert)
-                .setPositiveButton(
-                        "OK", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                            }
-                        }
-                )
-                .show();
+    private void Alert(String title, String message) {
+        final PkDialog mDialog = new PkDialog(TripSummaryDetail.this);
+        mDialog.setDialogTitle(title);
+        mDialog.setDialogMessage(message);
+        mDialog.setPositiveButton(getResources().getString(R.string.alert_label_ok), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+            }
+        });
+        mDialog.show();
     }
+
 
     //-----------------------Change Post Request-----------------
     private void postRequest_tripdetail(String Url)
@@ -294,6 +296,8 @@ public class TripSummaryDetail extends SubclassActivity {
                         String Sstatus = "",Scurrency_code="", Str_ridestatus="",Str_rideid="",Smessage = "",Str_totalbill="",Str_totalpaid="",Str_coupon_code="",Str_cancel="",Str_wallet_usage="",Str_cabtype="",Str_drop_date="",
                                 trip_paid_status="",Str_continu_ride="",Str_ride_distance="",Str_time_taken="",Str_wait_time="";
                         Currency currencycode = null;
+                        String Str_tipStatus="",Str_tipAmount="";
+
                         try {
                             JSONObject object = new JSONObject(response);
 
@@ -381,8 +385,16 @@ public class TripSummaryDetail extends SubclassActivity {
                                         Str_wallet_usage = jobject5.getString("wallet_usage");
                                     }
 
-                                }
 
+                                    JSONObject tips_object = jsonObject.getJSONObject("tips");
+                                    if (tips_object.length()>0)
+                                    {
+                                        Str_tipStatus = currencycode.getSymbol()+tips_object.getString("tips_status");
+                                        Str_tipAmount =  currencycode.getSymbol()+tips_object.getString("tips_amount");
+                                    }
+
+
+                                }
 
                                 String  data = jobject.getString("user_profile");
                                 Object json = new JSONTokener(data).nextValue();
@@ -403,12 +415,10 @@ public class TripSummaryDetail extends SubclassActivity {
                                     System.out.println("pickup_lat-----------------"+Str_pickup_lat);
                                     System.out.println("username-----------------"+Str_Username);
 
-
                                 } else if(json instanceof JSONArray){
                                 }
                                 Str_continu_ride  =jsonObject.getString("continue_ride");
                             }
-
 
                             if (Sstatus.equalsIgnoreCase("1"))
                             {
@@ -447,7 +457,17 @@ public class TripSummaryDetail extends SubclassActivity {
                                     if (Str_coupon_code.length()>0){
                                         Tv_coupon_discount.setVisibility(View.VISIBLE);
                                         Tv_coupon_discount.setVisibility(View.GONE);
-                                        Tv_coupon_discount.setText("Coupon discount used"+Str_coupon_code);
+                                        Tv_coupon_discount.setText("Coupon discount used" + Str_coupon_code);
+                                    }
+
+                                    if(Str_tipStatus.equalsIgnoreCase("0"))
+                                    {
+                                        Tv_driverTip.setVisibility(View.GONE);
+                                    }
+                                    else
+                                    {
+                                        Tv_driverTip.setVisibility(View.VISIBLE);
+                                        Tv_driverTip.setText(getResources().getString(R.string.cabily_driver_tip_amount)+" "+Str_tipAmount);
                                     }
 
                                 }else{
@@ -482,20 +502,7 @@ public class TripSummaryDetail extends SubclassActivity {
 
                             }
                             else{
-                                final MaterialDialog alertDialog = new MaterialDialog(TripSummaryDetail.this);
-                                alertDialog.setTitle("Error");
-                                alertDialog
-                                        .setMessage("Ride is not Available")
-                                        .setCanceledOnTouchOutside(false)
-                                        .setPositiveButton(
-                                                "OK", new View.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(View v) {
-                                                        alertDialog.dismiss();
-                                                    }
-                                                }
-                                        ).show();
-
+                                Alert(getResources().getString(R.string.alert_sorry_label_title),getResources().getString(R.string.fetchdatatoast));
                                // Toast.makeText(TripSummaryDetail.this,getResources().getString(R.string.fetchdatatoast),Toast.LENGTH_SHORT).show();
                             }
 
@@ -536,7 +543,6 @@ public class TripSummaryDetail extends SubclassActivity {
         };
         AppController.getInstance().addToRequestQueue(postrequest);
     }
-
 
     //method to convert currency code to currency symbol
     private static Locale getLocale(String strCode) {

@@ -33,6 +33,7 @@ import com.cabily.cabilydriver.Utils.ConnectionDetector;
 import com.cabily.cabilydriver.Utils.SessionManager;
 import com.cabily.cabilydriver.Utils.VolleyErrorResponse;
 import com.cabily.cabilydriver.adapter.TripSummeryAdapter;
+import com.cabily.cabilydriver.widgets.PkDialog;
 import com.special.ResideMenu.ResideMenu;
 
 import org.json.JSONArray;
@@ -224,25 +225,23 @@ public class TripSummeryList extends FragmentHockeyApp {
             PostRequest(ServiceConstant.tripsummery_list_url);
             System.out.println("triplists------------------" + ServiceConstant.tripsummery_list_url);
         } else {
-            Alert(getResources().getString(R.string.alert_label_title), getResources().getString(R.string.alert_nointernet));
+            Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
 
         }
     }
 
     //--------------Alert Method-----------
-    private void Alert(String title, String alert) {
-        final MaterialDialog dialog = new MaterialDialog(getActivity());
-        dialog.setTitle(title)
-                .setMessage(alert)
-                .setPositiveButton(
-                        "OK", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                            }
-                        }
-                )
-                .show();
+    private void Alert(String title, String message) {
+        final PkDialog mDialog = new PkDialog(getActivity());
+        mDialog.setDialogTitle(title);
+        mDialog.setDialogMessage(message);
+        mDialog.setPositiveButton(getResources().getString(R.string.alert_label_ok), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+            }
+        });
+        mDialog.show();
     }
 
     //-----------------------Code for my rides post request-----------------
@@ -264,42 +263,52 @@ public class TripSummeryList extends FragmentHockeyApp {
                     @Override
                     public void onResponse(String response) {
 
-                        System.out
-                                .println("--------------reponse-------------------"
-                                        + response);
+                        System.out.println("--------------reponse-------------------" + response);
 
                         Log.e("trip", response);
 
-                        String status = "", total_rides = "", type_group = "";
+                        String status = "", total_rides = "", type_group = "",Str_response="";
 
                         try {
                             JSONObject object = new JSONObject(response);
                             status = object.getString("status");
-                            JSONObject jsonObject = object.getJSONObject("response");
 
-                            total_rides = jsonObject.getString("total_rides");
-                            JSONArray jarry = jsonObject.getJSONArray("rides");
+                            System.out.println("triplist--status----"+status);
 
-                            if (jarry.length() > 0) {
+                            if (status.equalsIgnoreCase("1")){
 
-                                for (int i = 0; i < jarry.length(); i++) {
-                                    JSONObject jobjct = jarry.getJSONObject(i);
-                                    TripSummaryPojo items = new TripSummaryPojo();
-                                    items.setpickup(jobjct.getString("pickup"));
-                                    items.setdatetime(jobjct.getString("datetime"));
-                                    items.setride_id(jobjct.getString("ride_id"));
-                                    tripsummaryListall.add(items);
+                                JSONObject jsonObject = object.getJSONObject("response");
 
-                                    if (jobjct.getString("group").equalsIgnoreCase("completed")) {
-                                        tripsummaryListcompleted.add(items);
-                                    } else if (jobjct.getString("group").equalsIgnoreCase("onride")) {
-                                        tripsummaryListonride.add(items);
+                                total_rides = jsonObject.getString("total_rides");
+                                JSONArray jarry = jsonObject.getJSONArray("rides");
+
+                                if (jarry.length() > 0) {
+
+                                    for (int i = 0; i < jarry.length(); i++) {
+                                        JSONObject jobjct = jarry.getJSONObject(i);
+                                        TripSummaryPojo items = new TripSummaryPojo();
+                                        items.setpickup(jobjct.getString("pickup"));
+                                        items.setdatetime(jobjct.getString("datetime"));
+                                        items.setride_id(jobjct.getString("ride_id"));
+                                        tripsummaryListall.add(items);
+
+                                        if (jobjct.getString("group").equalsIgnoreCase("completed")) {
+                                            tripsummaryListcompleted.add(items);
+                                        } else if (jobjct.getString("group").equalsIgnoreCase("onride")) {
+                                            tripsummaryListonride.add(items);
+                                        }
+
                                     }
-
+                                    show_progress_status = true;
+                                } else {
+                                    show_progress_status = false;
                                 }
-                                show_progress_status = true;
-                            } else {
-                                show_progress_status = false;
+                            }else{
+
+                                Str_response = object.getString("response");
+
+                                System.out.println("triplist----------response---"+Str_response);
+
                             }
 
                         } catch (Exception e) {
@@ -307,14 +316,19 @@ public class TripSummeryList extends FragmentHockeyApp {
                             e.printStackTrace();
                         }
                         dialog.dismiss();
-                        adapter = new TripSummeryAdapter(getActivity(), tripsummaryListall);
-                        listview.setAdapter(adapter);
 
-                        if (show_progress_status) {
-                            empty_Tv.setVisibility(View.GONE);
-                        } else {
-                            empty_Tv.setVisibility(View.VISIBLE);
-                            listview.setEmptyView(empty_Tv);
+                        if (status.equalsIgnoreCase("1")){
+                            adapter = new TripSummeryAdapter(getActivity(), tripsummaryListall);
+                            listview.setAdapter(adapter);
+
+                            if (show_progress_status) {
+                                empty_Tv.setVisibility(View.GONE);
+                            } else {
+                                empty_Tv.setVisibility(View.VISIBLE);
+                                listview.setEmptyView(empty_Tv);
+                            }
+                        }else{
+                            Alert(getResources().getString(R.string.alert_sorry_label_title),Str_response);
                         }
                     }
                 }, new Response.ErrorListener() {

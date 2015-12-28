@@ -1,20 +1,19 @@
 package com.app.service;
 
 /**
- * Created by Administrator on 10/1/2015.
  */
 public interface ServiceConstant {
-    //http://project.dectar.com/fortaxi/
-    //http://192.168.1.251:8081/suresh/dectarfortaxi/
-/*
-    String BASE_URL = "http://192.168.1.251:8081/suresh/dectarfortaxi/api/v1/";
-    String XMPP_HOST_URL  = "192.168.1.148";
-    String XMPP_SERVICE_NAME = "casp83";*/
-
-     String BASE_URL ="http://project.dectar.com/fortaxi/api/v1/";
+     //http://project.dectar.com/fortaxi/
+     //http://192.168.1.251:8081/suresh/dectarfortaxi/
+     /* String BASE_URL = "http://192.168.1.251:8081/suresh/dectarfortaxi/api/v1/";
+     String PASSWORD_BASE_URL = "http://192.168.1.251:8081/suresh/dectarfortaxi/";
+     String XMPP_HOST_URL  = "192.168.1.150";
+     String XMPP_SERVICE_NAME = "casp83";*/
+     //http://project.dectar.com/cabilydemo/
+     String BASE_URL ="http://project.dectar.com/cabilydemo/api/v1/";
+     String PASSWORD_BASE_URL = "http://project.dectar.com/cabilydemo/";
      String XMPP_HOST_URL = "67.219.149.186";
      String XMPP_SERVICE_NAME = "messaging.dectar.com";
-
 
     String LOGIN_URL = BASE_URL + "provider/login";
     String UPDATE_CURRENT_LOCATION = BASE_URL + "provider/update-driver-geo";
@@ -29,10 +28,14 @@ public interface ServiceConstant {
     String TRIP_LIST_REQUEST = BASE_URL+ "provider/my-trips/list";
     String TRIP_VIEW_REQUEST = BASE_URL+ "provider/my-trips/view";
     public static String loginurl = BASE_URL+"provider/login";
+    public String place_search_url = "https://maps.googleapis.com/maps/api/place/autocomplete/json?types=geocode&key=AIzaSyA7EzKek44txQ083ZSFEvtEq3kipmg4v2c&input=";
+    public String GetAddressFrom_LatLong_url = "https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyA7EzKek44txQ083ZSFEvtEq3kipmg4v2c&placeid=";
+    public static String forgotpassword = PASSWORD_BASE_URL+"provider/forgot-password";
+    public static String changepassword = PASSWORD_BASE_URL+"provider/change-password";
+    public static String driver_dashboard = BASE_URL+"provider/dashboard?";
 
 
-    String place_search_url = "https://maps.googleapis.com/maps/api/place/autocomplete/json?types=geocode&key=AIzaSyA7EzKek44txQ083ZSFEvtEq3kipmg4v2c&input=";
-    String GetAddressFrom_LatLong_url = "https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyA7EzKek44txQ083ZSFEvtEq3kipmg4v2c&placeid=";
+
 
 
 
@@ -51,7 +54,6 @@ public interface ServiceConstant {
     public static String receivedbill_amounr_cash_url= BASE_URL+"provider/payment-received";
     public static String reviwes_options_list_url= BASE_URL+"app/review/options-list";
     public static String  submit_reviwes_url= BASE_URL+"app/review/submit";
-    public static String useragent="cabily2k15android";
     public static String request_paymnet_url= BASE_URL+"provider/request-payment";
     //----------------Push notification Key--------------------------
     String ACTION_LABEL = "action";
@@ -63,7 +65,9 @@ public interface ServiceConstant {
     String ACTION_ACTION_HOCKYAPPID ="a0edd6450fc641bead62a9bed17c39cc";
 
 
-
+    public static String useragent="cabily2k15android";
+    public static String  isapplication="1";
+    public static String  applanguage="en";
 
 
 }

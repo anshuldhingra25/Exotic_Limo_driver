@@ -28,6 +28,7 @@ public class NavigationDrawer extends BaseActivity implements View.OnClickListen
     private ResideMenuItem itemTripsummary;
     private ResideMenuItem itemBankaccount;
     private ResideMenuItem itemPaymentStatement;
+    private ResideMenuItem itemChangepassword;
     private ResideMenuItem itemLogout;
     private SessionManager session;
     private ActionBar actionBar;
@@ -45,8 +46,9 @@ public class NavigationDrawer extends BaseActivity implements View.OnClickListen
         actionBar.setIcon(R.drawable.drawer_icon);
         session = new SessionManager(NavigationDrawer.this);
         setUpMenu();
+
         if (savedInstanceState == null)
-            changeFragment(new DriverHomepageDetails());
+            changeFragment(new DashBoardDriver());
     }
 
 
@@ -67,16 +69,20 @@ public class NavigationDrawer extends BaseActivity implements View.OnClickListen
         itemTripsummary = new ResideMenuItem(this, R.drawable.icon_profile, "" + trip_summary);
         itemBankaccount = new ResideMenuItem(this, R.drawable.icon_calendar, "Bank Account");
         itemPaymentStatement = new ResideMenuItem(this, R.drawable.icon_settings, "Payment Details");
+        itemChangepassword = new ResideMenuItem(this,R.drawable.password_new,"Change Password");
         itemLogout = new ResideMenuItem(this, R.drawable.icon_settings, "Logout");
         itemHome.setOnClickListener(this);
         itemTripsummary.setOnClickListener(this);
         itemBankaccount.setOnClickListener(this);
         itemPaymentStatement.setOnClickListener(this);
+        itemChangepassword.setOnClickListener(this);
+
         itemLogout.setOnClickListener(this);
         resideMenu.addMenuItem(itemHome, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemTripsummary, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemBankaccount, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemPaymentStatement, ResideMenu.DIRECTION_LEFT);
+        resideMenu.addMenuItem(itemChangepassword,ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemLogout, ResideMenu.DIRECTION_LEFT);
     }
 
@@ -115,17 +121,18 @@ public class NavigationDrawer extends BaseActivity implements View.OnClickListen
         if (R.id.ic_menu == view.getId()) {
             resideMenu.openMenu(ResideMenu.DIRECTION_LEFT);
         } else if (view == itemHome) {
-            changeFragment(new DriverHomepageDetails());
+            changeFragment(new DashBoardDriver());
         } else if (view == itemTripsummary) {
             changeFragment(new TripSummeryList());
         } else if (view == itemBankaccount) {
             changeFragment(new BankDetails());
         } else if (view == itemPaymentStatement) {
             changeFragment(new PaymentDetails());
-        } else if (view == itemLogout) {
+        }else if(view == itemChangepassword){
+            changeFragment(new ChangePassWord());
+        }  else if (view == itemLogout) {
             showBackPressedDialog(true);
         }
-
         resideMenu.closeMenu();
 
     }

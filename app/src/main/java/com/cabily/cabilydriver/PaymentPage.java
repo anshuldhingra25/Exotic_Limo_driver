@@ -70,9 +70,9 @@ public class PaymentPage extends SubclassActivity {
                     PostRequest(ServiceConstant.receivedbill_amounr_cash_url);
                     System.out.println("end------------------" + ServiceConstant.receivedbill_amounr_cash_url);
                 } else {
-                    Alert(getResources().getString(R.string.alert_label_title), getResources().getString(R.string.alert_nointernet));
+                    Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
                 }
-                Toast.makeText(getApplicationContext(), "please wait until the transaction in complete", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.waitfortransaction_label_title), Toast.LENGTH_SHORT).show();
             }
         });
 

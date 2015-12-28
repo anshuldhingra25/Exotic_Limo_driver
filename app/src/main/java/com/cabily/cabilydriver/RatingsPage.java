@@ -27,6 +27,7 @@ import com.cabily.cabilydriver.Utils.ConnectionDetector;
 import com.cabily.cabilydriver.Utils.SessionManager;
 import com.cabily.cabilydriver.Utils.VolleyErrorResponse;
 import com.cabily.cabilydriver.adapter.Reviwes_adapter;
+import com.cabily.cabilydriver.widgets.PkDialog;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -134,7 +135,7 @@ public class RatingsPage extends ActivityHockeyApp
                             Post_RequestReviwes(ServiceConstant.submit_reviwes_url,jsonParams);
 
                         }else {
-                            Alert(getResources().getString(R.string.alert_label_title), getResources().getString(R.string.alert_nointernet));
+                            Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
                         }
                     }
                     else
@@ -177,30 +178,24 @@ public class RatingsPage extends ActivityHockeyApp
             PostRequest(ServiceConstant.reviwes_options_list_url);
             System.out.println("raatingslist------------------" +ServiceConstant.reviwes_options_list_url);
         }else {
-            Alert(getResources().getString(R.string.alert_label_title), getResources().getString(R.string.alert_nointernet));
+            Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
 
         }
     }
 
-
-
     //--------------Alert Method-----------
-    private void Alert(String title, String alert) {
-        final MaterialDialog dialog = new MaterialDialog(RatingsPage.this);
-        dialog.setTitle(title)
-                .setMessage(alert)
-                .setPositiveButton(
-                        "OK", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                            }
-                        }
-                )
-                .show();
+    private void Alert(String title, String message) {
+        final PkDialog mDialog = new PkDialog(RatingsPage.this);
+        mDialog.setDialogTitle(title);
+        mDialog.setDialogMessage(message);
+        mDialog.setPositiveButton(getResources().getString(R.string.alert_label_ok), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+            }
+        });
+        mDialog.show();
     }
-
-
 
 
     //-----------------------Code for reviwes options list post request-----------------
@@ -264,7 +259,7 @@ public class RatingsPage extends ActivityHockeyApp
                             listview.setAdapter(adapter);
                             dialog.dismiss();
                         }else{
-                            Toast.makeText(getApplicationContext(), "Unable to fetch data from server", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),getResources().getString(R.string.fetchdatatoast), Toast.LENGTH_SHORT).show();
                         }
                         if(show_progress_status)
                         {
@@ -365,7 +360,7 @@ public class RatingsPage extends ActivityHockeyApp
                                     .show();
 
                         } else {
-                            Alert(getResources().getString(R.string.alert_label_title), Str_response);
+                            Alert(getResources().getString(R.string.alert_sorry_label_title), Str_response);
                         }
 
 

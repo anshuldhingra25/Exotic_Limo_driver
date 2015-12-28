@@ -30,6 +30,7 @@ import com.cabily.cabilydriver.Utils.ConnectionDetector;
 import com.cabily.cabilydriver.Utils.SessionManager;
 import com.cabily.cabilydriver.Utils.VolleyErrorResponse;
 import com.cabily.cabilydriver.adapter.CancelReasonAdapter;
+import com.cabily.cabilydriver.widgets.PkDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -114,55 +115,53 @@ public class CancelTrip extends ActivityHockeyApp {
         if (isInternetPresent) {
             postRequest_Cancelreason(ServiceConstant.ridecancel_reason_url);
         } else {
-            Alert(getResources().getString(R.string.alert_label_title), getResources().getString(R.string.alert_nointernet));
+            Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
         }
     }
 
     //--------------Alert Method-----------
-    private void Alert(String title, String alert) {
-        final MaterialDialog dialog = new MaterialDialog(CancelTrip.this);
-        dialog.setTitle(title)
-                .setMessage(alert)
-                .setPositiveButton(
-                        "OK", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-
-                            }
-                        }
-                )
-                .show();
+    private void Alert(String title, String message) {
+        final PkDialog mDialog = new PkDialog(CancelTrip.this);
+        mDialog.setDialogTitle(title);
+        mDialog.setDialogMessage(message);
+        mDialog.setPositiveButton(getResources().getString(R.string.alert_label_ok), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+            }
+        });
+        mDialog.show();
     }
-
 
     //--------------------code for cancel reason diaolg--------------------
     public void cancelTripAlert() {
         ConnectionDetector cd = new ConnectionDetector(CancelTrip.this);
         final boolean isInternetPresent = cd.isConnectingToInternet();
+        final PkDialog mDialog = new PkDialog(CancelTrip.this);
+        mDialog.setDialogTitle(getResources().getString(R.string.confirmdelete));
+        mDialog.setDialogMessage(getResources().getString(R.string.surewanttodelete));
 
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(CancelTrip.this);
-        alertDialog.setMessage(getResources().getString(R.string.surewanttodelete));
-        alertDialog.setCancelable(false);
-
-        alertDialog.setPositiveButton(getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
+        mDialog.setPositiveButton(getResources().getString(R.string.label_yes), new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(View v) {
                 if (isInternetPresent) {
                     postRequest_Cancelride(ServiceConstant.ridecancel_url);
                 } else {
-                    Alert(getResources().getString(R.string.alert_label_title), getResources().getString(R.string.alert_nointernet));
+                    Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
                 }
+                mDialog.dismiss();
             }
         });
 
-        alertDialog.setNegativeButton(getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
+        mDialog.setNegativeButton(getResources().getString(R.string.label_no), new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
+            public void onClick(View v) {
+                mDialog.dismiss();
+
             }
         });
-        alertDialog.show();
+
+        mDialog.show();
 
     }
 
@@ -188,51 +187,61 @@ public class CancelTrip extends ActivityHockeyApp {
 
                         System.out.println("-------------cancelreason Response----------------" + response);
 
-                        String Sstatus = "";
+                        String Sstatus = "",Str_response="";
                         try {
 
                             JSONObject jobject = new JSONObject(response);
                             Sstatus = jobject.getString("status");
-                            JSONObject object = jobject.getJSONObject("response");
-                            JSONArray jarry = object.getJSONArray("reason");
 
-                            if (jarry.length() > 0) {
-                                for (int i = 0; i < jarry.length(); i++) {
+                            if (Sstatus.equalsIgnoreCase("1")){
+                                JSONObject object = jobject.getJSONObject("response");
+                                JSONArray jarry = object.getJSONArray("reason");
 
-                                    JSONObject object1 = jarry.getJSONObject(i);
+                                if (jarry.length() > 0) {
+                                    for (int i = 0; i < jarry.length(); i++) {
 
-                                    CancelReasonPojo items = new CancelReasonPojo();
+                                        JSONObject object1 = jarry.getJSONObject(i);
 
-                                    items.setReason(object1.getString("reason"));
-                                    items.setCancelreason_id(object1.getString("id"));
+                                        CancelReasonPojo items = new CancelReasonPojo();
 
-                                    System.out.println("reason----------" + object1.getString("reason"));
+                                        items.setReason(object1.getString("reason"));
+                                        items.setCancelreason_id(object1.getString("id"));
 
-                                    Cancelreason_arraylist.add(items);
+                                        System.out.println("reason----------" + object1.getString("reason"));
 
+                                        Cancelreason_arraylist.add(items);
+
+                                    }
+                                    show_progress_status = true;
+
+                                } else {
+                                    show_progress_status = false;
                                 }
-                                show_progress_status = true;
-
-                            } else {
-                                show_progress_status = false;
+                            }else{
+                                Str_response = jobject.getString("response");
                             }
+
                         } catch (JSONException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
                         dialog.dismiss();
 
-                        System.out.println("secnd-----------" + Cancelreason_arraylist.get(0).getReason());
-                        adapter = new CancelReasonAdapter(CancelTrip.this, Cancelreason_arraylist);
-                        cancel_listview.setAdapter(adapter);
+                        if (Sstatus.equalsIgnoreCase("1")){
+                            System.out.println("secnd-----------" + Cancelreason_arraylist.get(0).getReason());
+                            adapter = new CancelReasonAdapter(CancelTrip.this, Cancelreason_arraylist);
+                            cancel_listview.setAdapter(adapter);
 
-                        if (show_progress_status) {
-                            Tv_Emtytxt.setVisibility(View.GONE);
-                        } else {
-                            Tv_Emtytxt.setVisibility(View.VISIBLE);
-                            cancel_listview.setEmptyView(Tv_Emtytxt);
+                            if (show_progress_status) {
+                                Tv_Emtytxt.setVisibility(View.GONE);
+                            } else {
+                                Tv_Emtytxt.setVisibility(View.VISIBLE);
+                                cancel_listview.setEmptyView(Tv_Emtytxt);
+                            }
+                        }else{
+
+                            Alert(getResources().getString(R.string.alert_sorry_label_title),Str_response);
                         }
-
                     }
                 }, new Response.ErrorListener() {
 
@@ -298,11 +307,11 @@ public class CancelTrip extends ActivityHockeyApp {
                             e.printStackTrace();
                         }
                         if (Str_status.equalsIgnoreCase("1")) {
-                            final MaterialDialog dialog = new MaterialDialog(CancelTrip.this);
+                          final MaterialDialog dialog = new MaterialDialog(CancelTrip.this);
                             dialog.setTitle(getResources().getString(R.string.action_loading_sucess))
                                     .setMessage(Str_message)
                                     .setPositiveButton(
-                                            "OK", new View.OnClickListener() {
+                                            getResources().getString(R.string.lbel_notification_ok), new View.OnClickListener() {
                                                 @Override
                                                 public void onClick(View v) {
                                                     dialog.dismiss();
@@ -323,8 +332,6 @@ public class CancelTrip extends ActivityHockeyApp {
                                                     broadcastIntent_drivermap.setAction("com.finish.canceltrip.DriverMapActivity");
                                                     sendBroadcast(broadcastIntent_drivermap);
 
-
-
                                                     finish();
                                                     onBackPressed();
                                                 }
@@ -333,7 +340,7 @@ public class CancelTrip extends ActivityHockeyApp {
                                     .show();
 
                         } else {
-                            Alert(getResources().getString(R.string.alert_label_title), Str_message);
+                            Alert(getResources().getString(R.string.alert_sorry_label_title),Str_message);
                         }
                         dialog.dismiss();
 

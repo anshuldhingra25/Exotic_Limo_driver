@@ -26,7 +26,7 @@ public class PushNotificationAlert extends BaseActivity {
         setContentView(R.layout.pushnotification);
         initialize();
 
-        Textview_Ok.setOnClickListener(new View.OnClickListener() {
+        Rl_layout_alert_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 

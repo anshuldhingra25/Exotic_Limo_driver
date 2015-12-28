@@ -34,7 +34,7 @@
             </intent-filter>
         </activity>
 
-      <!--  <activity android:name="net.hockeyapp.android.UpdateActivity" />-->
+      <activity android:name="net.hockeyapp.android.UpdateActivity" />
 
 
         <!-- Goolge API Key -->
@@ -136,6 +136,14 @@
             android:name=".EndTrip_EnterDetails"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"  />
+
+        <activity
+            android:name=".ForgotPassword"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"  />
+
+
+
 
 
         <receiver

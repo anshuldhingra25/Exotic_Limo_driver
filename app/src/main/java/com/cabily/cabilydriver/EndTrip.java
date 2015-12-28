@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -34,6 +35,7 @@ import com.cabily.cabilydriver.Utils.GPSTracker;
 import com.cabily.cabilydriver.Utils.SessionManager;
 import com.cabily.cabilydriver.Utils.VolleyErrorResponse;
 import com.cabily.cabilydriver.subclass.SubclassActivity;
+import com.cabily.cabilydriver.widgets.PkDialog;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -78,6 +80,9 @@ public class EndTrip extends SubclassActivity {
     private  int secs;
     private  int milliseconds;
 
+    private Button Bt_Enable_voice;
+
+
     private  String Str_status = "",Str_response="",Str_ridefare="",Str_timetaken="",Str_waitingtime="",Str_need_payment="",Str_currency="",Str_ride_distance="";
     GPSTracker gps;
     LatLng fromPosition,toposition;
@@ -113,12 +118,12 @@ public class EndTrip extends SubclassActivity {
             public void onClick(View v) {
                 cd = new ConnectionDetector(EndTrip.this);
                 isInternetPresent = cd.isConnectingToInternet();
-                if (isInternetPresent){
+                if (isInternetPresent) {
                     PostRequest(ServiceConstant.endtrip_url);
-                    System.out.println("end------------------" +ServiceConstant.endtrip_url);
-                }else {
+                    System.out.println("end------------------" + ServiceConstant.endtrip_url);
+                } else {
 
-                    Alert(getResources().getString(R.string.alert_label_title), getResources().getString(R.string.alert_nointernet));
+                    Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
                 }
             }
         });
@@ -152,6 +157,14 @@ public class EndTrip extends SubclassActivity {
        });
 
 
+        Bt_Enable_voice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps?saddr=20.344,34.34&daddr=20.5666,45.345")); startActivity(intent);
+            }
+        });
+
+
     }
 
     private void initialize() {
@@ -180,6 +193,9 @@ public class EndTrip extends SubclassActivity {
         Tv_stop_wait = (TextView)findViewById(R.id.begin_waitingtime_tv_stop);
         timerValue = (TextView)findViewById(R.id.timerValue);
         layout_timer = (RelativeLayout)findViewById(R.id.layout_timer);
+        Bt_Enable_voice = (Button)findViewById(R.id.Enable_voice_button);
+
+
 
         alert_layout = (RelativeLayout)findViewById(R.id.end_trip_alert_layout);
         alert_textview = (TextView)findViewById(R.id.end_trip_alert_textView);
@@ -191,21 +207,18 @@ public class EndTrip extends SubclassActivity {
     }
 
     //--------------Alert Method-----------
-    private void Alert(String title, String alert) {
-        final MaterialDialog dialog = new MaterialDialog(EndTrip.this);
-        dialog.setTitle(title)
-                .setMessage(alert)
-                .setPositiveButton(
-                        "OK", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                            }
-                        }
-                )
-                .show();
+    private void Alert(String title, String message) {
+        final PkDialog mDialog = new PkDialog(EndTrip.this);
+        mDialog.setDialogTitle(title);
+        mDialog.setDialogMessage(message);
+        mDialog.setPositiveButton(getResources().getString(R.string.alert_label_ok), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+            }
+        });
+        mDialog.show();
     }
-
 
 
     private Runnable updateTimerThread = new Runnable() {
@@ -238,7 +251,7 @@ public class EndTrip extends SubclassActivity {
             googleMap = ((MapFragment)EndTrip.this.getFragmentManager().findFragmentById(R.id.arrived_trip_view_map)).getMap();
             // check if map is created successfully or not
             if (googleMap == null) {
-                Toast.makeText(EndTrip.this, "Sorry! unable to create maps", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EndTrip.this, getResources().getString(R.string.action_alert_unabletocreatemap), Toast.LENGTH_SHORT).show();
             }
         }
         // Changing map type
@@ -361,7 +374,7 @@ public class EndTrip extends SubclassActivity {
                     postRequest_Reqqustpayment(ServiceConstant.request_paymnet_url);
                     System.out.println("arrived------------------" + ServiceConstant.request_paymnet_url);
                 } else {
-                    Alert(getResources().getString(R.string.alert_label_title), getResources().getString(R.string.alert_nointernet));
+                    Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
                 }
             }
         });
@@ -427,19 +440,7 @@ public class EndTrip extends SubclassActivity {
                             }
 
                         }else {
-                            final MaterialDialog alertDialog = new MaterialDialog(EndTrip.this);
-                            alertDialog.setTitle("Error");
-                            alertDialog
-                                    .setMessage(Str_response)
-                                    .setCanceledOnTouchOutside(false)
-                                    .setPositiveButton(
-                                            "OK", new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    alertDialog.dismiss();
-                                                }
-                                            }
-                                    ).show();
+                            Alert(getResources().getString(R.string.alert_sorry_label_title), Str_response);
 
                         }
 
@@ -544,35 +545,10 @@ public class EndTrip extends SubclassActivity {
 
                         if (Str_status.equalsIgnoreCase("0"))
                         {
-                            final MaterialDialog alertDialog = new MaterialDialog(EndTrip.this);
-                            alertDialog.setTitle("Error");
-                            alertDialog
-                                    .setMessage(Str_response)
-                                    .setCanceledOnTouchOutside(false)
-                                    .setPositiveButton(
-                                            "OK", new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    alertDialog.dismiss();
-                                                }
-                                            }
-                                    ).show();
+                            Alert(getResources().getString(R.string.alert_sorry_label_title), Str_response);
 
                         }else{
-
-                            final MaterialDialog alertDialog = new MaterialDialog(EndTrip.this);
-                            alertDialog.setTitle("Suceess");
-                            alertDialog
-                                    .setMessage(Str_response)
-                                    .setCanceledOnTouchOutside(false)
-                                    .setPositiveButton(
-                                            "OK", new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    alertDialog.dismiss();
-                                                }
-                                            }
-                                    ).show();
+                            Alert(getResources().getString(R.string.label_pushnotification_cashreceived), Str_response);
 
                         }
 

@@ -3,6 +3,7 @@ package com.app.xmpp;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
 
 import com.app.service.ServiceConstant;
 import com.cabily.cabilydriver.Utils.SessionManager;
@@ -49,7 +50,7 @@ public class ChatingService extends IntentService    implements ChatManagerListe
     @Override
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
-                handleActionFoo();
+          handleActionFoo();
         }
     }
 
@@ -57,9 +58,6 @@ public class ChatingService extends IntentService    implements ChatManagerListe
      * Handle action Foo in the provided background thread with the provided
      * parameters.
      */
-
-
-
     private void handleActionFoo() {
         XMPPTCPConnectionConfiguration.Builder configBuilder = XMPPTCPConnectionConfiguration.builder();
         configBuilder.setSecurityMode(ConnectionConfiguration.SecurityMode.disabled);
@@ -133,7 +131,7 @@ public class ChatingService extends IntentService    implements ChatManagerListe
             connection.login(userName, password);
             ChatManager chatmanager = ChatManager.getInstanceFor(connection);
             chatmanager.addChatListener(this);
-
+            //Toast.makeText(getBaseContext(),"XMPP Service Connected",Toast.LENGTH_SHORT).show();
             System.out.println("-------------Xmpp response conectd---------------------" );
 
         } catch (XMPPException e) {
@@ -142,7 +140,8 @@ public class ChatingService extends IntentService    implements ChatManagerListe
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }    }
+        }
+    }
 
     @Override
     public void processMessage(Chat chat, final Message message) {

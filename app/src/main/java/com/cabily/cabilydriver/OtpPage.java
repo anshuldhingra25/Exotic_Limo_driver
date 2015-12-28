@@ -23,6 +23,7 @@ import com.cabily.cabilydriver.Utils.ConnectionDetector;
 import com.cabily.cabilydriver.Utils.SessionManager;
 import com.cabily.cabilydriver.Utils.VolleyErrorResponse;
 import com.cabily.cabilydriver.subclass.SubclassActivity;
+import com.cabily.cabilydriver.widgets.PkDialog;
 
 import org.json.JSONObject;
 
@@ -99,28 +100,24 @@ public class OtpPage extends SubclassActivity {
             System.out.println("end------------------" +ServiceConstant.receivecash_url);
         }else {
 
-            Alert(getResources().getString(R.string.alert_label_title), getResources().getString(R.string.alert_nointernet));
+            Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
         }
-
-
 
     }
 
 
     //--------------Alert Method------------------
-    private void Alert(String title, String alert) {
-        final MaterialDialog dialog = new MaterialDialog(OtpPage.this);
-        dialog.setTitle(title)
-                .setMessage(alert)
-                .setPositiveButton(
-                        "OK", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                            }
-                        }
-                )
-                .show();
+    private void Alert(String title, String message) {
+        final PkDialog mDialog = new PkDialog(OtpPage.this);
+        mDialog.setDialogTitle(title);
+        mDialog.setDialogMessage(message);
+        mDialog.setPositiveButton(getResources().getString(R.string.alert_label_ok), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+            }
+        });
+        mDialog.show();
     }
 
 
@@ -180,20 +177,7 @@ public class OtpPage extends SubclassActivity {
                             }
 
                         }else{
-                            final MaterialDialog alertDialog = new MaterialDialog(OtpPage.this);
-                            alertDialog.setTitle("Error");
-                            alertDialog
-                                    .setMessage(Str_response)
-                                    .setCanceledOnTouchOutside(false)
-                                    .setPositiveButton(
-                                            "OK", new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    alertDialog.dismiss();
-                                                }
-                                            }
-                                    ).show();
-                        }
+                            Alert(getResources().getString(R.string.alert_sorry_label_title), Str_response);  }
 
                     }
                 }, new Response.ErrorListener() {

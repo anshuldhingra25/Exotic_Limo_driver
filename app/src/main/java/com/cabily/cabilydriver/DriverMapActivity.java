@@ -1,11 +1,13 @@
 package com.cabily.cabilydriver;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.IntentSender;
 import android.location.Location;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -24,8 +26,14 @@ import com.cabily.cabilydriver.Utils.GPSTracker;
 import com.cabily.cabilydriver.Utils.SessionManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -43,13 +51,12 @@ import me.drakeet.materialdialog.MaterialDialog;
 /**
  * Created by user14 on 9/22/2015.
  */
-public class DriverMapActivity extends ActivityHockeyApp implements View.OnClickListener, com.google.android.gms.location.LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class DriverMapActivity extends ActivityHockeyApp implements View.OnClickListener, com.google.android.gms.location.LocationListener, GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
 
     // Google Map
     private GoogleMap googleMap;
     private Location location = null;
-    private GoogleApiClient mGoogleApiClient;
-    private LocationRequest mLocationRequest;
     public static Location myLocation;
     private SessionManager session;
     private Dialog dialog;
@@ -61,15 +68,24 @@ public class DriverMapActivity extends ActivityHockeyApp implements View.OnClick
     BroadcastReceiver receiver;
     GPSTracker gps;
 
+
+    LocationRequest mLocationRequest;
+    GoogleApiClient mGoogleApiClient;
+    PendingResult<LocationSettingsResult> result;
+    final static int REQUEST_LOCATION = 199;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.roadmap);
         session = new SessionManager(DriverMapActivity.this);
         gps = new GPSTracker(this);
+
         // get user data from session
         HashMap<String, String> user = session.getUserDetails();
         driver_id = user.get(SessionManager.KEY_DRIVERID);
+
         //Code for broadcat receive
         IntentFilter filter = new IntentFilter();
         filter.addAction("com.finish.canceltrip.DriverMapActivity");
@@ -81,10 +97,8 @@ public class DriverMapActivity extends ActivityHockeyApp implements View.OnClick
                 }
             }
         };
-        if (gps != null && gps.canGetLocation() && gps.isgpsenabled()) {
-        } else {
-            showGpsDisableDialog(getResources().getString(R.string.label_gps_textview));
-        }
+
+
         registerReceiver(receiver, filter);
 
         //Starting Xmpp service
@@ -106,7 +120,6 @@ public class DriverMapActivity extends ActivityHockeyApp implements View.OnClick
             @Override
             public void onClick(View view) {
                 goOffLine();
-
             }
 
         });
@@ -119,6 +132,14 @@ public class DriverMapActivity extends ActivityHockeyApp implements View.OnClick
         } catch (Exception e) {
         }
         initView();
+
+
+
+        if (gps != null && gps.canGetLocation() && gps.isgpsenabled()) {
+        } else {
+            enableGpsService();
+            //showGpsDisableDialog(getResources().getString(R.string.label_gps_textview));
+        }
     }
 
 
@@ -172,24 +193,7 @@ public class DriverMapActivity extends ActivityHockeyApp implements View.OnClick
         dialog.show();
     }
 
-    public void showGpsDisableDialog(String response){
-        final MaterialDialog alertDialog = new MaterialDialog(DriverMapActivity.this);
-        alertDialog.setTitle("Error");
-        alertDialog
-                .setMessage(response)
-                .setCanceledOnTouchOutside(false)
-                .setPositiveButton(
-                        "ENABLE", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                alertDialog.dismiss();
-                                startActivity(new Intent(Settings.ACTION_SETTINGS));
 
-                            }
-                        }
-                ).show();
-
-    }
 
     public void dismissDialog() {
         dialog.dismiss();
@@ -362,4 +366,83 @@ public class DriverMapActivity extends ActivityHockeyApp implements View.OnClick
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
     }
+
+    //Enabling Gps Service
+    private void enableGpsService()
+    {
+        mLocationRequest = LocationRequest.create();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setInterval(30 * 1000);
+        mLocationRequest.setFastestInterval(5 * 1000);
+
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(mLocationRequest);
+        builder.setAlwaysShow(true);
+
+        result = LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient, builder.build());
+
+        result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
+            @Override
+            public void onResult(LocationSettingsResult result) {
+                final Status status = result.getStatus();
+                //final LocationSettingsStates state = result.getLocationSettingsStates();
+                switch (status.getStatusCode()) {
+                    case LocationSettingsStatusCodes.SUCCESS:
+                        // All location settings are satisfied. The client can initialize location
+                        // requests here.
+                        //...
+                        break;
+                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                        // Location settings are not satisfied. But could be fixed by showing the user
+                        // a dialog.
+                        try {
+                            // Show the dialog by calling startResolutionForResult(),
+                            // and check the result in onActivityResult().
+                            status.startResolutionForResult(DriverMapActivity.this,REQUEST_LOCATION);
+                        } catch (IntentSender.SendIntentException e) {
+                            // Ignore the error.
+                        }
+                        break;
+                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                        // Location settings are not satisfied. However, we have no way to fix the
+                        // settings so we won't show the dialog.
+                        //...
+                        break;
+                }
+            }
+        });
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        switch (requestCode)
+        {
+            case REQUEST_LOCATION:
+                switch (resultCode)
+                {
+                    case Activity.RESULT_OK:
+                    {
+                        break;
+                    }
+                    case Activity.RESULT_CANCELED:
+                    {
+                        enableGpsService();
+                        break;
+                    }
+                    default:
+                    {
+                        break;
+                    }
+                }
+                break;
+        }
+    }
+
+
+
+
+
+
 }

@@ -49,7 +49,6 @@ public class DriverAlertAdapter extends BaseAdapter {
     private String KEY3 = "key3";
     private String rider_id = "";
     private Dialog dialog;
-
     int seconds = 0;
     private MediaPlayer mediaPlayer;
     private Location myLocation;

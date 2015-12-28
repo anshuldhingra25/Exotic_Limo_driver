@@ -22,37 +22,33 @@
             android:textSize="18sp" />
 
         <com.cabily.cabilydriver.widgets.CustomTextView
+            android:id="@+id/begin_waitingtime_tv_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/lbel_wait"
-            android:id="@+id/begin_waitingtime_tv_start"
-            android:textColor="#cc0000"
-            android:textSize="14sp"
+            android:layout_alignParentRight="true"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="15dp"
-            android:layout_alignParentRight="true" />
+            android:text="@string/lbel_wait"
+            android:textColor="#cc0000"
+            android:textSize="14sp" />
 
 
         <com.cabily.cabilydriver.widgets.CustomTextView
+            android:id="@+id/begin_waitingtime_tv_stop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/lbel_stopwait"
-            android:id="@+id/begin_waitingtime_tv_stop"
-            android:textColor="#cc0000"
-            android:textSize="14sp"
+            android:layout_alignParentRight="true"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="15dp"
-            android:layout_alignParentRight="true"
-            android:visibility="gone"/>
-
-
+            android:text="@string/lbel_stopwait"
+            android:textColor="#cc0000"
+            android:textSize="14sp"
+            android:visibility="gone" />
 
 
     </RelativeLayout>
-
-
 
 
     <RelativeLayout
@@ -165,9 +161,18 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/end_trip_mobilno"
-                android:layout_marginRight="20dp"
                 android:layout_marginBottom="15dp"
+                android:layout_marginRight="20dp"
                 android:src="@drawable/cell" />
+
+            <Button
+                android:id="@+id/Enable_voice_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Enable Voice"
+                android:layout_above="@+id/begintrip_call"
+                android:layout_alignParentRight="true"
+                android:visibility="gone"/>
 
 
         </RelativeLayout>
@@ -182,7 +187,6 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:layout_below="@+id/layout_end_trip_details" />
-
 
 
     <RelativeLayout
@@ -204,9 +208,6 @@
             android:textColor="#FCC900"
             android:textSize="13sp" />
     </RelativeLayout>
-
-
-
 
 
     <RelativeLayout
@@ -261,17 +262,17 @@
         android:layout_centerHorizontal="true"
         android:background="#80000000"
         android:visibility="gone">
+
         <TextView
             android:id="@+id/timerValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:textSize="40sp"
+            android:text="458654"
             android:textColor="#ffffff"
-            android:text="458654" />
+            android:textSize="40sp" />
     </RelativeLayout>
-
 
 
 </RelativeLayout>

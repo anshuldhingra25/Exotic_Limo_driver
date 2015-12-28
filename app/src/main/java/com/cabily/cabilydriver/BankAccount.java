@@ -1,7 +1,6 @@
 package com.cabily.cabilydriver;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -24,6 +23,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.cabily.cabilydriver.Utils.AppController;
 import com.cabily.cabilydriver.Utils.SessionManager;
+import com.cabily.cabilydriver.widgets.PkDialog;
 import com.special.ResideMenu.ResideMenu;
 
 import org.json.JSONException;
@@ -85,6 +85,23 @@ public class BankAccount extends FragmentHockeyApp implements View.OnClickListen
         save_btn.setOnClickListener(this);
     }
 
+
+    //--------------Alert Method-----------
+    private void Alert(String title, String message) {
+        final PkDialog mDialog = new PkDialog(getActivity());
+        mDialog.setDialogTitle(title);
+        mDialog.setDialogMessage(message);
+        mDialog.setPositiveButton(getResources().getString(R.string.alert_label_ok), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+            }
+        });
+        mDialog.show();
+    }
+
+
+
     @Override
     public void afterTextChanged(Editable s) {
     }
@@ -106,21 +123,21 @@ public class BankAccount extends FragmentHockeyApp implements View.OnClickListen
     @Override
     public void onClick(View v) {
         if (!isValidName(holder_name.getText().toString())) {
-            holder_name.setError("Invalid Name");
+            holder_name.setError(getResources().getString(R.string.action_alert_bank_Username));
         } else if (!isValid(holder_address.getText().toString())) {
-            holder_address.setError("Invalid");
+            holder_address.setError(getResources().getString(R.string.action_alert_bank_address));
         } else if (!isValid(account_no.getText().toString())) {
-            account_no.setError("Invalid");
+            account_no.setError(getResources().getString(R.string.action_alert_bank_accountno));
         } else if (!isValid(bankname.getText().toString())) {
-            bankname.setError("Invalid");
+            bankname.setError(getResources().getString(R.string.action_alert_bank_name));
         } else if (!isValid(branchname.getText().toString())) {
-            branchname.setError("Invalid");
+            branchname.setError(getResources().getString(R.string.action_alert_branch_name));
         } else if (!isValid(branchaddress.getText().toString())) {
-            branchaddress.setError("Invalid");
+            branchaddress.setError(getResources().getString(R.string.action_alert_branch_address));
         } else if (!isValid(ifsccode.getText().toString())) {
-            ifsccode.setError("Invalid");
+            ifsccode.setError(getResources().getString(R.string.action_alert_bank_ifs_code));
         } else if (!isValid(routingno.getText().toString())) {
-            routingno.setError("Invalid");
+            routingno.setError(getResources().getString(R.string.action_alert_bank_routingno));
         } else {
             save("/provider/save-banking-info");
         }
@@ -168,7 +185,6 @@ public class BankAccount extends FragmentHockeyApp implements View.OnClickListen
                     e.printStackTrace();
                 }
                 if (status.equalsIgnoreCase("1")) {
-                    Toast.makeText(getActivity(), "Login successfully", Toast.LENGTH_LONG).show();
                     holder_name.setText(acc_holder_name);
                     holder_address.setText(acc_holder_address);
                     account_no.setText(acc_number);
@@ -178,7 +194,7 @@ public class BankAccount extends FragmentHockeyApp implements View.OnClickListen
                     ifsccode.setText(swift_code);
                     routingno.setText(routing_number);
                 } else {
-                    Toast.makeText(getActivity(), "Invalid login", Toast.LENGTH_LONG).show();
+                    Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.action_alert_bankinfo_invails));
                 }
             }
         }, new Response.ErrorListener() {
@@ -226,15 +242,17 @@ public class BankAccount extends FragmentHockeyApp implements View.OnClickListen
 
                     JSONObject object = new JSONObject(response);
                     status = object.getString("status");
+                    response1 = object.getString("response");
 
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
                 if (status.equalsIgnoreCase("1")) {
-                    Toast.makeText(getActivity(), "save successfully", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), getResources().getString(R.string.alertsaved_label_title), Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(getActivity(), "Invalid login", Toast.LENGTH_LONG).show();
+                    //work
+                    Alert(getResources().getString(R.string.alert_sorry_label_title),response1);
                 }
             }
         }, new Response.ErrorListener() {

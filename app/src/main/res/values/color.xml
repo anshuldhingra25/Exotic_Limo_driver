@@ -13,7 +13,7 @@
 
     <color name="pushnotification_custom_theme_color">#66ffffff</color>
 
-
+    <color name="white_color">#FFFFFF</color>
 
 
     ResideMenu.DIRECTION_LEFT

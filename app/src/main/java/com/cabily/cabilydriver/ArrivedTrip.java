@@ -41,6 +41,7 @@ import com.cabily.cabilydriver.Utils.SessionManager;
 import com.cabily.cabilydriver.Utils.VolleyErrorResponse;
 import com.cabily.cabilydriver.googlemappath.GMapV2GetRouteDirection;
 import com.cabily.cabilydriver.subclass.SubclassActivity;
+import com.cabily.cabilydriver.widgets.PkDialog;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -60,6 +61,9 @@ import java.util.Map;
 
 import me.drakeet.materialdialog.MaterialDialog;
 
+/**
+ * Created by user88 on 10/28/2015.
+ */
 public class ArrivedTrip extends SubclassActivity {
     private Context context;
     private SessionManager session;
@@ -76,16 +80,20 @@ public class ArrivedTrip extends SubclassActivity {
     private TextView Tv_Address, Tv_RideId, Tv_usename;
     private RelativeLayout Rl_layout_userinfo, Rl_layout_arrived;
     private String ERROR_TAG = "Unknown Error Occured";
+
+    private Button Bt_Enable_voice;
+
+
     // List<Overlay> mapOverlays;
     private Barcode.GeoPoint point1, point2;
     private LocationManager locManager;
-    private Drawable drawable;
-    private Document document;
-    private GMapV2GetRouteDirection v2GetRouteDirection;
+    Drawable drawable;
+    Document document;
+    GMapV2GetRouteDirection v2GetRouteDirection;
     LatLng fromPosition;
     LatLng toPosition;
     MarkerOptions markerOptions;
-    private Location location;
+    Location location;
     private StringRequest postrequest;
     private Dialog dialog;
     private Boolean isInternetPresent = false;
@@ -133,7 +141,7 @@ public class ArrivedTrip extends SubclassActivity {
                     System.out.println("arrived------------------" + ServiceConstant.arrivedtrip_url);
                 } else {
 
-                    Alert(getResources().getString(R.string.alert_label_title), getResources().getString(R.string.alert_nointernet));
+                    Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
                 }
             }
         });
@@ -146,16 +154,36 @@ public class ArrivedTrip extends SubclassActivity {
                 if(Str_user_phoneno!=null)
                 {
                     Intent callIntent = new Intent(Intent.ACTION_CALL);
-                    callIntent.setData(Uri.parse("tel:"+Str_user_phoneno));
+                    callIntent.setData(Uri.parse("tel:" + Str_user_phoneno));
                     startActivity(callIntent);
                 }
                 else
                 {
-                    Alert(ArrivedTrip.this.getResources().getString(R.string.alert_label_title), ArrivedTrip.this.getResources().getString(R.string.arrived_alert_content1));
+                    Alert(ArrivedTrip.this.getResources().getString(R.string.alert_sorry_label_title), ArrivedTrip.this.getResources().getString(R.string.arrived_alert_content1));
                 }
 
             }
         });
+
+
+        Bt_Enable_voice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String voice_curent_lat_long=MyCurrent_lat+","+MyCurrent_long;
+                String voice_destination_lat_long=Str_pickUp_Lat+","+Str_pickUp_Long;
+
+                System.out.println("----------fromPosition---------------"+voice_curent_lat_long);
+                System.out.println("----------toPosition---------------"+voice_destination_lat_long);
+
+                String locationUrl="http://maps.google.com/maps?saddr="+voice_curent_lat_long+"&daddr="+voice_destination_lat_long;
+                System.out.println("----------locationUrl---------------"+locationUrl);
+
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(locationUrl));
+                startActivity(intent);
+            }
+        });
+
 
     }
 
@@ -186,6 +214,9 @@ public class ArrivedTrip extends SubclassActivity {
         Rl_layout_userinfo = (RelativeLayout) findViewById(R.id.layout_arrived_trip_userinfo);
         Rl_layout_arrived = (RelativeLayout) findViewById(R.id.layout_arrivedbtn);
         Bt_Arrived = (Button) findViewById(R.id.btn_arrived);
+        Bt_Enable_voice = (Button)findViewById(R.id.arrived_Enable_voice_button);
+
+
         Tv_Address.setText(Str_address);
         Tv_RideId.setText(Str_RideId);
         Tv_usename.setText(Str_username);
@@ -197,27 +228,26 @@ public class ArrivedTrip extends SubclassActivity {
     }
 
     //--------------Alert Method-----------
-    private void Alert(String title, String alert) {
-        final MaterialDialog dialog = new MaterialDialog(ArrivedTrip.this);
-        dialog.setTitle(title)
-                .setMessage(alert)
-                .setPositiveButton(
-                        "OK", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                            }
-                        }
-                )
-                .show();
+    private void Alert(String title, String message) {
+        final PkDialog mDialog = new PkDialog(ArrivedTrip.this);
+        mDialog.setDialogTitle(title);
+        mDialog.setDialogMessage(message);
+        mDialog.setPositiveButton(getResources().getString(R.string.alert_label_ok), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+            }
+        });
+        mDialog.show();
     }
+
 
 
     private void initilizeMap() {
         if (googleMap == null) {
             googleMap = ((MapFragment) ArrivedTrip.this.getFragmentManager().findFragmentById(R.id.arrived_trip_view_map)).getMap();
             if (googleMap == null) {
-                Toast.makeText(ArrivedTrip.this, "Sorry! unable to create maps", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ArrivedTrip.this,getResources().getString(R.string.action_alert_unabletocreatemap), Toast.LENGTH_SHORT).show();
             }
         }
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
@@ -405,20 +435,7 @@ public class ArrivedTrip extends SubclassActivity {
                             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                             finish();
                         } else {
-                            final MaterialDialog alertDialog = new MaterialDialog(ArrivedTrip.this);
-                            alertDialog.setTitle("Error");
-                            alertDialog
-                                    .setMessage(Str_response)
-                                    .setCanceledOnTouchOutside(false)
-                                    .setPositiveButton(
-                                            "OK", new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    alertDialog.dismiss();
-                                                }
-                                            }
-                                    ).show();
-
+                            Alert(getResources().getString(R.string.alert_sorry_label_title), Str_response);
                         }
 
                     }

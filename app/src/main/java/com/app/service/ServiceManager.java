@@ -51,7 +51,7 @@ public class ServiceManager {
         stringRequest = new StringRequest(method, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d(TAG, "Success " + response);
+                System.out.println("----------response------------------"+response);
                 try {
                     Object obj = manager.getObjectForUrl(url, response);
                     if (obj instanceof ServiceResponse) {
@@ -101,8 +101,12 @@ public class ServiceManager {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<String, String>();
                 headers.put("User-agent", ServiceConstant.useragent);
+                headers.put("isapplication",ServiceConstant.isapplication);
+                headers.put("applanguage",ServiceConstant.applanguage);
+                System.out.println("isapplication------------" + ServiceConstant.isapplication);
+                System.out.println("applanguage------------"+ServiceConstant.applanguage);
                 return headers;
-            }
+                }
         };
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(5000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,

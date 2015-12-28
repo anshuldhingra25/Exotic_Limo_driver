@@ -28,6 +28,7 @@ import com.cabily.cabilydriver.Utils.ConnectionDetector;
 import com.cabily.cabilydriver.Utils.SessionManager;
 import com.cabily.cabilydriver.Utils.VolleyErrorResponse;
 import com.cabily.cabilydriver.adapter.PaymentDetailsAdapter;
+import com.cabily.cabilydriver.widgets.PkDialog;
 import com.special.ResideMenu.ResideMenu;
 
 
@@ -117,26 +118,24 @@ public class PaymentDetails extends FragmentHockeyApp {
             System.out.println("payment------------------" + ServiceConstant.paymentdetails_url);
         } else {
 
-            Alert(getResources().getString(R.string.alert_label_title), getResources().getString(R.string.alert_nointernet));
+            Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
 
         }
 
     }
 
     //--------------Alert Method-----------
-    private void Alert(String title, String alert) {
-        final MaterialDialog dialog = new MaterialDialog(getActivity());
-        dialog.setTitle(title)
-                .setMessage(alert)
-                .setPositiveButton(
-                        "OK", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                            }
-                        }
-                )
-                .show();
+    private void Alert(String title, String message) {
+        final PkDialog mDialog = new PkDialog(getActivity());
+        mDialog.setDialogTitle(title);
+        mDialog.setDialogMessage(message);
+        mDialog.setPositiveButton(getResources().getString(R.string.alert_label_ok), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+            }
+        });
+        mDialog.show();
     }
 
 
@@ -160,60 +159,75 @@ public class PaymentDetails extends FragmentHockeyApp {
                     public void onResponse(String response) {
                         Log.e("paymrnt", response);
 
-                        String status = "", Str_currency_code = "";
+                        String status = "", Str_currency_code = "",Str_response="";
 
 
                         try {
                             JSONObject object = new JSONObject(response);
                             status = object.getString("status");
-                            JSONObject jsonObject = object.getJSONObject("response");
 
-                            Str_currency_code = jsonObject.getString("currency");
+                            if (status.equalsIgnoreCase("1")){
 
-                            System.out.println("currency--------------" + Str_currency_code);
+                                JSONObject jsonObject = object.getJSONObject("response");
 
-                            Currency currencycode = Currency.getInstance(getLocale(Str_currency_code));
+                                Str_currency_code = jsonObject.getString("currency");
 
-                            JSONArray jarry = jsonObject.getJSONArray("payments");
+                                System.out.println("currency--------------" + Str_currency_code);
 
-                            if (jarry.length() > 0) {
+                                Currency currencycode = Currency.getInstance(getLocale(Str_currency_code));
 
-                                for (int i = 0; jarry.length() > 0; i++) {
+                                JSONArray jarry = jsonObject.getJSONArray("payments");
 
-                                    JSONObject jobject = jarry.getJSONObject(i);
+                                if (jarry.length() > 0) {
 
-                                    PaymentdetailsPojo item = new PaymentdetailsPojo();
+                                    for (int i = 0; jarry.length() > 0; i++) {
 
-                                    item.setamount(currencycode.getSymbol() + jobject.getString("amount"));
-                                    item.setpay_date(jobject.getString("pay_date"));
-                                    item.setpay_duration_from(jobject.getString("pay_duration_from"));
-                                    item.setpay_duration_to(jobject.getString("pay_duration_to"));
-                                    item.setpay_id(jobject.getString("pay_id"));
+                                        JSONObject jobject = jarry.getJSONObject(i);
 
-                                    System.out.println("pay_id--------" + jobject.getString("pay_id"));
+                                        PaymentdetailsPojo item = new PaymentdetailsPojo();
 
-                                    paymentstatementList.add(item);
+                                        item.setamount(currencycode.getSymbol() + jobject.getString("amount"));
+                                        item.setpay_date(jobject.getString("pay_date"));
+                                        item.setpay_duration_from(jobject.getString("pay_duration_from"));
+                                        item.setpay_duration_to(jobject.getString("pay_duration_to"));
+                                        item.setpay_id(jobject.getString("pay_id"));
+
+                                        System.out.println("pay_id--------" + jobject.getString("pay_id"));
+
+                                        paymentstatementList.add(item);
+                                    }
+                                    show_progress_status = true;
+
+                                } else {
+                                    show_progress_status = false;
                                 }
-                                show_progress_status = true;
 
-                            } else {
-                                show_progress_status = false;
+                            }else{
+                                Str_response = object.getString("response");
                             }
+
                         } catch (Exception e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
 
-                        adapter = new PaymentDetailsAdapter(getActivity(), paymentstatementList);
-                        payment_list.setAdapter(adapter);
-                        dialog.dismiss();
+                        if (status.equalsIgnoreCase("1")){
+                            adapter = new PaymentDetailsAdapter(getActivity(), paymentstatementList);
+                            payment_list.setAdapter(adapter);
+                            dialog.dismiss();
 
-                        if (show_progress_status) {
-                            empty_Tv.setVisibility(View.GONE);
-                        } else {
-                            empty_Tv.setVisibility(View.VISIBLE);
-                            payment_list.setEmptyView(empty_Tv);
+                            if (show_progress_status) {
+                                empty_Tv.setVisibility(View.GONE);
+                            } else {
+                                empty_Tv.setVisibility(View.VISIBLE);
+                                payment_list.setEmptyView(empty_Tv);
+                            }
+
+                        }else{
+
+                            Alert(getResources().getString(R.string.alert_sorry_label_title),Str_response);
                         }
+
 
                     }
                 }, new Response.ErrorListener() {

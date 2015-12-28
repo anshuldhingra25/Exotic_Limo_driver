@@ -1,14 +1,11 @@
 package com.Hockeyapp;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import net.hockeyapp.android.CrashManager;
-import net.hockeyapp.android.UpdateManager;
 
 
 /**
@@ -16,7 +13,7 @@ import net.hockeyapp.android.UpdateManager;
  */
 public class FragmentHockeyApp extends Fragment
 {
-    private static  String APP_ID = "9f8e1861d5cc413ba593e3367676bca3";
+  /*private static  String APP_ID = "9f8e1861d5cc413ba593e3367676bca3";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,7 +52,7 @@ public class FragmentHockeyApp extends Fragment
     private void unregisterManagers() {
         UpdateManager.unregister();
         // unregister other managers if necessary...
-    }
+    }*/
 
 }
 

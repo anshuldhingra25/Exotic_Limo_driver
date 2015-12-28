@@ -62,7 +62,7 @@ public class DriverAlertActivity extends ActionBarActivityHockeyApp implements c
     void initView(){
         sessionManager = new SessionManager(this);
         if (!sessionManager.isLoggedIn()) {
-            Toast.makeText(this, "Driver not logged in", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,getResources().getString(R.string.drivernotlogged_label_title) , Toast.LENGTH_SHORT).show();
         }
         mediaPlayer = MediaPlayer.create(this, Settings.System.DEFAULT_RINGTONE_URI);
         //alertAdapter = new DriverAlertAdapter(sessionManager, this, myLocation);

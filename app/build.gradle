@@ -40,6 +40,6 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'io.card:android-sdk:5.1.2'
     compile 'com.github.jd-alexander:library:1.0.7'
-    compile 'net.hockeyapp.android:HockeySDK:3.5.0'
-    compile 'ch.acra:acra:4.6.2'
+    compile 'com.github.paolorotolo:expandableheightlistview:1.0.0'
+
 }

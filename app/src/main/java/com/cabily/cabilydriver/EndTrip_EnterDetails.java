@@ -29,6 +29,7 @@ import com.cabily.cabilydriver.Utils.AppController;
 import com.cabily.cabilydriver.Utils.ConnectionDetector;
 import com.cabily.cabilydriver.Utils.SessionManager;
 import com.cabily.cabilydriver.Utils.VolleyErrorResponse;
+import com.cabily.cabilydriver.widgets.PkDialog;
 import com.github.jjobes.slidedatetimepicker.SlideDateTimeListener;
 import com.github.jjobes.slidedatetimepicker.SlideDateTimePicker;
 
@@ -133,7 +134,7 @@ public class EndTrip_EnterDetails extends FragmentActivity {
                     System.out.println("enterdetails------------------" + ServiceConstant.endtrip_url);
                 } else {
 
-                    Alert(getResources().getString(R.string.alert_label_title), getResources().getString(R.string.alert_nointernet));
+                    Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
                 }
             }
         });
@@ -243,21 +244,18 @@ public class EndTrip_EnterDetails extends FragmentActivity {
         }
     }
 
-
     //--------------Alert Method-----------
-    private void Alert(String title, String alert) {
-        final MaterialDialog dialog = new MaterialDialog(EndTrip_EnterDetails.this);
-        dialog.setTitle(title)
-                .setMessage(alert)
-                .setPositiveButton(
-                        "OK", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                            }
-                        }
-                )
-                .show();
+    private void Alert(String title, String message) {
+        final PkDialog mDialog = new PkDialog(EndTrip_EnterDetails.this);
+        mDialog.setDialogTitle(title);
+        mDialog.setDialogMessage(message);
+        mDialog.setPositiveButton(getResources().getString(R.string.alert_label_ok), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+            }
+        });
+        mDialog.show();
     }
 
     //-------------------Show Summery fare  Method--------------------
@@ -299,7 +297,7 @@ public class EndTrip_EnterDetails extends FragmentActivity {
                     postRequest_Reqqustpayment(ServiceConstant.request_paymnet_url);
                     System.out.println("arrived------------------" + ServiceConstant.request_paymnet_url);
                 } else {
-                    Alert(getResources().getString(R.string.alert_label_title), getResources().getString(R.string.alert_nointernet));
+                    Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
                 }
             }
         });
@@ -360,19 +358,7 @@ public class EndTrip_EnterDetails extends FragmentActivity {
                             }
 
                         }else {
-                            final MaterialDialog alertDialog = new MaterialDialog(EndTrip_EnterDetails.this);
-                            alertDialog.setTitle("Error");
-                            alertDialog
-                                    .setMessage(Str_response)
-                                    .setCanceledOnTouchOutside(false)
-                                    .setPositiveButton(
-                                            "OK", new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    alertDialog.dismiss();
-                                                }
-                                            }
-                                    ).show();
+                            Alert(getResources().getString(R.string.alert_sorry_label_title), Str_response);
 
                         }
                         dialog.dismiss();
@@ -474,35 +460,11 @@ public class EndTrip_EnterDetails extends FragmentActivity {
 
                         if (Str_status.equalsIgnoreCase("0"))
                         {
-                            final MaterialDialog alertDialog = new MaterialDialog(EndTrip_EnterDetails.this);
-                            alertDialog.setTitle("Error");
-                            alertDialog
-                                    .setMessage(Str_response)
-                                    .setCanceledOnTouchOutside(false)
-                                    .setPositiveButton(
-                                            "OK", new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    alertDialog.dismiss();
-                                                }
-                                            }
-                                    ).show();
+                            Alert(getResources().getString(R.string.alert_sorry_label_title), Str_response);
 
                         }else{
 
-                            final MaterialDialog alertDialog = new MaterialDialog(EndTrip_EnterDetails.this);
-                            alertDialog.setTitle("Suceess");
-                            alertDialog
-                                    .setMessage(Str_response)
-                                    .setCanceledOnTouchOutside(false)
-                                    .setPositiveButton(
-                                            "OK", new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    alertDialog.dismiss();
-                                                }
-                                            }
-                                    ).show();
+                            Alert(getResources().getString(R.string.label_pushnotification_cashreceived), Str_response);
 
                         }
 

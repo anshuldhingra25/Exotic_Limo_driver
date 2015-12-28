@@ -469,31 +469,6 @@
                 </RelativeLayout>
 
 
-                <TextView
-                    android:id="@+id/wallet_usage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/layoutsummery_and_bill_details"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="20dp"
-                    android:text="wallet"
-                    android:textColor="#000000"
-                    android:textSize="12sp"
-                    android:visibility="gone" />
-
-
-                <TextView
-                    android:id="@+id/coupon_discount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/layoutsummery_and_bill_details"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="20dp"
-                    android:text="couponn"
-                    android:textColor="#000000"
-                    android:textSize="12sp"
-                    android:visibility="gone" />
-
                 <RelativeLayout
                     android:id="@+id/layout_trip_summery_details_status"
                     android:layout_width="wrap_content"
@@ -503,7 +478,7 @@
                     android:layout_marginBottom="15dp"
                     android:layout_marginRight="10dp"
                     android:background="@drawable/button_background_black"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
 
                     <com.cabily.cabilydriver.widgets.CustomTextView
@@ -511,9 +486,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:text=""
+                        android:text="hfghjfgfgj"
                         android:textColor="#cc0000"
-                        android:textSize="12sp" />
+                        android:textSize="14sp" />
 
                 </RelativeLayout>
 
@@ -527,7 +502,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="5dp"
                     android:background="@drawable/button_background_black"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
 
                     <com.cabily.cabilydriver.widgets.CustomTextView
@@ -535,14 +510,53 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:text=""
+                        android:text="fsgdsfdscfsdc"
                         android:textColor="#00bb27"
-                        android:textSize="12sp" />
+                        android:textSize="14sp" />
 
                 </RelativeLayout>
 
 
             </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/wallet_usage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout_trip_summery_details"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:text="wallet"
+                android:textColor="#000000"
+                android:textSize="12sp"
+                android:visibility="gone" />
+
+
+            <TextView
+                android:id="@+id/coupon_discount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/wallet_usage"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:text="couponn"
+                android:textColor="#000000"
+                android:textSize="12sp"
+                android:visibility="gone" />
+
+
+            <TextView
+                android:id="@+id/driver_tip_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/coupon_discount"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:text="tips"
+                android:textColor="#000000"
+                android:textSize="12sp"
+                android:visibility="gone" />
 
 
         </RelativeLayout>
