@@ -80,7 +80,6 @@ public class BankAccount extends FragmentHockeyApp implements View.OnClickListen
         routingno = (EditText) rootview.findViewById(R.id.bank_ac_routing_number);
         save_btn = (Button) rootview.findViewById(R.id.bank_ac_save_button);
         session = new SessionManager(getActivity());
-
         HashMap<String, String> user = session.getUserDetails();
         driver_id = user.get(SessionManager.KEY_DRIVERID);
         postRequest("/provider/get-banking-info");

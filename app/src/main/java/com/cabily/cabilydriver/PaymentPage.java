@@ -88,10 +88,7 @@ public class PaymentPage extends SubclassActivity {
         Str_amount = i.getStringExtra("amount");
         Str_rideid = i.getStringExtra("rideid");
         Str_currencycode = i.getStringExtra("CurrencyCode");
-
         System.out.println("rideid---paymneinituliz-------------" + Str_rideid);
-
-
         System.out.println("amount-------------" + Str_amount);
         Tv_amount = (TextView) findViewById(R.id.Receive_cash_amount);
         Bt_receivecash = (Button) findViewById(R.id.Receive_cash_receive_btn);

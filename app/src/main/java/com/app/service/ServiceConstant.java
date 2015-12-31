@@ -61,6 +61,7 @@ public interface ServiceConstant {
     public static String reviwes_options_list_url= BASE_URL+"app/review/options-list";
     public static String  submit_reviwes_url= BASE_URL+"app/review/submit";
     public static String request_paymnet_url= BASE_URL+"provider/request-payment";
+
     //----------------Push notification Key--------------------------
     String ACTION_LABEL = "action";
     String ACTION_TAG_RIDE_REQUEST = "ride_request";

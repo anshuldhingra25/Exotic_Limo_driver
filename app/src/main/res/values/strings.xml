@@ -31,7 +31,7 @@
     <string name="action_label_newassword">new password</string>
     <string name="action_label_confirmnewpassword">confirm new password</string>
 
-    <string name="action_label_signin">SignIn</string>
+    <string name="action_label_signin">Sign In</string>
     <string name="action_label_done">Done</string>
 
            <!--Driver dashboard-->
@@ -92,7 +92,7 @@
 
 
     <!--MainPage-->
-    <string name="cabily_driver_main_lable_signin_Textview">SIGNIN</string>
+    <string name="cabily_driver_main_lable_signin_Textview">SIGN IN</string>
     <string name="cabily_driver_main_lable_register_Textview">REGISTER</string>
     <string name="cabily_driver_main_lable_tripsummery_Textview">Trip Summery</string>
     <string name="cabily_driver_tip_amount">Your Tip Amount :</string>
