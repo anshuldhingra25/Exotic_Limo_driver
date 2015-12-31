@@ -8,54 +8,55 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_alignParentTop="true"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true">
 
         <ImageView
+            android:id="@+id/mainpagebackgrouncdimg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/mainpagebackgrouncdimg"
-            android:src="@drawable/driverlogo"
+            android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
+            android:src="@drawable/driverlogo" />
 
-        <Button
-            android:id="@+id/btn_signin"
-            android:layout_width="120dp"
-            android:layout_height="40dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="18dp"
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:background="@drawable/button_curve_background_blue"
-            android:textColor="#ffffff"
-            android:layout_marginBottom="25dp"
-            android:text="@string/cabily_driver_main_lable_signin_Textview"
-            android:textSize="15sp"
-            />
+            android:background="#ffffff">
+
+
+            <Button
+                android:id="@+id/btn_signin"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="#CC2793ff"
+                android:paddingRight="2dp"
+                android:layout_marginRight="2dp"
+                android:text="@string/cabily_driver_main_lable_signin_Textview"
+                android:textColor="#ffffff"
+                android:textSize="15sp" />
 
 
 
 
-        <Button
-            android:id="@+id/btn_register"
-            android:layout_width="120dp"
-            android:layout_height="40dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="10dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/button_curve_background_blue"
-            android:layout_marginRight="18dp"
-            android:textColor="#ffffff"
-            android:layout_marginBottom="25dp"
-            android:text="@string/cabily_driver_main_lable_register_Textview"
-            android:textSize="15sp"
-            />
 
 
+            <Button
+                android:id="@+id/btn_register"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="#CC2793ff"
+                android:paddingLeft="2dp"
+                android:text="@string/cabily_driver_main_lable_register_Textview"
+                android:textColor="#ffffff"
+                android:textSize="15sp" />
 
 
+        </LinearLayout>
 
 
     </RelativeLayout>

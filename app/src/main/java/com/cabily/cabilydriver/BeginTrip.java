@@ -1,5 +1,6 @@
 package com.cabily.cabilydriver;
 
+import android.animation.Animator;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +8,8 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -31,6 +34,7 @@ import com.cabily.cabilydriver.Utils.SessionManager;
 import com.cabily.cabilydriver.Utils.VolleyErrorResponse;
 import com.cabily.cabilydriver.googlemappath.GMapV2GetRouteDirection;
 import com.cabily.cabilydriver.subclass.SubclassActivity;
+import com.cabily.cabilydriver.widgets.OnSwipeTouchListener;
 import com.cabily.cabilydriver.widgets.PkDialog;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -44,6 +48,9 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.romainpiel.shimmer.Shimmer;
+import com.romainpiel.shimmer.ShimmerButton;
+import com.romainpiel.shimmer.ShimmerTextView;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
@@ -61,8 +68,9 @@ import me.drakeet.materialdialog.MaterialDialog;
 /**
  * Created by user88 on 10/29/2015.
  */
-public class BeginTrip extends SubclassActivity implements com.google.android.gms.location.LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
+public class BeginTrip extends SubclassActivity implements com.google.android.gms.location.LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,View.OnTouchListener  {
 
+    private static final String TAG ="swip" ;
     private String driver_id = "";
     private Boolean isInternetPresent = false;
     private ConnectionDetector cd;
@@ -74,7 +82,7 @@ public class BeginTrip extends SubclassActivity implements com.google.android.gm
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     public static Location myLocation;
-
+    Shimmer shimmer;
     private String Str_name = "", Str_mobilno = "", Str_rideid = "", Str_profilpic = "";
 
     private GoogleMap googleMap;
@@ -86,7 +94,11 @@ public class BeginTrip extends SubclassActivity implements com.google.android.gm
     private Marker currentMarker;
     private RelativeLayout alert_layout, Rl_layout_cancel;
     private TextView alert_textview;
-    private Button Bt_begin_trip;
+    //private RelativeLayout Bt_begin_trip;
+    private ShimmerButton Bt_shimmer_begintrip;
+    float initialX, initialY;
+
+
     Dialog dialog;
     StringRequest postrequest;
     GMapV2GetRouteDirection v2GetRouteDirection;
@@ -96,6 +108,9 @@ public class BeginTrip extends SubclassActivity implements com.google.android.gm
     MarkerOptions markerOptions;
     Document document;
     private String current_location = "";
+
+    public BeginTrip() {
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,39 +132,84 @@ public class BeginTrip extends SubclassActivity implements com.google.android.gm
             }
         });
 
-
-        Bt_begin_trip.setOnClickListener(new View.OnClickListener() {
+       Bt_shimmer_begintrip.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                cd = new ConnectionDetector(BeginTrip.this);
-                isInternetPresent = cd.isConnectingToInternet();
-                if (isInternetPresent) {
-                    PostRequest(ServiceConstant.begintrip_url);
-                    System.out.println("begin------------------" + ServiceConstant.begintrip_url);
-                } else {
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getActionMasked();
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        initialX = event.getX();
+                        initialY = event.getY();
 
-                    Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
+                        Log.d(TAG, "Action was DOWN");
+                        break;
+
+                    case MotionEvent.ACTION_MOVE:
+                        Log.d(TAG, "Action was MOVE");
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        float finalX = event.getX();
+                        float finalY = event.getY();
+
+                        Log.d(TAG, "Action was UP");
+
+                        if (initialX < finalX) {
+                            cd = new ConnectionDetector(BeginTrip.this);
+                            isInternetPresent = cd.isConnectingToInternet();
+                            if (isInternetPresent) {
+                                PostRequest(ServiceConstant.begintrip_url);
+                                System.out.println("begin------------------" + ServiceConstant.begintrip_url);
+                            } else {
+                                Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
+                            }
+
+                            Log.d(TAG, "Left to Right swipe performed");
+                        }
+
+                        if (initialX > finalX) {
+                            Log.d(TAG, "Right to Left swipe performed");
+                        }
+
+                        if (initialY < finalY) {
+                            Log.d(TAG, "Up to Down swipe performed");
+                        }
+
+                        if (initialY > finalY) {
+                            Log.d(TAG, "Down to Up swipe performed");
+                        }
+
+                        break;
+
+                    case MotionEvent.ACTION_CANCEL:
+                        Log.d(TAG,"Action was CANCEL");
+                        break;
+
+                    case MotionEvent.ACTION_OUTSIDE:
+                        Log.d(TAG, "Movement occurred outside bounds of current screen element");
+                        break;
                 }
+                return true;
             }
         });
+
+
 
 
         callimg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Str_mobilno!=null)
-                {
+                if (Str_mobilno != null) {
                     Intent callIntent = new Intent(Intent.ACTION_CALL);
-                    callIntent.setData(Uri.parse("tel:"+Str_mobilno));
+                    callIntent.setData(Uri.parse("tel:" + Str_mobilno));
                     startActivity(callIntent);
-                }
-                else
-                {
+                } else {
                     Alert(BeginTrip.this.getResources().getString(R.string.alert_sorry_label_title), BeginTrip.this.getResources().getString(R.string.arrived_alert_content1));
                 }
             }
         });
     }
+
 
     @Override
     public void onStart() {
@@ -213,16 +273,21 @@ public class BeginTrip extends SubclassActivity implements com.google.android.gm
         alert_textview = (TextView) findViewById(R.id.begintrip_alert_textView);
         alert_layout = (RelativeLayout) findViewById(R.id.begintrip_alert_layout);
         Rl_layout_cancel = (RelativeLayout) findViewById(R.id.layout_begin_trip_cancel);
-        Bt_begin_trip = (Button) findViewById(R.id.btn_begintrip);
+        // Bt_begin_trip = (RelativeLayout) findViewById(R.id.layout_btn_begintrip);
+        Bt_shimmer_begintrip = (ShimmerButton)findViewById(R.id.btn_begintrip);
 
 
         Tv_name_header.setText(Str_name);
         Tv_mobile_no.setText(Str_mobilno);
         Tv_name.setText(Str_name);
 
+        shimmer = new Shimmer();
+        shimmer.start(Bt_shimmer_begintrip);
+
         Picasso.with(BeginTrip.this).load(String.valueOf(Str_profilpic)).placeholder(R.drawable.nouserimg).memoryPolicy(MemoryPolicy.NO_CACHE).into(profile_img);
 
     }
+
 
     private void initilizeMap() {
 
@@ -270,9 +335,68 @@ public class BeginTrip extends SubclassActivity implements com.google.android.gm
         }
         setLocationRequest();
         buildGoogleApiClient();
-
-
     }
+
+
+
+
+    private final class GestureListener extends GestureDetector.SimpleOnGestureListener {
+
+        private static final int SWIPE_THRESHOLD = 100;
+        private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return true;
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            boolean result = false;
+            try {
+                float diffY = e2.getY() - e1.getY();
+                float diffX = e2.getX() - e1.getX();
+                if (Math.abs(diffX) > Math.abs(diffY)) {
+                    if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                        if (diffX > 0) {
+                            onSwipeRight();
+                        } else {
+                            onSwipeLeft();
+                        }
+                    }
+                    result = true;
+                }
+                else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                    if (diffY > 0) {
+                        onSwipeBottom();
+                    } else {
+                        onSwipeTop();
+                    }
+                }
+                result = true;
+
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+            return result;
+        }
+    }
+
+    public void onSwipeRight() {
+    }
+
+    public void onSwipeLeft() {
+    }
+
+    public void onSwipeTop() {
+    }
+
+    public void onSwipeBottom() {
+    }
+
+
+
+
 
     //--------------Alert Method-----------
     private void Alert(String title, String message) {
@@ -312,6 +436,12 @@ public class BeginTrip extends SubclassActivity implements com.google.android.gm
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
     }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        return false;
+    }
+
     class SayHello extends TimerTask {
         public void run() {
             System.out.println("hello");
@@ -380,6 +510,8 @@ public class BeginTrip extends SubclassActivity implements com.google.android.gm
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<String, String>();
                 headers.put("User-agent", ServiceConstant.useragent);
+                headers.put("isapplication",ServiceConstant.isapplication);
+                headers.put("applanguage",ServiceConstant.applanguage);
                 return headers;
             }
 

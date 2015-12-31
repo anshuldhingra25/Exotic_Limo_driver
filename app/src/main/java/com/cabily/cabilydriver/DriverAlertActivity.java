@@ -36,7 +36,6 @@ import at.grabner.circleprogress.CircleProgressView;
 
 public class DriverAlertActivity extends ActionBarActivityHockeyApp implements com.google.android.gms.location.LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private SessionManager sessionManager;
-    private DriverAlertAdapter alertAdapter;
     private static ArrayList<JSONObject> details = new ArrayList<>();
     private CircleProgressView mCircleView;
     private CountDownTimer timer;
@@ -47,6 +46,7 @@ public class DriverAlertActivity extends ActionBarActivityHockeyApp implements c
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     public static Location myLocation;
+
     private  LinearLayout listView;
     private ContinuousRequestAdapter continuousRequestAdapter;
     private int count = 0;
@@ -66,7 +66,7 @@ public class DriverAlertActivity extends ActionBarActivityHockeyApp implements c
         }
         mediaPlayer = MediaPlayer.create(this, Settings.System.DEFAULT_RINGTONE_URI);
         //alertAdapter = new DriverAlertAdapter(sessionManager, this, myLocation);
-        continuousRequestAdapter = new ContinuousRequestAdapter(sessionManager,this,myLocation);
+        continuousRequestAdapter = new ContinuousRequestAdapter(sessionManager,this,myLocation,listView);
         continuousRequestAdapter.setTimerCompleteCallBack(timerCompletCallback);
         setLocationRequest();
         buildGoogleApiClient();

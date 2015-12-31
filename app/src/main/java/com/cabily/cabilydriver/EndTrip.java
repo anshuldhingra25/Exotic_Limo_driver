@@ -14,6 +14,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -45,6 +46,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.vision.barcode.Barcode;
+import com.romainpiel.shimmer.Shimmer;
+import com.romainpiel.shimmer.ShimmerButton;
 
 import org.json.JSONObject;
 
@@ -60,6 +63,7 @@ import me.drakeet.materialdialog.MaterialDialog;
  * Created by user88 on 10/29/2015.
  */
 public class EndTrip extends SubclassActivity {
+    private static final String TAG = "swipe";
     private String driver_id = "";
     private Boolean isInternetPresent = false;
     private ConnectionDetector cd;
@@ -70,7 +74,11 @@ public class EndTrip extends SubclassActivity {
     private String Str_name="",Str_mobilno="",Str_rideid="";
     private RelativeLayout alert_layout;
     private TextView alert_textview;
-    private  Button Bt_End_trip;
+
+    private ShimmerButton Bt_Shimmer_End_trip;
+    float initialX, initialY;
+    Shimmer shimmer;
+
     private GoogleMap googleMap;
     Dialog dialog;
     StringRequest postrequest;
@@ -113,20 +121,70 @@ public class EndTrip extends SubclassActivity {
         //Starting Xmpp service
         ChatingService.startDriverAction(EndTrip.this);
 
-        Bt_End_trip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cd = new ConnectionDetector(EndTrip.this);
-                isInternetPresent = cd.isConnectingToInternet();
-                if (isInternetPresent) {
-                    PostRequest(ServiceConstant.endtrip_url);
-                    System.out.println("end------------------" + ServiceConstant.endtrip_url);
-                } else {
 
-                    Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
+        Bt_Shimmer_End_trip.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getActionMasked();
+                switch (action) {
+
+                    case MotionEvent.ACTION_DOWN:
+                        initialX = event.getX();
+                        initialY = event.getY();
+
+                        Log.d(TAG, "Action was DOWN");
+                        break;
+
+                    case MotionEvent.ACTION_MOVE:
+                        Log.d(TAG, "Action was MOVE");
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        float finalX = event.getX();
+                        float finalY = event.getY();
+
+                        Log.d(TAG, "Action was UP");
+
+                        if (initialX < finalX) {
+                            cd = new ConnectionDetector(EndTrip.this);
+                            isInternetPresent = cd.isConnectingToInternet();
+                            if (isInternetPresent) {
+                                PostRequest(ServiceConstant.endtrip_url);
+                                System.out.println("end------------------" + ServiceConstant.endtrip_url);
+                            } else {
+
+                                Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
+                            }
+
+                            Log.d(TAG, "Left to Right swipe performed");
+                        }
+
+                        if (initialX > finalX) {
+                            Log.d(TAG, "Right to Left swipe performed");
+                        }
+
+                        if (initialY < finalY) {
+                            Log.d(TAG, "Up to Down swipe performed");
+                        }
+
+                        if (initialY > finalY) {
+                            Log.d(TAG, "Down to Up swipe performed");
+                        }
+
+                        break;
+
+                    case MotionEvent.ACTION_CANCEL:
+                        Log.d(TAG,"Action was CANCEL");
+                        break;
+
+                    case MotionEvent.ACTION_OUTSIDE:
+                        Log.d(TAG, "Movement occurred outside bounds of current screen element");
+                        break;
                 }
+                return true;
             }
         });
+
 
 
         Tv_start_wait.setOnClickListener(new View.OnClickListener() {
@@ -170,6 +228,9 @@ public class EndTrip extends SubclassActivity {
     private void initialize() {
         session = new SessionManager(EndTrip.this);
         gps = new GPSTracker(EndTrip.this);
+        shimmer = new Shimmer();
+
+
         // get user data from session
         HashMap<String, String> user = session.getUserDetails();
         driver_id = user.get(SessionManager.KEY_DRIVERID);
@@ -188,7 +249,7 @@ public class EndTrip extends SubclassActivity {
         Tv_name = (TextView)findViewById(R.id.end_trip_name);
         Tv_mobilno = (TextView)findViewById(R.id.end_trip_mobilno);
         Tv_rideid = (TextView)findViewById(R.id.beginendtrip_rideid);
-        Bt_End_trip = (Button)findViewById(R.id.btn_end_trip);
+        Bt_Shimmer_End_trip = (ShimmerButton)findViewById(R.id.btn_end_trip);
         Tv_start_wait = (TextView)findViewById(R.id.begin_waitingtime_tv_start);
         Tv_stop_wait = (TextView)findViewById(R.id.begin_waitingtime_tv_stop);
         timerValue = (TextView)findViewById(R.id.timerValue);
@@ -196,6 +257,8 @@ public class EndTrip extends SubclassActivity {
         Bt_Enable_voice = (Button)findViewById(R.id.Enable_voice_button);
 
 
+        shimmer = new Shimmer();
+        shimmer.start(Bt_Shimmer_End_trip);
 
         alert_layout = (RelativeLayout)findViewById(R.id.end_trip_alert_layout);
         alert_textview = (TextView)findViewById(R.id.end_trip_alert_textView);
@@ -433,7 +496,6 @@ public class EndTrip extends SubclassActivity {
                                 System.out.println("sucess------------"+Str_need_payment);
                                 showfaresummerydetails();
                             }else{
-
                                 Intent intent= new Intent(EndTrip.this,RatingsPage.class);
                                 startActivity(intent);
                                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
@@ -460,6 +522,8 @@ public class EndTrip extends SubclassActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<String, String>();
                 headers.put("User-agent", ServiceConstant.useragent);
+                headers.put("isapplication",ServiceConstant.isapplication);
+                headers.put("applanguage",ServiceConstant.applanguage);
                 return headers;
             }
 
@@ -566,6 +630,8 @@ public class EndTrip extends SubclassActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<String, String>();
                 headers.put("User-agent",ServiceConstant.useragent);
+                headers.put("isapplication",ServiceConstant.isapplication);
+                headers.put("applanguage",ServiceConstant.applanguage);
                 return headers;
             }
 

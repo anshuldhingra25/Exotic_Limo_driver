@@ -11,6 +11,7 @@ import android.content.IntentSender;
 import android.location.Location;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -204,6 +205,11 @@ public class DriverMapActivity extends ActivityHockeyApp implements View.OnClick
             HashMap<String, String> jsonParams = new HashMap<String, String>();
             HashMap<String, String> userDetails = session.getUserDetails();
             String driverId = userDetails.get("driverid");
+
+            System.out.println("driverId-------------"+driverId);
+            System.out.println("latitude-------------"+myLocation.getLatitude());
+            System.out.println("longitude-------------"+myLocation.getLongitude());
+
             jsonParams.put("driver_id", "" + driverId);
             jsonParams.put("latitude", "" + myLocation.getLatitude());
             jsonParams.put("longitude", "" + myLocation.getLongitude());
@@ -231,7 +237,11 @@ public class DriverMapActivity extends ActivityHockeyApp implements View.OnClick
                 Str_availablestaus = jobject2.getString("availability");
                 Str_message = jobject2.getString("message");
                 Str_rideId = jobject2.getString("ride_id");
-                System.out.println("mapresponse----------" + response);
+
+                System.out.println("rideIDDresponse----------" + Str_rideId);
+
+                System.out.println("online----------" + response);
+
                 if (Str_availablestaus.equalsIgnoreCase("Unavailable"))
                 {
                     Rl_layout_available_status.setVisibility(View.VISIBLE);
@@ -278,6 +288,10 @@ public class DriverMapActivity extends ActivityHockeyApp implements View.OnClick
         String driverId = userDetails.get("driverid");
         jsonParams.put("driver_id", "" + driverId);
         jsonParams.put("availability", "" + "No");
+
+        System.out.println("availability-------------" +"No");
+        System.out.println("offline driver_id-------------"+driverId);
+
         ServiceManager manager = new ServiceManager(this, updateAvailabilityServiceListener);
         manager.makeServiceRequest(ServiceConstant.UPDATE_AVAILABILITY, Request.Method.POST, jsonParams);
     }
@@ -288,6 +302,8 @@ public class DriverMapActivity extends ActivityHockeyApp implements View.OnClick
             try {
                 dismissDialog();
                 String response = (String) object;
+                System.out.println("goofflineresponse---------"+response);
+
                 finish();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -341,6 +357,9 @@ public class DriverMapActivity extends ActivityHockeyApp implements View.OnClick
             marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
             currentMarker =  googleMap.addMarker(marker);
             postRequest(ServiceConstant.UPDATE_CURRENT_LOCATION);
+
+            System.out.println("online------------------"+ServiceConstant.UPDATE_CURRENT_LOCATION);
+
         }
     }
 

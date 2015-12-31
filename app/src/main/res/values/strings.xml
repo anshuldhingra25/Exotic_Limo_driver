@@ -19,8 +19,8 @@
     <string name="action_loading_error">Error</string>
     <string name="action_loading_sucess">Success</string>
     <string name="action_loading_cancel">Cancelling</string>
-    <string name="action_loading_rating">Ratting</string>
-    <string name="action_label_forgotpassword">Forgot password?</string>
+    <string name="action_loading_rating">Rating</string>
+    <string name="action_label_forgotpassword">Forgot password ?</string>
     <string name="action_label_forgotpassword_header">Forgot password</string>
     <string name="forgotpassword">Please enter the email address of your account</string>
     <string name="action_label_changepassword">Change Password</string>
@@ -36,12 +36,11 @@
 
            <!--Driver dashboard-->
     <string name="lasttrip_label">Last Trip</string>
-    <string name="todayearnings_label">Today earnings</string>
-    <string name="todaytips_label">Today tips</string>
-    <string name="lasttrip_emtpy_label">No Tips</string>
+    <string name="todayearnings_label">Today Earnings</string>
+    <string name="todaytips_label">Today Tips</string>
+    <string name="lasttrip_emtpy_label">No Trip</string>
     <string name="todayearning_no_online_label">No Online</string>
     <string name="todayearning_no_trips_label">No Trip</string>
-
 
 
 
@@ -71,7 +70,7 @@
     <string name="action_alert_header">Ratting</string>
     <string name="action_alert_invalid_email">Email address is invalid</string>
     <string name="action_alert_invalid_password">Password is invalid</string>
-    <string name="action_alert_SigninFaild">Signin Faild</string>
+    <string name="action_alert_SigninFaild">Sign In Failed</string>
     <string name="action_alert_signinfaildmsg">Invalid username or  password </string>
     <string name="action_alert_unabletocreatemap"> Sorry! unable to create maps </string>
 
@@ -180,7 +179,7 @@
     <!--Arrived-->
     <string name="arrivedtrip_info_label">Info</string>
     <string name="arrivedtrip_id_label">ID :</string>
-    <string name="arrivedtrip_arrivedtriptv_label">Arrived</string>
+    <string name="arrivedtrip_arrivedtriptv_label">Slide to Arrived</string>
     <string name="alert_canceld_label_title">Cancelled</string>
     <string name="alert_tripdetail_label_title">Trip Detail</string>
     <string name="alert_tripdetail_droplocation_label_title">Drop Location</string>
@@ -190,9 +189,9 @@
     <string name="alert_tripdetail_waitingtime_label_title">Waiting Time</string>
     <string name="alert_tripdetail_ridedistance_label_title">Ride Distance</string>
     <string name="alert_tripdetail_enterdistance_label_hint">Enter Distance(eg:25)</string>
-    <string name="alert_tripdetail_endtrip_label">End Trip</string>
+    <string name="alert_tripdetail_endtrip_label">Slide to End Trip</string>
     <string name="arrived_alert_content1">Unable to contact user.please try again after sometime</string>
-
+    <string name="voice_navigationlabel">Start navigation</string>
 
 
 
@@ -211,10 +210,10 @@
 
     <!--Begin Trip-->
     <string name="lbel_begintrip_label_cancel">Cancel</string>
-    <string name="lbel_begintrip">Begin Trip</string>
+    <string name="lbel_begintrip">Slide to Begin Trip</string>
 
       <!--EndTrip-->
-    <string name="lbel_endtrip">End Trip</string>
+    <string name="lbel_endtrip">Slide to End Trip</string>
     <string name="lbel_currentride">Current Ride</string>
     <string name="lbel_wait">Start wait</string>
     <string name="lbel_stopwait">Stop wait</string>
@@ -280,7 +279,10 @@
     <string name="alert_label_trip_content">Please make sure that drop time is before atleast an hour from now</string>
 
 
-
+      <!--hange Password-->
+    <string name="changepassword_currentpwd_label">currentpassword can\'t be empty</string>
+    <string name="changepassword_newpwd_label">newpassword can\'t be empty</string>
+    <string name="changepassword_confirmpwd_label">confirmpassword can\'t be empty</string>
 
 
 </resources>

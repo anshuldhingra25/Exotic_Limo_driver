@@ -255,6 +255,8 @@ public class CancelTrip extends ActivityHockeyApp {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<String, String>();
                 headers.put("User-agent", ServiceConstant.useragent);
+                headers.put("isapplication",ServiceConstant.isapplication);
+                headers.put("applanguage",ServiceConstant.applanguage);
                 return headers;
             }
 
@@ -307,37 +309,36 @@ public class CancelTrip extends ActivityHockeyApp {
                             e.printStackTrace();
                         }
                         if (Str_status.equalsIgnoreCase("1")) {
-                          final MaterialDialog dialog = new MaterialDialog(CancelTrip.this);
-                            dialog.setTitle(getResources().getString(R.string.action_loading_sucess))
-                                    .setMessage(Str_message)
-                                    .setPositiveButton(
-                                            getResources().getString(R.string.lbel_notification_ok), new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    dialog.dismiss();
+                          final PkDialog mdialog = new PkDialog(CancelTrip.this);
+                            mdialog.setDialogTitle(getResources().getString(R.string.action_loading_sucess));
+                            mdialog.setDialogMessage(Str_message);
+                            mdialog.setPositiveButton(getResources().getString(R.string.lbel_notification_ok), new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            mdialog.dismiss();
 
-                                                    Intent broadcastIntent = new Intent();
-                                                    broadcastIntent.setAction("com.finish.ArrivedTrip");
-                                                    sendBroadcast(broadcastIntent);
+                                            Intent broadcastIntent = new Intent();
+                                            broadcastIntent.setAction("com.finish.ArrivedTrip");
+                                            sendBroadcast(broadcastIntent);
 
-                                                    Intent broadcastIntent_userinfo = new Intent();
-                                                    broadcastIntent_userinfo.setAction("com.finish.UserInfo");
-                                                    sendBroadcast(broadcastIntent_userinfo);
+                                            Intent broadcastIntent_userinfo = new Intent();
+                                            broadcastIntent_userinfo.setAction("com.finish.UserInfo");
+                                            sendBroadcast(broadcastIntent_userinfo);
 
-                                                    Intent broadcastIntent_tripdetail = new Intent();
-                                                    broadcastIntent_tripdetail.setAction("com.finish.tripsummerydetail");
-                                                    sendBroadcast(broadcastIntent_tripdetail);
+                                            Intent broadcastIntent_tripdetail = new Intent();
+                                            broadcastIntent_tripdetail.setAction("com.finish.tripsummerydetail");
+                                            sendBroadcast(broadcastIntent_tripdetail);
 
-                                                    Intent broadcastIntent_drivermap = new Intent();
-                                                    broadcastIntent_drivermap.setAction("com.finish.canceltrip.DriverMapActivity");
-                                                    sendBroadcast(broadcastIntent_drivermap);
+                                            Intent broadcastIntent_drivermap = new Intent();
+                                            broadcastIntent_drivermap.setAction("com.finish.canceltrip.DriverMapActivity");
+                                            sendBroadcast(broadcastIntent_drivermap);
 
-                                                    finish();
-                                                    onBackPressed();
-                                                }
-                                            }
-                                    )
-                                    .show();
+                                            finish();
+                                            onBackPressed();
+                                        }
+                                    }
+                            );
+                                    mdialog.show();
 
                         } else {
                             Alert(getResources().getString(R.string.alert_sorry_label_title),Str_message);
@@ -357,6 +358,8 @@ public class CancelTrip extends ActivityHockeyApp {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<String, String>();
                 headers.put("User-agent", ServiceConstant.useragent);
+                headers.put("isapplication",ServiceConstant.isapplication);
+                headers.put("applanguage",ServiceConstant.applanguage);
                 return headers;
             }
 

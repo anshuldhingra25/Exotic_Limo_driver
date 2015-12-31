@@ -157,6 +157,7 @@ public class ForgotPassword extends ActionBarActivity {
                 Map<String, String> headers = new HashMap<String, String>();
                 headers.put("User-agent", ServiceConstant.useragent);
                 headers.put("isapplication",ServiceConstant.isapplication);
+                headers.put("applanguage",ServiceConstant.applanguage);
                 return headers;
             }
 

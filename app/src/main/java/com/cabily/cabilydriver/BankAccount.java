@@ -21,6 +21,7 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.app.service.ServiceConstant;
 import com.cabily.cabilydriver.Utils.AppController;
 import com.cabily.cabilydriver.Utils.SessionManager;
 import com.cabily.cabilydriver.widgets.PkDialog;
@@ -30,6 +31,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -215,6 +217,15 @@ public class BankAccount extends FragmentHockeyApp implements View.OnClickListen
                 }
             }
         }) {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<String, String>();
+                headers.put("User-agent", ServiceConstant.useragent);
+                headers.put("isapplication",ServiceConstant.isapplication);
+                headers.put("applanguage",ServiceConstant.applanguage);
+                return headers;
+            }
 
             @Override
             protected java.util.Map<String, String> getParams() throws AuthFailureError {

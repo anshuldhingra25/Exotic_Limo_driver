@@ -24,6 +24,7 @@ import com.cabily.cabilydriver.Utils.ConnectionDetector;
 import com.cabily.cabilydriver.Utils.SessionManager;
 import com.cabily.cabilydriver.Utils.VolleyErrorResponse;
 import com.cabily.cabilydriver.subclass.SubclassActivity;
+import com.cabily.cabilydriver.widgets.PkDialog;
 
 import org.json.JSONObject;
 
@@ -150,46 +151,45 @@ public class PaymentPage extends SubclassActivity {
 
                             if (Str_status.equalsIgnoreCase("1")){
 
-                                final MaterialDialog mdialog = new MaterialDialog(PaymentPage.this);
-                                mdialog.setTitle(getResources().getString(R.string.action_loading_sucess))
-                                        .setMessage(Str_response)
-                                        .setPositiveButton(
-                                                "OK", new View.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(View v) {
-                                                        mdialog.dismiss();
+                                final PkDialog mdialog = new PkDialog(PaymentPage.this);
+                                mdialog.setDialogTitle(getResources().getString(R.string.action_loading_sucess));
+                                mdialog.setDialogMessage(Str_response);
+                                mdialog.setPositiveButton(
+                                        "OK", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                mdialog.dismiss();
 
-                                                        Intent broadcastIntent_otp = new Intent();
-                                                        broadcastIntent_otp.setAction("com.finish.OtpPage");
-                                                        sendBroadcast(broadcastIntent_otp);
+                                                Intent broadcastIntent_otp = new Intent();
+                                                broadcastIntent_otp.setAction("com.finish.OtpPage");
+                                                sendBroadcast(broadcastIntent_otp);
 
-                                                        Intent broadcastIntent = new Intent();
-                                                        broadcastIntent.setAction("com.finish.EndTrip");
-                                                        sendBroadcast(broadcastIntent);
-                                                        finish();
+                                                Intent broadcastIntent = new Intent();
+                                                broadcastIntent.setAction("com.finish.EndTrip");
+                                                sendBroadcast(broadcastIntent);
+                                                finish();
 
-                                                        Intent intent = new Intent(PaymentPage.this,RatingsPage.class);
-                                                        intent.putExtra("rideid",Str_rideid);
-                                                        startActivity(intent);
-                                                        //onBackPressed();
-                                                    }
-                                                }
-                                        )
-                                        .show();
+                                                Intent intent = new Intent(PaymentPage.this, RatingsPage.class);
+                                                intent.putExtra("rideid", Str_rideid);
+                                                startActivity(intent);
+                                                //onBackPressed();
+                                            }
+                                        }
+                                );
+                                mdialog.show();
                             }else {
-                                final MaterialDialog alertDialog = new MaterialDialog(PaymentPage.this);
-                                alertDialog.setTitle("Error");
-                                alertDialog
-                                        .setMessage(Str_response)
-                                        .setCanceledOnTouchOutside(false)
-                                        .setPositiveButton(
-                                                "OK", new View.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(View v) {
-                                                        alertDialog.dismiss();
-                                                    }
-                                                }
-                                        ).show();
+                                final PkDialog mdialog = new PkDialog(PaymentPage.this);
+                                mdialog.setDialogTitle(getResources().getString(R.string.alert_sorry_label_title));
+                                mdialog.setDialogMessage(Str_response);
+                                mdialog.setCancelOnTouchOutside(false);
+                                mdialog.setPositiveButton(getResources().getString(R.string.alert_label_ok), new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                mdialog.dismiss();
+                                            }
+                                        }
+                                );
+                                mdialog.show();
 
                             }
 
@@ -216,6 +216,8 @@ public class PaymentPage extends SubclassActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<String, String>();
                 headers.put("User-agent", ServiceConstant.useragent);
+                headers.put("isapplication",ServiceConstant.isapplication);
+                headers.put("applanguage",ServiceConstant.applanguage);
                 return headers;
             }
 

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
         android:id="@+id/layout_end_trip_header"
         android:layout_width="fill_parent"
-        android:layout_height="45dp"
+        android:layout_height="55dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:background="@color/app_color">
@@ -19,7 +20,7 @@
             android:layout_centerVertical="true"
             android:text="@string/lbel_currentride"
             android:textColor="#ffffff"
-            android:textSize="18sp" />
+            android:textSize="20sp" />
 
         <com.cabily.cabilydriver.widgets.CustomTextView
             android:id="@+id/begin_waitingtime_tv_start"
@@ -237,19 +238,22 @@
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="#80000000">
+        android:background="#31c3e7"
+        >
 
 
-        <Button
+        <com.romainpiel.shimmer.ShimmerButton
             android:id="@+id/btn_end_trip"
-            android:layout_width="200dp"
-            android:layout_height="35dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:background="@color/app_color"
             android:text="@string/lbel_endtrip"
+            android:layout_centerInParent="true"
+            android:layout_margin="2dp"
+            android:textStyle="bold"
             android:textColor="#ffffff"
-            android:textSize="15sp" />
+            app:reflectionColor="#31c3e7"
+            android:textSize="18sp" />
 
 
     </RelativeLayout>

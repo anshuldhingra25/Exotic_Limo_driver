@@ -1,15 +1,22 @@
 package com.cabily.cabilydriver;
 
 import android.app.Dialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -24,6 +31,7 @@ import com.cabily.cabilydriver.Utils.ConnectionDetector;
 import com.cabily.cabilydriver.Utils.SessionManager;
 import com.cabily.cabilydriver.Utils.VolleyErrorResponse;
 import com.cabily.cabilydriver.widgets.PkDialog;
+import com.special.ResideMenu.ResideMenu;
 
 import org.json.JSONObject;
 
@@ -35,51 +43,97 @@ import java.util.Map;
  */
 public class ChangePassWord extends Fragment {
 
-    private EditText Et_currrentpassword, Et_new_password, Et_new_confirm_password;
-    private Button Bt_done;
+    private EditText Et_currrentpassword,Et_new_password,Et_new_confirm_password;
     private Dialog dialog;
+    private RelativeLayout layout_done;
+
+
     private StringRequest postrequest;
-    private String driver_id = "";
-    private SessionManager session;
+    private String driver_id="";
+    SessionManager session;
+    private ResideMenu resideMenu;
     private Boolean isInternetPresent = false;
     private ConnectionDetector cd;
+    private static View rootview;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View rootview = inflater.inflate(R.layout.change_password, container, false);
+
+        if (rootview != null) {
+            ViewGroup parent = (ViewGroup) rootview.getParent();
+            if (parent != null)
+                parent.removeView(rootview);
+        }
+        try {
+            rootview = inflater.inflate(R.layout.change_password, container, false);
+        } catch (InflateException e) {
+        }
         init(rootview);
-        Bt_done.setOnClickListener(new View.OnClickListener() {
+
+        rootview.findViewById(R.id.ham_home).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                cd = new ConnectionDetector(getActivity());
-                isInternetPresent = cd.isConnectingToInternet();
-                if (isInternetPresent) {
-                    changepassword_PostRequest(ServiceConstant.changepassword);
-                    System.out.println("changepwd-----------" + ServiceConstant.changepassword);
-                } else {
-                    Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
+            public void onClick(View view) {
+                if (resideMenu != null) {
+                    resideMenu.openMenu(ResideMenu.DIRECTION_LEFT);
                 }
             }
         });
 
+        layout_done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cd = new ConnectionDetector(getActivity());
+                isInternetPresent = cd.isConnectingToInternet();
+                 if (Et_currrentpassword.length()==0){
+                     erroredit(Et_currrentpassword, getResources().getString(R.string.changepassword_currentpwd_label));
+                 }else if (Et_new_password.length()==0){
+                     erroredit(Et_new_password,getResources().getString(R.string.changepassword_newpwd_label));
+                 }else if (Et_new_confirm_password.length()==0){
+                     erroredit(Et_new_confirm_password,getResources().getString(R.string.changepassword_confirmpwd_label));
+                 }else{
+                     if (isInternetPresent) {
+                         changepassword_PostRequest(ServiceConstant.changepassword);
+                         System.out.println("changepwd-----------" + ServiceConstant.changepassword);
+                     } else {
+                         Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
+                     }
+                 }
+            }
+        });
+
+        setUpViews();
         return rootview;
 
     }
-
     private void init(View rootview) {
 
         session = new SessionManager(getActivity());
 
-        Et_currrentpassword = (EditText) rootview.findViewById(R.id.loginpage_currentPwd_edittext_label);
-        Et_new_password = (EditText) rootview.findViewById(R.id.loginpage_new_Pwd_edittext_label);
-        Et_new_confirm_password = (EditText) rootview.findViewById(R.id.loginpage_confirm_new_Pwd_edittext_label);
-        Bt_done = (Button) rootview.findViewById(R.id.signin_main_button);
+        Et_currrentpassword = (EditText)rootview.findViewById(R.id.loginpage_currentPwd_edittext_label);
+        Et_new_password = (EditText)rootview.findViewById(R.id.loginpage_new_Pwd_edittext_label);
+        Et_new_confirm_password = (EditText)rootview.findViewById(R.id.loginpage_confirm_new_Pwd_edittext_label);
+        layout_done = (RelativeLayout)rootview.findViewById(R.id.layout_changepassword_done);
 
         HashMap<String, String> user = session.getUserDetails();
         driver_id = user.get(SessionManager.KEY_DRIVERID);
 
     }
+
+    private void erroredit(EditText editname, String msg) {
+        Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
+        editname.startAnimation(shake);
+        ForegroundColorSpan fgcspan = new ForegroundColorSpan(Color.parseColor("#CC0000"));
+        SpannableStringBuilder ssbuilder = new SpannableStringBuilder(msg);
+        ssbuilder.setSpan(fgcspan, 0, msg.length(), 0);
+        editname.setError(ssbuilder);
+    }
+
+
+    private void setUpViews() {
+        NavigationDrawer parentActivity = (NavigationDrawer) getActivity();
+        resideMenu = parentActivity.getResideMenu();
+    }
+
 
     private void Alert(String title, String message) {
         final PkDialog mDialog = new PkDialog(getActivity());
@@ -96,7 +150,6 @@ public class ChangePassWord extends Fragment {
         });
         mDialog.show();
     }
-
 
     //--------------------------code for post forgot password-----------------------
     private void changepassword_PostRequest(String Url) {
@@ -132,10 +185,10 @@ public class ChangePassWord extends Fragment {
                             e.printStackTrace();
                         }
 
-                        if (Str_status.equalsIgnoreCase("1")) {
-                            Alert(getResources().getString(R.string.label_pushnotification_cashreceived), Str_response);
-                        } else {
-                            Alert(getResources().getString(R.string.alert_sorry_label_title), Str_response);
+                        if (Str_status.equalsIgnoreCase("1")){
+                            Alert(getResources().getString(R.string.label_pushnotification_cashreceived),Str_response);
+                        }else{
+                            Alert(getResources().getString(R.string.alert_sorry_label_title),Str_response);
                         }
 
                         dialog.dismiss();
@@ -155,8 +208,8 @@ public class ChangePassWord extends Fragment {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<String, String>();
                 headers.put("User-agent", ServiceConstant.useragent);
-                headers.put("isapplication", ServiceConstant.isapplication);
-                headers.put("applanguage", ServiceConstant.applanguage);
+                headers.put("isapplication",ServiceConstant.isapplication);
+                headers.put("applanguage",ServiceConstant.applanguage);
 
                 return headers;
             }
@@ -164,12 +217,12 @@ public class ChangePassWord extends Fragment {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> jsonParams = new HashMap<String, String>();
-                jsonParams.put("driver_id", driver_id);
-                jsonParams.put("password", Et_currrentpassword.getText().toString());
-                jsonParams.put("new_password", Et_new_password.getText().toString());
+                jsonParams.put("driver_id",driver_id);
+                jsonParams.put("password",Et_currrentpassword.getText().toString());
+                jsonParams.put("new_password",Et_new_password.getText().toString());
 
-                System.out.println("--------------driver_id-------------------" + driver_id);
-                System.out.println("--------------password-------------------" + Et_currrentpassword.getText().toString());
+                System.out.println("--------------driver_id-------------------" +driver_id);
+                System.out.println("--------------password-------------------" +Et_currrentpassword.getText().toString());
                 System.out.println("--------------new_password-------------------" + Et_currrentpassword.getText().toString());
 
                 return jsonParams;
@@ -182,6 +235,13 @@ public class ChangePassWord extends Fragment {
 
         AppController.getInstance().addToRequestQueue(postrequest);
     }
+
+
+
+
+
+
+
 
 
 }

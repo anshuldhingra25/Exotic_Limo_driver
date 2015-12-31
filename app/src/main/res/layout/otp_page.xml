@@ -36,7 +36,7 @@
                 android:text="@string/lbel_otp"
                 android:id="@+id/textView2"
                 android:layout_centerVertical="true"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:textColor="#ffffff"
                 android:layout_centerHorizontal="true" />
 
@@ -75,7 +75,7 @@
             android:textAlignment="center"
             android:textColor="#050505"
             android:textColorHint="#ececec"
-            android:textSize="28dp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <Button
@@ -84,12 +84,9 @@
             android:layout_height="50dp"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:background="@drawable/button_curve_background_blue"
+            android:background="#CC2793ff"
             android:text="@string/lbel_otp_code_confirm"
             android:textColor="#ffffff"
-            android:layout_marginBottom="10dp"
             android:textSize="15sp"
             android:textStyle="bold" />
     </RelativeLayout>

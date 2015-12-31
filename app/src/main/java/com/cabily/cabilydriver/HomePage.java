@@ -14,6 +14,7 @@ import com.Hockeyapp.ActivityHockeyApp;
 import com.app.xmpp.ChatingService;
 import com.cabily.cabilydriver.Utils.GPSTracker;
 import com.cabily.cabilydriver.Utils.SessionManager;
+import com.cabily.cabilydriver.widgets.PkDialog;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -94,21 +95,18 @@ public class HomePage extends ActivityHockeyApp implements GoogleApiClient.Conne
         });
     }
 
-    private void Alert(String title, String alert) {
-        final MaterialDialog dialog = new MaterialDialog(HomePage.this);
-        dialog.setTitle(title)
-                .setMessage(alert)
-                .setPositiveButton(
-                        "OK", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                            }
-                        }
-                )
-                .show();
+    private void Alert(String title, String message) {
+        final PkDialog mDialog = new PkDialog(HomePage.this);
+        mDialog.setDialogTitle(title);
+        mDialog.setDialogMessage(message);
+        mDialog.setPositiveButton(getResources().getString(R.string.alert_label_ok), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+            }
+        });
+        mDialog.show();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/layouts_cancel_reasons"
         android:layout_width="fill_parent"
-        android:layout_height="45dp"
+        android:layout_height="55dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:background="@color/app_color">
@@ -34,7 +34,7 @@
             android:layout_marginLeft="30dp"
             android:text="@string/userinfo_cancel_label"
             android:textColor="#ffffff"
-            android:textSize="16sp" />
+            android:textSize="20sp" />
 
 
     </RelativeLayout>

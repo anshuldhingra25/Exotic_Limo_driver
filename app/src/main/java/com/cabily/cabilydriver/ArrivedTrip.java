@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -51,6 +52,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.vision.barcode.Barcode;
+import com.romainpiel.shimmer.Shimmer;
+import com.romainpiel.shimmer.ShimmerButton;
 
 import org.json.JSONObject;
 import org.w3c.dom.Document;
@@ -65,6 +68,7 @@ import me.drakeet.materialdialog.MaterialDialog;
  * Created by user88 on 10/28/2015.
  */
 public class ArrivedTrip extends SubclassActivity {
+    private static final String TAG = "swipe";
     private Context context;
     private SessionManager session;
     private String driver_id = "";
@@ -76,12 +80,15 @@ public class ArrivedTrip extends SubclassActivity {
     private String Str_user_rating = "";
     private String Str_user_phoneno = "";
     private String Str_user_img = "";
-    private Button Bt_Arrived;
     private TextView Tv_Address, Tv_RideId, Tv_usename;
     private RelativeLayout Rl_layout_userinfo, Rl_layout_arrived;
     private String ERROR_TAG = "Unknown Error Occured";
 
-    private Button Bt_Enable_voice;
+    private RelativeLayout Rl_layout_enable_voicenavigation;
+
+    Shimmer shimmer;
+    private ShimmerButton Bt_Shimmer_Arrived;
+    float initialX, initialY;
 
 
     // List<Overlay> mapOverlays;
@@ -131,18 +138,64 @@ public class ArrivedTrip extends SubclassActivity {
         });
 
 
-        Bt_Arrived.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cd = new ConnectionDetector(ArrivedTrip.this);
-                isInternetPresent = cd.isConnectingToInternet();
-                if (isInternetPresent) {
-                    PostRequest(ServiceConstant.arrivedtrip_url);
-                    System.out.println("arrived------------------" + ServiceConstant.arrivedtrip_url);
-                } else {
 
-                    Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
+
+        Bt_Shimmer_Arrived.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getActionMasked();
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        initialX = event.getX();
+                        initialY = event.getY();
+
+                        Log.d(TAG, "Action was DOWN");
+                        break;
+
+                    case MotionEvent.ACTION_MOVE:
+                        Log.d(TAG, "Action was MOVE");
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        float finalX = event.getX();
+                        float finalY = event.getY();
+                        Log.d(TAG, "Action was UP");
+                        if (initialX < finalX) {
+
+                            cd = new ConnectionDetector(ArrivedTrip.this);
+                            isInternetPresent = cd.isConnectingToInternet();
+                            if (isInternetPresent) {
+                                PostRequest(ServiceConstant.arrivedtrip_url);
+                                System.out.println("arrived------------------" + ServiceConstant.arrivedtrip_url);
+                            } else {
+                                Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
+                            }
+                            Log.d(TAG, "Left to Right swipe performed");
+                        }
+
+                        if (initialX > finalX) {
+                            Log.d(TAG, "Right to Left swipe performed");
+                        }
+
+                        if (initialY < finalY) {
+                            Log.d(TAG, "Up to Down swipe performed");
+                        }
+
+                        if (initialY > finalY) {
+                            Log.d(TAG, "Down to Up swipe performed");
+                        }
+
+                        break;
+
+                    case MotionEvent.ACTION_CANCEL:
+                        Log.d(TAG,"Action was CANCEL");
+                        break;
+
+                    case MotionEvent.ACTION_OUTSIDE:
+                        Log.d(TAG, "Movement occurred outside bounds of current screen element");
+                        break;
                 }
+                return true;
             }
         });
 
@@ -166,7 +219,7 @@ public class ArrivedTrip extends SubclassActivity {
         });
 
 
-        Bt_Enable_voice.setOnClickListener(new View.OnClickListener() {
+        Rl_layout_enable_voicenavigation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -192,6 +245,9 @@ public class ArrivedTrip extends SubclassActivity {
         session = new SessionManager(ArrivedTrip.this);
         gps = new GPSTracker(ArrivedTrip.this);
         v2GetRouteDirection = new GMapV2GetRouteDirection();
+        shimmer = new Shimmer();
+
+
         HashMap<String, String> user = session.getUserDetails();
         driver_id = user.get(SessionManager.KEY_DRIVERID);
         alert_textview = (TextView) findViewById(R.id.arrivd_Tripaccpt_alert_textView);
@@ -209,17 +265,19 @@ public class ArrivedTrip extends SubclassActivity {
         System.out.println("adres---------" + Str_address);
         System.out.println("id---------" + Str_RideId);
         Tv_Address = (TextView) findViewById(R.id.trip_arrived_user_address);
-        Tv_RideId = (TextView) findViewById(R.id.trip_arrived_user_id);
+       // Tv_RideId = (TextView) findViewById(R.id.trip_arrived_user_id);
         Tv_usename = (TextView) findViewById(R.id.trip_arrived_usernameTxt);
         Rl_layout_userinfo = (RelativeLayout) findViewById(R.id.layout_arrived_trip_userinfo);
         Rl_layout_arrived = (RelativeLayout) findViewById(R.id.layout_arrivedbtn);
-        Bt_Arrived = (Button) findViewById(R.id.btn_arrived);
-        Bt_Enable_voice = (Button)findViewById(R.id.arrived_Enable_voice_button);
-
+        Bt_Shimmer_Arrived = (ShimmerButton) findViewById(R.id.btn_arrived);
+        Rl_layout_enable_voicenavigation = (RelativeLayout)findViewById(R.id.layout_arrived_Enable_voice);
 
         Tv_Address.setText(Str_address);
-        Tv_RideId.setText(Str_RideId);
+       // Tv_RideId.setText(Str_RideId);
         Tv_usename.setText(Str_username);
+
+        shimmer.start(Bt_Shimmer_Arrived);
+
     }
 
     @Override
@@ -452,6 +510,8 @@ public class ArrivedTrip extends SubclassActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<String, String>();
                 headers.put("User-agent", ServiceConstant.useragent);
+                headers.put("isapplication",ServiceConstant.isapplication);
+                headers.put("applanguage",ServiceConstant.applanguage);
                 return headers;
             }
 

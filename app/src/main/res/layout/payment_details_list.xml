@@ -42,7 +42,7 @@
             android:layout_centerVertical="true"
             android:text="@string/payment_details"
             android:textColor="#ffffff"
-            android:textSize="16sp" />
+            android:textSize="20sp" />
     </RelativeLayout>
 
 

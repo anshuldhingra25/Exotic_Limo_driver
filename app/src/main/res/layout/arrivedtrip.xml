@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
 
     <RelativeLayout
         android:id="@+id/layout_arrived_trip_header"
@@ -28,7 +30,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="@string/arrivedtrip_info_label"
                 android:textColor="#ffffff"
-                android:textSize="16sp" />
+                android:textSize="20sp" />
 
         </RelativeLayout>
 
@@ -40,7 +42,7 @@
             android:layout_centerVertical="true"
             android:text=""
             android:textColor="#ffffff"
-            android:textSize="16sp" />
+            android:textSize="20sp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -65,17 +67,15 @@
                 android:layout_marginTop="20dp"
                 android:src="@drawable/phonecall" />
 
-
             <View
                 android:id="@+id/arrivedtrip_view"
                 android:layout_width="2px"
                 android:layout_height="80dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
                 android:layout_toRightOf="@+id/user_phonecall"
                 android:background="#b3b3b3" />
-
 
         </RelativeLayout>
 
@@ -84,60 +84,69 @@
             android:id="@+id/layout_user_details"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
             android:layout_marginTop="5dp"
+            android:layout_toLeftOf="@+id/layout_arrived_Enable_voice"
             android:layout_toRightOf="@+id/layout_phone">
-
-
-            <RelativeLayout
-                android:id="@+id/layout_user_id_detail"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:visibility="gone"
-
-                >
-
-
-                <com.cabily.cabilydriver.widgets.CustomTextView
-                    android:id="@+id/trip_arrived_user_idTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="8dp"
-                    android:text="@string/arrivedtrip_id_label"
-                    android:textColor="#000000"
-                    android:textSize="20sp"
-                     android:textStyle="bold"/>
-
-
-                <com.cabily.cabilydriver.widgets.CustomTextView
-                    android:id="@+id/trip_arrived_user_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="4dp"
-                    android:layout_toRightOf="@+id/trip_arrived_user_idTv"
-                    android:text="789654"
-                    android:textColor="#000000"
-                    android:textStyle="bold"
-                    android:textSize="20sp" />
-
-            </RelativeLayout>
-
 
             <com.cabily.cabilydriver.widgets.CustomTextView
                 android:id="@+id/trip_arrived_user_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/layout_user_id_detail"
-                android:layout_marginLeft="15dp"
-                android:text="bvhdfgbjhj g jgfnvj"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="8dp"
+                android:text="vdghvhvbhjhbjnb"
                 android:textColor="#4e4e4e"
                 android:textSize="13sp" />
+
         </RelativeLayout>
 
+
+        <RelativeLayout
+            android:id="@+id/layout_arrived_Enable_voice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="#ffffff">
+
+            <ImageView
+                android:id="@+id/enable_voice_img"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/navigation" />
+
+
+            <com.cabily.cabilydriver.widgets.CustomTextView
+                android:id="@+id/navigationTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/enable_voice_img"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/voice_navigationlabel"
+                android:textColor="#389ad4"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/dummy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/navigationTv"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="@string/voice_navigationlabel"
+                android:textColor="#000000"
+                android:textSize="13sp"
+                android:visibility="invisible" />
+
+
+        </RelativeLayout>
 
     </RelativeLayout>
 
@@ -184,7 +193,7 @@
             android:background="#00000000">
 
 
-            <Button
+            <com.romainpiel.shimmer.ShimmerButton
                 android:id="@+id/btn_arrived"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
@@ -194,17 +203,9 @@
                 android:background="@color/app_color"
                 android:text="@string/arrivedtrip_arrivedtriptv_label"
                 android:textColor="#ffffff"
-                android:textSize="15sp" />
-
-
-            <Button
-                android:id="@+id/arrived_Enable_voice_button"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:background="#CC0000"
-                android:textColor="#ffffff"
-                android:text="Enable Voice" />
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:reflectionColor="#31c3e7" />
 
 
         </LinearLayout>

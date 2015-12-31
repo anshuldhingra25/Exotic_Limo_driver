@@ -52,6 +52,8 @@ public class ServiceManager {
             @Override
             public void onResponse(String response) {
                 System.out.println("----------response------------------"+response);
+
+
                 try {
                     Object obj = manager.getObjectForUrl(url, response);
                     if (obj instanceof ServiceResponse) {
@@ -103,9 +105,14 @@ public class ServiceManager {
                 headers.put("User-agent", ServiceConstant.useragent);
                 headers.put("isapplication",ServiceConstant.isapplication);
                 headers.put("applanguage",ServiceConstant.applanguage);
+
                 System.out.println("isapplication------------" + ServiceConstant.isapplication);
                 System.out.println("applanguage------------"+ServiceConstant.applanguage);
+
+
                 return headers;
+
+
                 }
         };
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(5000,

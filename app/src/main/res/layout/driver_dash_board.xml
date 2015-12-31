@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#e5e6eb">
+
+
+    <RelativeLayout
+        android:id="@+id/layout_driverdash_board_head"
+        android:layout_width="fill_parent"
+        android:layout_height="55dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/app_color">
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout_home_driverdetail_header"
+            android:layout_width="fill_parent"
+            android:layout_height="55dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:background="@color/app_color">
+
+            <ImageView
+                android:id="@+id/ham_home"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@drawable/ham_new" />
+
+            <Button
+                android:id="@+id/Bt_gonlinebutton"
+                android:layout_width="150dp"
+                android:layout_height="35dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/background_border_light_blu"
+                android:text="@string/goonline_label"
+                android:textColor="#ffffff"
+                android:textSize="16sp" />
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_driver_details"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_driverdash_board_head"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:background="#e5e6eb">
+
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#FAFAFA">
+
+            <com.cabily.cabilydriver.Utils.RoundedImageView
+                android:id="@+id/dasboard_driverimg"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/nouserimg" />
+
+            <com.cabily.cabilydriver.widgets.CustomTextView
+                android:id="@+id/home_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@+id/dasboard_driverimg"
+                android:text=" "
+                android:textSize="15sp" />
+
+
+            <com.cabily.cabilydriver.widgets.CustomTextView
+                android:id="@+id/home_car_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/home_user_name"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="4dp"
+                android:layout_toRightOf="@+id/dasboard_driverimg"
+                android:text=""
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#795548"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+
+            <com.cabily.cabilydriver.widgets.CustomTextView
+                android:id="@+id/home_car_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/home_car_name"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="4dp"
+                android:layout_toRightOf="@+id/dasboard_driverimg"
+                android:text=""
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#795548"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+
+
+            <com.cabily.cabilydriver.widgets.CustomTextView
+                android:id="@+id/home_car_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/home_car_category"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="4dp"
+                android:layout_toRightOf="@+id/dasboard_driverimg"
+                android:text=""
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#000000"
+                android:textSize="15sp" />
+
+            <RatingBar
+                android:id="@+id/driver_dashboard_ratting"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/home_car_no"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@+id/dasboard_driverimg" />
+
+
+            <com.cabily.cabilydriver.widgets.CustomTextView
+                android:id="@+id/dummy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/driver_dashboard_ratting"
+                android:layout_centerHorizontal="true"
+                android:visibility="invisible" />
+
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+
+    <ScrollView
+        android:id="@+id/scrollView3"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/layout_driver_details"
+        android:layout_centerHorizontal="true"
+        android:fillViewport="true">
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent">
+
+
+            <fragment
+                android:id="@+id/driver_dashboradsmain_map"
+                android:name="com.google.android.gms.maps.MapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="5dp"
+                android:clickable="false" />
+
+
+            <RelativeLayout
+                android:id="@+id/layout_viwes_dashboard"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_below="@+id/driver_dashboradsmain_map">
+
+                <RelativeLayout
+                    android:id="@+id/layout_lastrip_main"
+                    android:layout_width="fill_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="5dp">
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/dashboards_cardView_layout"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        card_view:cardBackgroundColor="#ffffff"
+                        card_view:cardCornerRadius="4dp"
+                        card_view:cardElevation="4dp">
+
+                        <RelativeLayout
+                            android:id="@+id/layout_last_trip"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:background="#00000000">
+
+                            <com.cabily.cabilydriver.widgets.CustomTextView
+                                android:id="@+id/dashboard_driver_last_trip"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginLeft="15dp"
+                                android:layout_marginTop="5dp"
+                                android:text="@string/lasttrip_label"
+                                android:textColor="#8cb500"
+                                android:textSize="16sp" />
+
+                            <com.cabily.cabilydriver.widgets.CustomTextView
+                                android:id="@+id/dashboard_ride_time"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_above="@+id/dashboard_last_trip_ride_date"
+                                android:layout_alignParentLeft="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="15dp"
+                                android:text=""
+                                android:textColor="#000000"
+                                android:textSize="12sp" />
+
+                            <com.cabily.cabilydriver.widgets.CustomTextView
+                                android:id="@+id/dashboard_last_trip_ride_date"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true"
+                                android:layout_alignParentLeft="true"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="15dp"
+                                android:layout_marginTop="5dp"
+                                android:text=""
+                                android:textColor="#000000"
+                                android:textSize="12sp" />
+
+                            <com.cabily.cabilydriver.widgets.CustomTextView
+                                android:id="@+id/netAmount_price_last_trips"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_above="@+id/netAmount"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginBottom="5dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginTop="5dp"
+                                android:text=""
+                                android:textColor="#8cb500"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <com.cabily.cabilydriver.widgets.CustomTextView
+                                android:id="@+id/netAmount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_below="@+id/dashboard_ride_time"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="15dp"
+                                android:layout_marginRight="10dp"
+                                android:text="Net earnings"
+                                android:textColor="#818181"
+                                android:textSize="14sp" />
+                        </RelativeLayout>
+                    </android.support.v7.widget.CardView>
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/layout_todays_earnings"
+                    android:layout_width="fill_parent"
+                    android:layout_height="100dp"
+                    android:layout_below="@+id/layout_lastrip_main"
+                    android:layout_marginTop="3dp">
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/dashboards_today_earnings_cardView_layout"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        card_view:cardBackgroundColor="#fafafa"
+                        card_view:cardCornerRadius="4dp"
+                        card_view:cardElevation="4dp">
+
+                        <RelativeLayout
+                            android:id="@+id/layout_todays_earnings_inside"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:background="#00000000">
+
+
+                            <com.cabily.cabilydriver.widgets.CustomTextView
+                                android:id="@+id/dashboard_driver_today_earnings_header"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginTop="10dp"
+                                android:text="@string/todayearnings_label"
+                                android:textColor="#8cb500"
+                                android:textSize="16sp" />
+
+                            <com.cabily.cabilydriver.widgets.CustomTextView
+                                android:id="@+id/dashboard_today_earnings_trips"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true"
+                                android:layout_alignParentLeft="true"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="15dp"
+                                android:text=""
+                                android:textColor="#000000"
+                                android:textSize="12sp" />
+
+                            <com.cabily.cabilydriver.widgets.CustomTextView
+                                android:id="@+id/dashboard_today_earnings_onlinetime"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_above="@+id/dashboard_today_earnings_trips"
+                                android:layout_alignParentLeft="true"
+                                android:layout_marginLeft="15dp"
+                                android:layout_marginTop="5dp"
+                                android:text=""
+                                android:textColor="#000000"
+                                android:textSize="12sp" />
+
+                            <com.cabily.cabilydriver.widgets.CustomTextView
+                                android:id="@+id/today_earnings_netAmountTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginBottom="20dp"
+                                android:layout_marginRight="15dp"
+                                android:text="Estimated Net"
+                                android:textColor="#818181"
+                                android:textSize="14sp" />
+
+                            <com.cabily.cabilydriver.widgets.CustomTextView
+                                android:id="@+id/netAmount_price_today_earnings"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_above="@+id/today_earnings_netAmountTv"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginRight="15dp"
+                                android:text=""
+                                android:textColor="#8cb500"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+                        </RelativeLayout>
+                    </android.support.v7.widget.CardView>
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/layout_todays_tips_main"
+                    android:layout_width="fill_parent"
+                    android:layout_height="100dp"
+                    android:layout_below="@+id/layout_todays_earnings"
+                    android:layout_marginTop="3dp">
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/dlayout_todays_tips_cardView_layout"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        card_view:cardBackgroundColor="#fafafa"
+                        card_view:cardCornerRadius="4dp"
+                        card_view:cardElevation="4dp">
+
+
+                        <RelativeLayout
+                            android:id="@+id/layout_todays_tips_inside"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:background="#00000000">
+
+                            <com.cabily.cabilydriver.widgets.CustomTextView
+                                android:id="@+id/dashboard_driver_today_todays_tips_header"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginTop="10dp"
+                                android:text="@string/todaytips_label"
+                                android:textColor="#8cb500"
+                                android:textSize="16sp" />
+
+                            <com.cabily.cabilydriver.widgets.CustomTextView
+                                android:id="@+id/dashboard_todays_trips"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true"
+                                android:layout_alignParentLeft="true"
+                                android:layout_marginBottom="20dp"
+                                android:layout_marginLeft="15dp"
+                                android:text=""
+                                android:textColor="#000000"
+                                android:textSize="12sp"
+
+                                />
+
+                            <com.cabily.cabilydriver.widgets.CustomTextView
+                                android:id="@+id/today_tips_netamountTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginBottom="20dp"
+                                android:layout_marginRight="20dp"
+                                android:text="Tips"
+                                android:textColor="#818181"
+                                android:textSize="14sp" />
+
+                            <com.cabily.cabilydriver.widgets.CustomTextView
+                                android:id="@+id/netAmount_price_today_tips"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_above="@+id/today_tips_netamountTv"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginRight="25dp"
+                                android:text=""
+                                android:textColor="#8cb500"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+                        </RelativeLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="60dp"
+                    android:layout_below="@+id/layout_todays_tips_main"
+                    android:layout_marginTop="3dp"
+                    android:visibility="invisible">
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <com.cabily.cabilydriver.widgets.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout_viwes_dashboard"
+                android:layout_marginTop="35dp"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+
+    </ScrollView>
+
+</RelativeLayout>

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -23,6 +24,7 @@ import com.cabily.cabilydriver.DriverAlertActivity;
 import com.cabily.cabilydriver.DriverMapActivity;
 import com.cabily.cabilydriver.R;
 import com.cabily.cabilydriver.Utils.SessionManager;
+import com.cabily.cabilydriver.widgets.PkDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,6 +43,8 @@ public class ContinuousRequestAdapter {
     private SessionManager sm;
     private LayoutInflater mInflater;
     private Activity context;
+    private LinearLayout listview;
+
     private CircleProgressView mCircleView;
     private CountDownTimer timer;
     private String KEY1 = "key1";
@@ -61,10 +65,11 @@ public class ContinuousRequestAdapter {
         public  JSONObject data;
     }
 
-    public ContinuousRequestAdapter(SessionManager sm, Activity context, Location myLocation) {
+    public ContinuousRequestAdapter(SessionManager sm, Activity context, Location myLocation,LinearLayout listview) {
         this.sm = sm;
         this.context = context;
         mInflater = LayoutInflater.from(context);
+        this.listview = listview;
     }
 
     public void setTimerCompleteCallBack(DriverAlertActivity.TimerCompletCallback callBack){
@@ -125,7 +130,6 @@ public class ContinuousRequestAdapter {
                     mHandler.removeCallbacks(this);
                     if (timerCompletCallback != null){
                        // timerCompletCallback.timerCompleteCallBack(holder);
-
                     }
                     isRunning = false;
                 }
@@ -210,20 +214,24 @@ public class ContinuousRequestAdapter {
                         context.finish();
                     } else {
                         SResponse = object1.getString("response");
-                        final MaterialDialog alertDialog = new MaterialDialog(context);
-                        alertDialog.setTitle("Message");
-                        alertDialog
-                                .setMessage(SResponse)
-                                .setCanceledOnTouchOutside(false)
-                                .setPositiveButton(
-                                        "OK", new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                alertDialog.dismiss();
-                                            }
-                                        }
-                                ).show();
+                        Alert(context.getString(R.string.alert_sorry_label_title), SResponse);
+                        final PkDialog mdialog = new PkDialog(context);
+                        mdialog.setDialogTitle(context.getString(R.string.alert_sorry_label_title));
+                        mdialog.setDialogMessage(SResponse);
+                        mdialog.setPositiveButton(context.getString(R.string.alert_label_ok), new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        mdialog.dismiss();
 
+                                        //--------remove list after
+                                        listview.removeViewAt(0);
+                                        context.finish();
+
+
+                                    }
+                                }
+                        );
+                        mdialog.show();
                     }
 
                 } catch (JSONException e) {
@@ -284,5 +292,22 @@ public class ContinuousRequestAdapter {
         } catch (Exception e) {
         }
     }
+
+
+
+    //--------------Alert Method-----------
+    private void Alert(String title, String message) {
+        final PkDialog mDialog = new PkDialog(context);
+        mDialog.setDialogTitle(title);
+        mDialog.setDialogMessage(message);
+        mDialog.setPositiveButton(context.getString(R.string.alert_label_ok), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+            }
+        });
+        mDialog.show();
+    }
+
 
 }

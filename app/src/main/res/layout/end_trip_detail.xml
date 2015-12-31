@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <RelativeLayout
@@ -41,14 +42,13 @@
             android:layout_centerVertical="true"
             android:text="@string/alert_tripdetail_label_title"
             android:textColor="#ffffff"
-            android:textSize="16sp" />
+            android:textSize="20sp" />
     </RelativeLayout>
 
     <ScrollView
         android:id="@+id/scrollView_arrived_tripdetail"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_above="@+id/layout_triparrived_btn"
         android:layout_below="@+id/layout_arrived_tripdetail_list_header">
 
         <RelativeLayout
@@ -305,22 +305,24 @@
     <RelativeLayout
         android:id="@+id/layout_end_triparrived_btn"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="#80000000">
+        android:background="#31c3e7">
 
 
-        <Button
+        <com.romainpiel.shimmer.ShimmerButton
             android:id="@+id/btn_endtrip"
-            android:layout_width="200dp"
+            android:layout_width="fill_parent"
             android:layout_height="45dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:background="@color/app_color"
             android:text="@string/alert_tripdetail_endtrip_label"
             android:textColor="#ffffff"
-            android:textSize="15sp" />
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:reflectionColor="#31c3e7"/>
 
 
     </RelativeLayout>

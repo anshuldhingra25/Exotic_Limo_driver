@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/relativeLayout_signinpage"
         android:layout_width="fill_parent"
-        android:layout_height="45dp"
+        android:layout_height="50dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:background="@color/app_color">
@@ -21,7 +21,7 @@
             android:layout_centerVertical="true"
             android:text="@string/cabily_driver_main_lable_signin_Textview"
             android:textColor="#ffffff"
-            android:textSize="16sp" />
+            android:textSize="20sp" />
     </RelativeLayout>
 
 
@@ -108,34 +108,23 @@
             android:id="@+id/forgot_passwordTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
             android:text="@string/action_label_forgotpassword"
-            android:textSize="18sp" />
+            android:textSize="13sp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="35dp"
+            android:textColor="#cc0000"/>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView9"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            android:src="@drawable/forgotpassword"
-            android:layout_toRightOf="@+id/forgot_passwordTv"
-          />
 
 
     </RelativeLayout>
    <Button
         android:id="@+id/signin_main_button"
         android:layout_width="fill_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_marginBottom="15dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:background="@drawable/button_curve_background_blue"
+        android:background="#CC2793ff"
         android:text="@string/action_label_signin"
         android:textColor="#ffffff"
         android:textSize="15sp"

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -32,6 +33,8 @@ import com.cabily.cabilydriver.Utils.VolleyErrorResponse;
 import com.cabily.cabilydriver.widgets.PkDialog;
 import com.github.jjobes.slidedatetimepicker.SlideDateTimeListener;
 import com.github.jjobes.slidedatetimepicker.SlideDateTimePicker;
+import com.romainpiel.shimmer.Shimmer;
+import com.romainpiel.shimmer.ShimmerButton;
 
 import org.json.JSONObject;
 
@@ -51,13 +54,17 @@ import me.drakeet.materialdialog.MaterialDialog;
  * Created by user88 on 11/17/2015.
  */
 public class EndTrip_EnterDetails extends FragmentActivity {
+    private static final String TAG ="swipe" ;
     private String driver_id = "";
     private Boolean isInternetPresent = false;
     private ConnectionDetector cd;
     private SessionManager session;
     Dialog dialog;
     private EditText Et_hours, Et_minuts, Et_distance, Et_drop_location, Et_drop_time;
-    private Button Bt_endtrip;
+
+    private ShimmerButton Bt_shimmer_endtrip;
+    float initialX, initialY;
+
 
     private  String Str_status = "",Str_pickup_time="",Str_response="",Str_ridefare="",Str_timetaken="",Str_waitingtime="",Str_need_payment="",Str_currency="",Str_ride_distance="";
 
@@ -67,6 +74,8 @@ public class EndTrip_EnterDetails extends FragmentActivity {
     private int googlerequestcode = 100;
     private   String Slattitude="";
     private String Slongitude="";
+
+    Shimmer shimmer;
 
     private String mins;
     private String secs;
@@ -109,36 +118,78 @@ public class EndTrip_EnterDetails extends FragmentActivity {
             }
         });
 
-
-        Bt_endtrip.setOnClickListener(new View.OnClickListener() {
+        Bt_shimmer_endtrip.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getActionMasked();
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        initialX = event.getX();
+                        initialY = event.getY();
 
-                mins = Et_minuts.getText().toString();
-                hours = Et_hours.getText().toString();
+                        Log.d(TAG, "Action was DOWN");
+                        break;
 
-                System.out.println("hour----------------"+hours);
-                System.out.println("mins----------------"+mins);
+                    case MotionEvent.ACTION_MOVE:
+                        Log.d(TAG, "Action was MOVE");
+                        break;
 
-                wait_time = ("" + hours + ":"
-                        +  mins) + ":"
-                        + 000;
+                    case MotionEvent.ACTION_UP:
+                        float finalX = event.getX();
+                        float finalY = event.getY();
 
+                        Log.d(TAG, "Action was UP");
 
+                        if (initialX < finalX) {
+                            mins = Et_minuts.getText().toString();
+                            hours = Et_hours.getText().toString();
 
-                System.out.println("waittime----------------" + wait_time);
-                cd = new ConnectionDetector(getApplicationContext());
-                isInternetPresent = cd.isConnectingToInternet();
-                if (isInternetPresent) {
-                    postRequest_EnterTripdetails(ServiceConstant.endtrip_url);
-                    System.out.println("enterdetails------------------" + ServiceConstant.endtrip_url);
-                } else {
+                            System.out.println("hour----------------"+hours);
+                            System.out.println("mins----------------"+mins);
 
-                    Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
+                            wait_time = ("" + hours + ":"
+                                    +  mins) + ":"
+                                    + 000;
+
+                            System.out.println("waittime----------------" + wait_time);
+                            cd = new ConnectionDetector(getApplicationContext());
+                            isInternetPresent = cd.isConnectingToInternet();
+                            if (isInternetPresent) {
+                                postRequest_EnterTripdetails(ServiceConstant.endtrip_url);
+                                System.out.println("enterdetails------------------" + ServiceConstant.endtrip_url);
+                            } else {
+                                Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
+                            }
+                            Log.d(TAG, "Left to Right swipe performed");
+                        }
+
+                        if (initialX > finalX) {
+                            Log.d(TAG, "Right to Left swipe performed");
+                        }
+
+                        if (initialY < finalY) {
+                            Log.d(TAG, "Up to Down swipe performed");
+                        }
+
+                        if (initialY > finalY) {
+                            Log.d(TAG, "Down to Up swipe performed");
+                        }
+
+                        break;
+
+                    case MotionEvent.ACTION_CANCEL:
+                        Log.d(TAG,"Action was CANCEL");
+                        break;
+
+                    case MotionEvent.ACTION_OUTSIDE:
+                        Log.d(TAG, "Movement occurred outside bounds of current screen element");
+                        break;
                 }
+                return true;
+
+
             }
         });
-
 
 
         Et_drop_location.setOnClickListener(new View.OnClickListener() {
@@ -211,11 +262,11 @@ public class EndTrip_EnterDetails extends FragmentActivity {
         // get user data from session
         HashMap<String, String> user = session.getUserDetails();
         driver_id = user.get(SessionManager.KEY_DRIVERID);
+        shimmer = new Shimmer();
 
         Intent i = getIntent();
         Str_rideid = i.getStringExtra("rideid");
         Str_pickup_time = i.getStringExtra("pickuptime");
-
 
 
         System.out.println("pickuptime------------------"+Str_pickup_time);
@@ -226,7 +277,10 @@ public class EndTrip_EnterDetails extends FragmentActivity {
         Et_drop_location = (EditText) findViewById(R.id.arrived_tripdetail_droplocation_Et);
         Et_drop_time = (EditText) findViewById(R.id.arrived_tripdetail_droptime_Et);
         Rl_layout_back = (RelativeLayout) findViewById(R.id.layout_arrivd_detail_back);
-        Bt_endtrip = (Button)findViewById(R.id.btn_endtrip);
+        Bt_shimmer_endtrip = (ShimmerButton)findViewById(R.id.btn_endtrip);
+
+        shimmer.start(Bt_shimmer_endtrip);
+
 
     }
 
@@ -376,6 +430,8 @@ public class EndTrip_EnterDetails extends FragmentActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<String, String>();
                 headers.put("User-agent", ServiceConstant.useragent);
+                headers.put("isapplication",ServiceConstant.isapplication);
+                headers.put("applanguage",ServiceConstant.applanguage);
                 return headers;
             }
 
@@ -482,6 +538,9 @@ public class EndTrip_EnterDetails extends FragmentActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<String, String>();
                 headers.put("User-agent",ServiceConstant.useragent);
+                headers.put("isapplication",ServiceConstant.isapplication);
+                headers.put("applanguage",ServiceConstant.applanguage);
+
                 return headers;
             }
 

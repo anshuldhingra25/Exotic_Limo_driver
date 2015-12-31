@@ -78,6 +78,15 @@ public class RatingsPage extends ActivityHockeyApp
                 broadcastIntent_tripdetail.setAction("com.finish.endtripenterdetail");
                 sendBroadcast(broadcastIntent_tripdetail);
 
+                Intent broadcastIntent_begintrip = new Intent();
+                broadcastIntent_begintrip.setAction("com.finish.com.finish.BeginTrip");
+                sendBroadcast(broadcastIntent_begintrip);
+
+                Intent broadcastIntent = new Intent();
+                broadcastIntent.setAction("com.finish.EndTrip");
+                sendBroadcast(broadcastIntent);
+                finish();
+
                 Intent broadcastIntent_drivermap = new Intent();
                 broadcastIntent_drivermap.setAction("com.finish.canceltrip.DriverMapActivity");
                 sendBroadcast(broadcastIntent_drivermap);
@@ -285,6 +294,8 @@ public class RatingsPage extends ActivityHockeyApp
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<String, String>();
                 headers.put("User-agent", ServiceConstant.useragent);
+                headers.put("isapplication",ServiceConstant.isapplication);
+                headers.put("applanguage",ServiceConstant.applanguage);
                 return headers;
             }
 
@@ -336,34 +347,31 @@ public class RatingsPage extends ActivityHockeyApp
                         }
 
                         if (status.equalsIgnoreCase("1")) {
-                            final MaterialDialog dialog = new MaterialDialog(RatingsPage.this);
-                            dialog.setTitle(getResources().getString(R.string.action_loading_sucess))
-                                    .setMessage(Str_response)
-                                    .setPositiveButton(
-                                            "OK", new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    dialog.dismiss();
+                            final PkDialog mdialog = new PkDialog(RatingsPage.this);
+                            mdialog.setDialogTitle(getResources().getString(R.string.action_loading_sucess));
+                            mdialog.setDialogMessage(Str_response);
+                            mdialog.setPositiveButton(getResources().getString(R.string.alert_label_ok), new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            mdialog.dismiss();
 
-                                                    Intent broadcastIntent_tripdetail = new Intent();
-                                                    broadcastIntent_tripdetail.setAction("com.finish.endtripenterdetail");
-                                                    sendBroadcast(broadcastIntent_tripdetail);
+                                            Intent broadcastIntent_tripdetail = new Intent();
+                                            broadcastIntent_tripdetail.setAction("com.finish.endtripenterdetail");
+                                            sendBroadcast(broadcastIntent_tripdetail);
 
-                                                    Intent broadcastIntent_drivermap = new Intent();
-                                                    broadcastIntent_drivermap.setAction("com.finish.canceltrip.DriverMapActivity");
-                                                    sendBroadcast(broadcastIntent_drivermap);
+                                            Intent broadcastIntent_drivermap = new Intent();
+                                            broadcastIntent_drivermap.setAction("com.finish.canceltrip.DriverMapActivity");
+                                            sendBroadcast(broadcastIntent_drivermap);
 
-                                                    finish();
-                                                }
-                                            }
-                                    )
-                                    .show();
+                                            finish();
+                                        }
+                                    }
+                            );
+                            mdialog.show();
 
                         } else {
                             Alert(getResources().getString(R.string.alert_sorry_label_title), Str_response);
                         }
-
-
                         dialog.dismiss();
 
                     }
@@ -381,6 +389,8 @@ public class RatingsPage extends ActivityHockeyApp
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<String, String>();
                 headers.put("User-agent", ServiceConstant.useragent);
+                headers.put("isapplication",ServiceConstant.isapplication);
+                headers.put("applanguage",ServiceConstant.applanguage);
                 return headers;
             }
 

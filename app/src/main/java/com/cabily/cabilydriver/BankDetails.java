@@ -79,6 +79,7 @@ public class BankDetails extends FragmentHockeyApp {
         actionBar.setHomeButtonEnabled(true);
         actionBar.hide();
         initialize(rootview);
+
         rootview.findViewById(R.id.ham_home).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -258,6 +259,8 @@ public class BankDetails extends FragmentHockeyApp {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<String, String>();
                 headers.put("User-agent", ServiceConstant.useragent);
+                headers.put("isapplication",ServiceConstant.isapplication);
+                headers.put("applanguage",ServiceConstant.applanguage);
                 return headers;
             }
 
@@ -373,6 +376,8 @@ public class BankDetails extends FragmentHockeyApp {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<String, String>();
                 headers.put("User-agent", ServiceConstant.useragent);
+                headers.put("isapplication",ServiceConstant.isapplication);
+                headers.put("applanguage",ServiceConstant.applanguage);
                 return headers;
             }
 
