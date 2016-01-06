@@ -315,8 +315,8 @@ public class DashBoardDriver extends Fragment implements View.OnClickListener, c
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
         } else {
-            alert_layout.setVisibility(View.VISIBLE);
-            alert_textview.setText(getResources().getString(R.string.alert_gpsEnable));
+            //alert_layout.setVisibility(View.VISIBLE);
+            //alert_textview.setText(getResources().getString(R.string.alert_gpsEnable));
         }
 
         markerOptions = new MarkerOptions();
