@@ -3,14 +3,12 @@ package com.Hockeyapp;
 import android.app.Activity;
 import android.os.Bundle;
 
-import net.hockeyapp.android.CrashManager;
-import net.hockeyapp.android.UpdateManager;
 
 /**
  * Created by Prem Kumar and Anitha on 11/12/2015.
  */
 public class ActivityHockeyApp extends Activity
-{
+{/*
     private static  String APP_ID = "9f8e1861d5cc413ba593e3367676bca3";
 
     @Override
@@ -51,5 +49,5 @@ public class ActivityHockeyApp extends Activity
         UpdateManager.unregister();
         // unregister other managers if necessary...
     }
-
+*/
 }

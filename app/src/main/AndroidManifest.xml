@@ -34,7 +34,17 @@
             </intent-filter>
         </activity>
 
-      <activity android:name="net.hockeyapp.android.UpdateActivity" />
+   <!--   <activity android:name="net.hockeyapp.android.UpdateActivity" />-->
+
+
+        <!-- Auto Connect Internet Permission -->
+        <receiver android:name="com.cabily.cabilydriver.Utils.NetworkChangeReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+
 
 
         <!-- Goolge API Key -->

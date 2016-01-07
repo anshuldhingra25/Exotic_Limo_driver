@@ -5,12 +5,10 @@ import android.support.v7.app.ActionBarActivity;
 
 import com.app.service.ServiceConstant;
 
-import net.hockeyapp.android.CrashManager;
-import net.hockeyapp.android.UpdateManager;
 
 
 public class ActionBarActivityHockeyApp extends ActionBarActivity
-{
+{/*
     private static  String APP_ID = ServiceConstant.ACTION_ACTION_HOCKYAPPID;
 
     @Override
@@ -50,7 +48,7 @@ public class ActionBarActivityHockeyApp extends ActionBarActivity
     private void unregisterManagers() {
         UpdateManager.unregister();
         // unregister other managers if necessary...
-    }
+    }*/
 
 }
 

@@ -7,19 +7,18 @@ public interface ServiceConstant {
     //http://project.dectar.com/fortaxi/
     //http://192.168.1.251:8081/suresh/dectarfortaxi/
 
-/*    String BASE_URL = "http://192.168.1.251:8081/suresh/dectarfortaxi/api/v1/";
+  /*  String BASE_URL = "http://192.168.1.251:8081/suresh/dectarfortaxi/api/v1/";
     String XMPP_HOST_URL  = "192.168.1.150";
     String XMPP_SERVICE_NAME = "casp83";*/
-/*
+
      String BASE_URL ="http://project.dectar.com/fortaxi/api/v1/";
      String XMPP_HOST_URL = "67.219.149.186";
-     String XMPP_SERVICE_NAME = "messaging.dectar.com";*/
-
+     String XMPP_SERVICE_NAME = "messaging.dectar.com";
 
     //----------testing url  live------------
-    String BASE_URL = "http://project.dectar.com/cabilydemo/api/v1/";
+    /*String BASE_URL = "http://project.dectar.com/cabilydemo/api/v1/";
     String XMPP_HOST_URL = "67.219.149.186";
-    String XMPP_SERVICE_NAME = "messaging.dectar.com";
+    String XMPP_SERVICE_NAME = "messaging.dectar.com";*/
 
     String LOGIN_URL = BASE_URL + "provider/login";
     String UPDATE_CURRENT_LOCATION = BASE_URL + "provider/update-driver-geo";
@@ -61,7 +60,6 @@ public interface ServiceConstant {
     public static String reviwes_options_list_url= BASE_URL+"app/review/options-list";
     public static String  submit_reviwes_url= BASE_URL+"app/review/submit";
     public static String request_paymnet_url= BASE_URL+"provider/request-payment";
-
     //----------------Push notification Key--------------------------
     String ACTION_LABEL = "action";
     String ACTION_TAG_RIDE_REQUEST = "ride_request";

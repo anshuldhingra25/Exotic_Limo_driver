@@ -1,6 +1,7 @@
 package com.cabily.cabilydriver;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -57,7 +58,7 @@ public class ForgotPassword extends ActionBarActivity {
                     System.out.println("forgotpwd-----------" + ServiceConstant.forgotpassword);
                 } else {
 
-                    alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
+                    Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
                 }
             }
         });
@@ -82,7 +83,7 @@ public class ForgotPassword extends ActionBarActivity {
     }
 
 
-    private void alert(String title, String message) {
+    private void Alert(String title, String message) {
         final PkDialog mDialog = new PkDialog(ForgotPassword.this);
         mDialog.setDialogTitle(title);
         mDialog.setDialogMessage(message);
@@ -117,8 +118,11 @@ public class ForgotPassword extends ActionBarActivity {
                     @Override
                     public void onResponse(String response) {
                         Log.e("forgotpwd", response);
+
                         System.out.println("forgotpwdresponse---------" + response);
+
                         String Str_status = "", Str_response = "";
+
                         try {
                             JSONObject object = new JSONObject(response);
                             Str_status = object.getString("status");
@@ -127,11 +131,12 @@ public class ForgotPassword extends ActionBarActivity {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
+
                         if (Str_status.equalsIgnoreCase("1")) {
-                            alert(getResources().getString(R.string.label_pushnotification_cashreceived), Str_response);
+                            Alert(getResources().getString(R.string.label_pushnotification_cashreceived), Str_response);
 
                         } else {
-                            alert(getResources().getString(R.string.alert_sorry_label_title), Str_response);
+                            Alert(getResources().getString(R.string.alert_sorry_label_title), Str_response);
                         }
 
                         dialog.dismiss();
@@ -160,7 +165,9 @@ public class ForgotPassword extends ActionBarActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> jsonParams = new HashMap<String, String>();
                 jsonParams.put("email", Et_email.getText().toString());
+
                 System.out.println("--------------email-------------------" + Et_email.getText().toString());
+
                 return jsonParams;
             }
         };

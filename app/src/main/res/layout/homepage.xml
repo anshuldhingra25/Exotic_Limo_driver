@@ -17,7 +17,6 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:visibility="gone"
             android:src="@drawable/driverlogo" />
 
 
@@ -33,7 +32,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
-                android:background="@color/app_color"
+                android:background="#CC2793ff"
                 android:paddingRight="2dp"
                 android:layout_marginRight="2dp"
                 android:text="@string/cabily_driver_main_lable_signin_Textview"
@@ -41,12 +40,16 @@
                 android:textSize="15sp" />
 
 
+
+
+
+
             <Button
                 android:id="@+id/btn_register"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
-                android:background="@color/app_color"
+                android:background="#CC2793ff"
                 android:paddingLeft="2dp"
                 android:text="@string/cabily_driver_main_lable_register_Textview"
                 android:textColor="#ffffff"

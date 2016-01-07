@@ -240,7 +240,7 @@ public class RatingsPage extends ActivityHockeyApp
 
                             if (jarry.length()>0){
 
-                                for (int i =0;jarry.length()>0;i++){
+                                for (int i =0;i<jarry.length();i++){
 
                                     JSONObject jobject =jarry.getJSONObject(i);
 

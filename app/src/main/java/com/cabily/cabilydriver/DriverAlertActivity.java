@@ -141,6 +141,9 @@ public class DriverAlertActivity extends ActionBarActivityHockeyApp implements c
     }
 
 
+
+
+
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -207,5 +210,14 @@ public class DriverAlertActivity extends ActionBarActivityHockeyApp implements c
         }
     }
 
+    @Override
+    protected void onDestroy() {
 
+        if (mediaPlayer.isPlaying()){
+            mediaPlayer.stop();
+        }
+
+        super.onDestroy();
+
+    }
 }
