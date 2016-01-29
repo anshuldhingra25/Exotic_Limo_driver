@@ -57,6 +57,7 @@ public class ChatHandler {
         Intent broadcastIntent = new Intent();
         broadcastIntent.setAction("com.finish.BeginTrip");
         context.sendBroadcast(broadcastIntent);
+
         Intent intent = new Intent(context, PushNotificationAlert.class);
         intent.putExtra("Message", messageObject.getString("message"));
         intent.putExtra("Action", messageObject.getString("action"));
@@ -69,6 +70,7 @@ public class ChatHandler {
         broadcastIntent.setAction("com.finish.OtpPage");
         context.sendBroadcast(broadcastIntent);
         System.out.println("rideId----------------xmpp" + messageObject.getString("key1"));
+
         Intent intent = new Intent(context, PushNotificationAlert.class);
         intent.putExtra("Message", messageObject.getString("message"));
         intent.putExtra("Action", messageObject.getString("action"));

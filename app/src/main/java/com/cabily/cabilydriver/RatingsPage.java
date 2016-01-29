@@ -1,10 +1,12 @@
 package com.cabily.cabilydriver;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -61,8 +63,6 @@ public class RatingsPage extends ActivityHockeyApp
     Button Bt_rate_rider;
 
     private RelativeLayout Rl_layout_rating;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,7 +176,6 @@ public class RatingsPage extends ActivityHockeyApp
 
         Intent i = getIntent();
         Str_rideid =  i.getStringExtra("rideid");
-
 
           Tv_skip = (TextView)findViewById(R.id.review_skip);
 

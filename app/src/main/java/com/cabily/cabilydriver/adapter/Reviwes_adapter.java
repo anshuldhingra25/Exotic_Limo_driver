@@ -79,12 +79,6 @@ public class Reviwes_adapter extends BaseAdapter {
 
             holder.rating_text.setText(data.get(position).getOptions_title());
 
-
-
-
-
-
-
         return view;
     }
 }

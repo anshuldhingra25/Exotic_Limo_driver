@@ -3,7 +3,6 @@ package com.cabily.cabilydriver;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -31,7 +30,6 @@ import com.cabily.cabilydriver.adapter.PaymentDetailsAdapter;
 import com.cabily.cabilydriver.widgets.PkDialog;
 import com.special.ResideMenu.ResideMenu;
 
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -41,8 +39,6 @@ import java.util.Currency;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
-import me.drakeet.materialdialog.MaterialDialog;
 
 /**
  * Created by user14 on 9/22/2015.
@@ -82,10 +78,13 @@ public class PaymentDetails extends FragmentHockeyApp {
                 }
             }
         });
+
         payment_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), PaymentDetailsList.class);
+                intent.putExtra("Payid",paymentstatementList.get(position).getpay_id());
+
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
@@ -180,7 +179,7 @@ public class PaymentDetails extends FragmentHockeyApp {
 
                                 if (jarry.length() > 0) {
 
-                                    for (int i = 0; jarry.length() > 0; i++) {
+                                    for (int i = 0; i<jarry.length(); i++) {
 
                                         JSONObject jobject = jarry.getJSONObject(i);
 

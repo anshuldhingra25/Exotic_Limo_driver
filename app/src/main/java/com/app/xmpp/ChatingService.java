@@ -155,7 +155,6 @@ public class ChatingService extends IntentService    implements ChatManagerListe
             System.out.println("-------------Xmpp response process recevied---------------------" );
             ChatHandler chatHandler = new ChatHandler(getApplicationContext(),this);
             chatHandler.onHandleChatMessage(message);
-
         }
 
     }

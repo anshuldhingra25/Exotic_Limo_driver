@@ -198,7 +198,7 @@ public class LoginPage extends BaseActivity implements View.OnClickListener,Goog
             final String email = emailid.getText().toString();
             if (!isValidEmail(email)) {
                 emailid.setError(getResources().getString(R.string.action_alert_invalid_email));
-            } else if (!isValidPassword(pass)) {
+            } else if (pass.length()==0) {
                 password.setError(getResources().getString(R.string.action_alert_invalid_password));
             } else {
                 gps = new GPSTracker(LoginPage.this);

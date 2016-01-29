@@ -374,11 +374,6 @@ public class DriverMapActivity extends ActivityHockeyApp implements View.OnClick
         if (myLocation != null && currentMarker != null) {
             LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
             currentMarker.setPosition(latLng);
-                        if(googleMap != null){
-                      googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()),
-                        16));
-            }
-
         }
     }
 

@@ -1,16 +1,12 @@
 package com.cabily.cabilydriver;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.Hockeyapp.ActivityHockeyApp;
 import com.android.volley.AuthFailureError;
@@ -37,8 +33,6 @@ import java.util.Currency;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
-import me.drakeet.materialdialog.MaterialDialog;
 
 /**
  *
@@ -183,6 +177,9 @@ public class PaymentDetailsList extends ActivityHockeyApp {
 
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
+
+                    System.out.println("try------------------"+e);
+
                     e.printStackTrace();
                 }
                 payment.setText(pay_duration_from + " to " + pay_duration_to);
@@ -221,10 +218,15 @@ public class PaymentDetailsList extends ActivityHockeyApp {
             }
 
             @Override
-            protected java.util.Map<String, String> getParams() throws AuthFailureError {
-                java.util.Map<String, String> jsonParams = new HashMap<String, String>();
-                jsonParams.put("driver_id", driver_id);
-                jsonParams.put("pay_id", payid);
+            protected HashMap<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> jsonParams = new HashMap<String, String>();
+
+                System.out.println("driver_id------------"+driver_id);
+
+                System.out.println("pay_id------------"+payid);
+
+                jsonParams.put("driver_id",driver_id);
+                jsonParams.put("pay_id",payid);
                 return jsonParams;
             }
 

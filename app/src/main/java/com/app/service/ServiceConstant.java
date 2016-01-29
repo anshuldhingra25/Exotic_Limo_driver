@@ -6,8 +6,8 @@ package com.app.service;
 public interface ServiceConstant {
     //http://project.dectar.com/fortaxi/
     //http://192.168.1.251:8081/suresh/dectarfortaxi/
-
-  /*  String BASE_URL = "http://192.168.1.251:8081/suresh/dectarfortaxi/api/v1/";
+/*
+    String BASE_URL = "http://192.168.1.251:8081/suresh/dectarfortaxi/api/v1/";
     String XMPP_HOST_URL  = "192.168.1.150";
     String XMPP_SERVICE_NAME = "casp83";*/
 
