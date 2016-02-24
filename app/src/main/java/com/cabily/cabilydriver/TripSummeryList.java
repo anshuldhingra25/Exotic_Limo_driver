@@ -27,6 +27,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.app.service.ServiceConstant;
+import com.app.service.ServiceRequest;
 import com.cabily.cabilydriver.Pojo.TripSummaryPojo;
 import com.cabily.cabilydriver.Utils.AppController;
 import com.cabily.cabilydriver.Utils.ConnectionDetector;
@@ -72,6 +73,8 @@ public class TripSummeryList extends FragmentHockeyApp {
     private Boolean isInternetPresent = false;
     private ConnectionDetector cd;
     private boolean show_progress_status = false;
+
+    private ServiceRequest mRequest;
 
     BroadcastReceiver receiver;
 
@@ -245,7 +248,105 @@ public class TripSummeryList extends FragmentHockeyApp {
     }
 
     //-----------------------Code for my rides post request-----------------
+
     private void PostRequest(String Url) {
+        dialog = new Dialog(getActivity());
+        dialog.getWindow();
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.custom_loading);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+
+        TextView dialog_title = (TextView) dialog.findViewById(R.id.custom_loading_textview);
+        dialog_title.setText(getResources().getString(R.string.action_loading));
+
+        System.out.println("-------------triplist----------------" + Url);
+
+        HashMap<String, String> jsonParams = new HashMap<String, String>();
+        jsonParams.put("driver_id", driver_id);
+        jsonParams.put("trip_type", "all");
+
+        mRequest = new ServiceRequest(getActivity());
+        mRequest.makeServiceRequest(Url, Request.Method.POST, jsonParams, new ServiceRequest.ServiceListener() {
+            @Override
+            public void onCompleteListener(String response) {
+                System.out.println("--------------reponse-------------------" + response);
+                Log.e("trip", response);
+                String status = "", total_rides = "", type_group = "",Str_response="";
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    status = object.getString("status");
+
+                    System.out.println("triplist--status----"+status);
+
+                    if (status.equalsIgnoreCase("1")){
+
+                        JSONObject jsonObject = object.getJSONObject("response");
+
+                        total_rides = jsonObject.getString("total_rides");
+                        JSONArray jarry = jsonObject.getJSONArray("rides");
+
+                        if (jarry.length() > 0) {
+
+                            for (int i = 0; i < jarry.length(); i++) {
+                                JSONObject jobjct = jarry.getJSONObject(i);
+                                TripSummaryPojo items = new TripSummaryPojo();
+                                items.setpickup(jobjct.getString("pickup"));
+                                items.setdatetime(jobjct.getString("datetime"));
+                                items.setride_id(jobjct.getString("ride_id"));
+                                tripsummaryListall.add(items);
+
+                                if (jobjct.getString("group").equalsIgnoreCase("completed")) {
+                                    tripsummaryListcompleted.add(items);
+                                } else if (jobjct.getString("group").equalsIgnoreCase("onride")) {
+                                    tripsummaryListonride.add(items);
+                                }
+
+                            }
+                            show_progress_status = true;
+                        } else {
+                            show_progress_status = false;
+                        }
+                    }else{
+
+                        Str_response = object.getString("response");
+
+                        System.out.println("triplist----------response---"+Str_response);
+
+                    }
+
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                dialog.dismiss();
+
+                if (status.equalsIgnoreCase("1")){
+                    adapter = new TripSummeryAdapter(getActivity(), tripsummaryListall);
+                    listview.setAdapter(adapter);
+
+                    if (show_progress_status) {
+                        empty_Tv.setVisibility(View.GONE);
+                    } else {
+                        empty_Tv.setVisibility(View.VISIBLE);
+                        listview.setEmptyView(empty_Tv);
+                    }
+                }else{
+                    Alert(getResources().getString(R.string.alert_sorry_label_title),Str_response);
+                }
+            }
+
+            @Override
+            public void onErrorListener() {
+                dialog.dismiss();
+            }
+
+        });
+
+    }
+
+     /*       private void PostRequest1(String Url) {
 
         dialog = new Dialog(getActivity());
         dialog.getWindow();
@@ -360,7 +461,7 @@ public class TripSummeryList extends FragmentHockeyApp {
             }
         };
         AppController.getInstance().addToRequestQueue(postrequest);
-    }
+    }*/
 
 
 }

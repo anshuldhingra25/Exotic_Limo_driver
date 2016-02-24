@@ -31,11 +31,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.app.service.ServiceConstant;
 import com.app.service.ServiceManager;
+import com.app.service.ServiceRequest;
 import com.app.xmpp.ChatingService;
 import com.cabily.cabilydriver.Pojo.Driver_Dashborad_Pojo;
 import com.cabily.cabilydriver.Pojo.TripSummaryPojo;
 import com.cabily.cabilydriver.Utils.AppController;
 import com.cabily.cabilydriver.Utils.ConnectionDetector;
+import com.cabily.cabilydriver.Utils.CurrencySymbolConverter;
 import com.cabily.cabilydriver.Utils.GPSTracker;
 import com.cabily.cabilydriver.Utils.RoundedImageView;
 import com.cabily.cabilydriver.Utils.SessionManager;
@@ -90,8 +92,11 @@ public class DashBoardDriver extends Fragment implements View.OnClickListener, c
     private StringRequest postrequest;
     private String driver_id = "";
 
+    private ServiceRequest mRequest;
+
       private  String Str_currencglobal="";
      private   Currency  currency_code;
+    private String sCurrencySymbol="";
 
     private Boolean isInternetPresent = false;
     private ConnectionDetector cd;
@@ -421,6 +426,199 @@ public class DashBoardDriver extends Fragment implements View.OnClickListener, c
         TextView dialog_title = (TextView) dialog.findViewById(R.id.custom_loading_textview);
         dialog_title.setText(getResources().getString(R.string.action_loading));
 
+        System.out.println("-------------dashboard----------------" + Url);
+
+        HashMap<String, String> jsonParams = new HashMap<String, String>();
+        jsonParams.put("driver_id", driver_id);
+
+        mRequest = new ServiceRequest(getActivity());
+        mRequest.makeServiceRequest(Url, Request.Method.POST, jsonParams, new ServiceRequest.ServiceListener() {
+
+            @Override
+            public void onCompleteListener(String response) {
+
+                Log.e("dashboards", response);
+                System.out.println("dashboards---------" + response);
+                String Str_status = "", Str_response = "", Str_driver_name = "", Str_driver_img = "",Str_driver_category="", Str_vechile_no = "", Str_vechile_model = "", Str_driver_id = "",
+                        Str_driver_lattitude = "", Str_driver_longitude = "", Str_driver_ratting = "", Str_lasttrip_ridetime = "", Str_lasttrip_ridedate = "",
+                        Str_lasttrip_earnings = "", Str_lasttrip_currencycode = "", Str_todayearnings_onlinehours = "", Str_todayearnings_trips = "",
+                        Str_todayearnings_earnings = "", Str_todayearnings_currencycode = "", Str_todaytips_trips = "", Str_todaytips_tips = "", Str_todaytips_currencycode = "";
+
+                try {
+
+                    JSONObject jobject = new JSONObject(response);
+
+                    Str_status = jobject.getString("status");
+
+                    if (Str_status.equalsIgnoreCase("1")) {
+                        JSONObject object = jobject.getJSONObject("response");
+
+                        Str_currencglobal = object.getString("currency");
+                        currency_code = Currency.getInstance(getLocale(Str_currencglobal));
+
+                        Str_driver_id = object.getString("driver_id");
+                        Str_driver_name = object.getString("driver_name");
+                        Str_vechile_no = object.getString("vehicle_number");
+                        Str_vechile_model = object.getString("vehicle_model");
+                        Str_driver_img = object.getString("driver_image");
+                        Str_driver_ratting = object.getString("driver_review");
+                        Str_driver_category = object.getString("driver_category");
+
+                        Str_driver_lattitude = object.getString("driver_lat");
+                        Str_driver_longitude = object.getString("driver_lon");
+                        strlat = Double.parseDouble(Str_driver_lattitude);
+                        strlon = Double.parseDouble(Str_driver_longitude);
+
+                        Object check_last_trip_object = object.get("last_trip");
+                        if (check_last_trip_object instanceof JSONObject) {
+
+                            JSONObject jobject1 = object.getJSONObject("last_trip");
+                            if (jobject1.length() > 0) {
+                                Str_lasttrip_ridetime = jobject1.getString("ride_time");
+                                Str_lasttrip_ridedate = jobject1.getString("ride_date");
+                                Str_lasttrip_currencycode = jobject1.getString("currency");
+                                // currencycode = Currency.getInstance(getLocale(Str_lasttrip_currencycode));
+
+                                sCurrencySymbol = CurrencySymbolConverter.getCurrencySymbol(Str_lasttrip_currencycode);
+
+                                Str_lasttrip_earnings = sCurrencySymbol+ jobject1.getString("earnings");
+                                isLastTripAvailable =true;
+
+                                System.out.println("ridetim------"+Str_lasttrip_ridetime);
+                                System.out.println("ridedate------"+Str_lasttrip_ridedate);
+                                System.out.println("amount------"+Str_lasttrip_earnings);
+
+                            }else{
+                                isLastTripAvailable =false;
+                            }
+                        }else{
+                            isLastTripAvailable =false;
+                        }
+
+                        Object check_today_earnings_object = object.get("today_earnings");
+                        if (check_today_earnings_object instanceof JSONObject){
+                            JSONObject jobject2 = object.getJSONObject("today_earnings");
+                            if (jobject2.length() > 0) {
+                                Str_todayearnings_onlinehours = jobject2.getString("online_hours");
+                                Str_todayearnings_trips = jobject2.getString("trips");
+                                Str_todayearnings_currencycode = jobject2.getString("currency");
+
+                                // currencycode1= Currency.getInstance(getLocale(Str_todayearnings_currencycode));
+
+                                sCurrencySymbol = CurrencySymbolConverter.getCurrencySymbol(Str_todayearnings_currencycode);
+
+                                Str_todayearnings_earnings = sCurrencySymbol + jobject2.getString("earnings");
+                                isTodayEarningsAvailable = true;
+                            }else{
+                                isTodayEarningsAvailable = false;
+                            }
+                        }else{
+                            isTodayEarningsAvailable = false;
+                        }
+
+                        Object check_today_tips_object = object.get("today_tips");
+                        if (check_today_tips_object instanceof JSONObject){
+                            JSONObject jobject3 = object.getJSONObject("today_tips");
+                            if (jobject3.length() > 0) {
+                                Str_todaytips_trips = jobject3.getString("trips");
+                                Str_todaytips_currencycode = jobject3.getString("currency");
+                                //currencycode2 = Currency.getInstance(getLocale(Str_todaytips_currencycode));
+
+                                sCurrencySymbol = CurrencySymbolConverter.getCurrencySymbol(Str_todaytips_currencycode);
+
+                                Str_todaytips_tips = sCurrencySymbol + jobject3.getString("tips");
+                                isTodayTipsAvailable = true;
+                            }else{
+                                isTodayTipsAvailable = false;
+                            }
+                        }else{
+                            isTodayTipsAvailable = false;
+                        }
+
+                    } else {
+                        Str_response = jobject.getString("response");
+                    }
+
+                    if (Str_status.equalsIgnoreCase("1")) {
+                        Tv_Driver_vechile_model.setText(Str_vechile_model);
+                        Tv_driver_name.setText(Str_driver_name);
+                        Tv_Driver_Vechile_no.setText(Str_vechile_no);
+                        driver_rating.setRating(Float.parseFloat(Str_driver_ratting));
+                        Tv_car_category.setText(Str_driver_category);
+
+                        if (isLastTripAvailable==true)
+                        {
+                            Tv_lasttrip_ridetime.setText(Str_lasttrip_ridetime);
+                            Tv_lasttrip_ridedate.setText(Str_lasttrip_ridedate);
+                            Tv_lasttrip_earnings.setText(Str_lasttrip_earnings);
+                        }else {
+                            Tv_lasttrip_ridetime.setText(getResources().getString(R.string.lasttrip_emtpy_label));
+                            Tv_lasttrip_ridedate.setText(getResources().getString(R.string.lasttrip_emtpy_label));
+                            Tv_lasttrip_earnings.setText(sCurrencySymbol+"0.00");
+                        }
+
+                        if (isTodayEarningsAvailable==true)
+                        {
+                            Tv_today_earnings_onlinehours.setText(Str_todayearnings_onlinehours);
+                            Tv_todayearnigs_trips.setText(Str_todayearnings_trips+" "+"Trips");
+                            Tv_todayearnings_earnings.setText(Str_todayearnings_earnings);
+                        }else{
+                            Tv_today_earnings_onlinehours.setText(getResources().getString(R.string.todayearning_no_online_label));
+                            Tv_todayearnigs_trips.setText(getResources().getString(R.string.todayearning_no_trips_label));
+                            Tv_todayearnings_earnings.setText(sCurrencySymbol+"0.00");
+                        }
+
+                        if (isTodayTipsAvailable==true)
+                        {
+                            Tv_todaytips_tips.setText(Str_todaytips_tips);
+                            Tv_todaytips_trips.setText(Str_todaytips_trips+" "+"Trips");
+                        }else{
+                            Tv_todaytips_tips.setText(sCurrencySymbol+"0.00");
+                            Tv_todaytips_trips.setText((getResources().getString(R.string.lasttrip_emtpy_label)));
+                        }
+
+                        //---------------map marker--------------
+                        googleMap.addMarker(new MarkerOptions()
+                                .position(new LatLng((strlat), (strlon)))
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.maps)));
+                        // Move the camera to last position with a zoom level
+                        CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng((strlat), (strlon))).zoom(12).build();
+                        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+                    } else {
+                        Alert(getResources().getString(R.string.alert_sorry_label_title), Str_response);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                dialog.dismiss();
+
+            }
+
+            @Override
+            public void onErrorListener() {
+                dialog.dismiss();
+            }
+        });
+
+
+    }
+
+
+
+
+   /* private void driverdashboard_PostRequest(String Url) {
+        dialog = new Dialog(getActivity());
+        dialog.getWindow();
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.custom_loading);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+
+        TextView dialog_title = (TextView) dialog.findViewById(R.id.custom_loading_textview);
+        dialog_title.setText(getResources().getString(R.string.action_loading));
+
 
         postrequest = new StringRequest(Request.Method.POST, Url,
                 new Response.Listener<String>() {
@@ -435,8 +633,10 @@ public class DashBoardDriver extends Fragment implements View.OnClickListener, c
                                 Str_todayearnings_earnings = "", Str_todayearnings_currencycode = "", Str_todaytips_trips = "", Str_todaytips_tips = "", Str_todaytips_currencycode = "";
 
                         try {
-                            JSONObject jobject = new JSONObject(response);
-                            Str_status = jobject.getString("status");
+
+                             JSONObject jobject = new JSONObject(response);
+
+                              Str_status = jobject.getString("status");
 
                             if (Str_status.equalsIgnoreCase("1")) {
                                 JSONObject object = jobject.getJSONObject("response");
@@ -465,8 +665,11 @@ public class DashBoardDriver extends Fragment implements View.OnClickListener, c
                                         Str_lasttrip_ridetime = jobject1.getString("ride_time");
                                         Str_lasttrip_ridedate = jobject1.getString("ride_date");
                                         Str_lasttrip_currencycode = jobject1.getString("currency");
-                                        currencycode = Currency.getInstance(getLocale(Str_lasttrip_currencycode));
-                                        Str_lasttrip_earnings = currencycode.getSymbol() + jobject1.getString("earnings");
+                                       // currencycode = Currency.getInstance(getLocale(Str_lasttrip_currencycode));
+
+                                        sCurrencySymbol = CurrencySymbolConverter.getCurrencySymbol(Str_lasttrip_currencycode);
+
+                                        Str_lasttrip_earnings = sCurrencySymbol+ jobject1.getString("earnings");
                                         isLastTripAvailable =true;
 
                                         System.out.println("ridetim------"+Str_lasttrip_ridetime);
@@ -487,8 +690,12 @@ public class DashBoardDriver extends Fragment implements View.OnClickListener, c
                                         Str_todayearnings_onlinehours = jobject2.getString("online_hours");
                                         Str_todayearnings_trips = jobject2.getString("trips");
                                         Str_todayearnings_currencycode = jobject2.getString("currency");
-                                        currencycode1= Currency.getInstance(getLocale(Str_todayearnings_currencycode));
-                                        Str_todayearnings_earnings = currencycode1.getSymbol() + jobject2.getString("earnings");
+
+                                       // currencycode1= Currency.getInstance(getLocale(Str_todayearnings_currencycode));
+
+                                        sCurrencySymbol = CurrencySymbolConverter.getCurrencySymbol(Str_todayearnings_currencycode);
+
+                                        Str_todayearnings_earnings = sCurrencySymbol + jobject2.getString("earnings");
                                         isTodayEarningsAvailable = true;
                                     }else{
                                         isTodayEarningsAvailable = false;
@@ -503,8 +710,11 @@ public class DashBoardDriver extends Fragment implements View.OnClickListener, c
                                     if (jobject3.length() > 0) {
                                         Str_todaytips_trips = jobject3.getString("trips");
                                         Str_todaytips_currencycode = jobject3.getString("currency");
-                                        currencycode2 = Currency.getInstance(getLocale(Str_todaytips_currencycode));
-                                        Str_todaytips_tips = currencycode2.getSymbol() + jobject3.getString("tips");
+                                        //currencycode2 = Currency.getInstance(getLocale(Str_todaytips_currencycode));
+
+                                        sCurrencySymbol = CurrencySymbolConverter.getCurrencySymbol(Str_todaytips_currencycode);
+
+                                        Str_todaytips_tips = sCurrencySymbol + jobject3.getString("tips");
                                         isTodayTipsAvailable = true;
                                     }else{
                                         isTodayTipsAvailable = false;
@@ -532,7 +742,7 @@ public class DashBoardDriver extends Fragment implements View.OnClickListener, c
                                 }else {
                                     Tv_lasttrip_ridetime.setText(getResources().getString(R.string.lasttrip_emtpy_label));
                                     Tv_lasttrip_ridedate.setText(getResources().getString(R.string.lasttrip_emtpy_label));
-                                    Tv_lasttrip_earnings.setText(currency_code.getSymbol()+"0.00");
+                                    Tv_lasttrip_earnings.setText(sCurrencySymbol+"0.00");
                                 }
 
                                 if (isTodayEarningsAvailable==true)
@@ -543,7 +753,7 @@ public class DashBoardDriver extends Fragment implements View.OnClickListener, c
                                 }else{
                                     Tv_today_earnings_onlinehours.setText(getResources().getString(R.string.todayearning_no_online_label));
                                     Tv_todayearnigs_trips.setText(getResources().getString(R.string.todayearning_no_trips_label));
-                                    Tv_todayearnings_earnings.setText(currency_code.getSymbol()+"0.00");
+                                    Tv_todayearnings_earnings.setText(sCurrencySymbol+"0.00");
                                 }
 
                                 if (isTodayTipsAvailable==true)
@@ -551,7 +761,7 @@ public class DashBoardDriver extends Fragment implements View.OnClickListener, c
                                     Tv_todaytips_tips.setText(Str_todaytips_tips);
                                     Tv_todaytips_trips.setText(Str_todaytips_trips+" "+"Trips");
                                 }else{
-                                    Tv_todaytips_tips.setText(currency_code.getSymbol()+"0.00");
+                                    Tv_todaytips_tips.setText(sCurrencySymbol+"0.00");
                                     Tv_todaytips_trips.setText((getResources().getString(R.string.lasttrip_emtpy_label)));
                                 }
 
@@ -609,7 +819,7 @@ public class DashBoardDriver extends Fragment implements View.OnClickListener, c
 
         AppController.getInstance().addToRequestQueue(postrequest);
     }
-
+*/
 
     @Override
     public void onConnected(Bundle bundle) {

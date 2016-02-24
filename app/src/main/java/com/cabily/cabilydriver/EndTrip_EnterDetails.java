@@ -26,6 +26,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.app.service.ServiceConstant;
+import com.app.service.ServiceRequest;
 import com.cabily.cabilydriver.Utils.AppController;
 import com.cabily.cabilydriver.Utils.ConnectionDetector;
 import com.cabily.cabilydriver.Utils.SessionManager;
@@ -65,6 +66,8 @@ public class EndTrip_EnterDetails extends FragmentActivity {
     private ShimmerButton Bt_shimmer_endtrip;
     float initialX, initialY;
 
+    private ServiceRequest mRequest;
+
 
     private  String Str_status = "",Str_pickup_time="",Str_response="",Str_ridefare="",Str_timetaken="",Str_waitingtime="",Str_need_payment="",Str_currency="",Str_ride_distance="";
 
@@ -84,7 +87,9 @@ public class EndTrip_EnterDetails extends FragmentActivity {
 
    // private SimpleDateFormat mFormatter = new SimpleDateFormat("MMM/dd,hh:mm aa");
     private SimpleDateFormat mFormatter = new SimpleDateFormat("ddMMM,yyyy hh:mm aa");
-    private SimpleDateFormat coupon_mFormatter = new SimpleDateFormat("yyyy-MM-dd");
+
+    private SimpleDateFormat coupon_mFormatter = new SimpleDateFormat("yyyy-MM-dd hh:mm aa");
+
     private SimpleDateFormat coupon_time_mFormatter = new SimpleDateFormat("hh:mm aa");
     private SimpleDateFormat mTime_Formatter = new SimpleDateFormat("HH");
     BroadcastReceiver receiver;
@@ -226,9 +231,9 @@ public class EndTrip_EnterDetails extends FragmentActivity {
             Date d = cal.getTime();
             String currenttime = mTime_Formatter.format(d);
             String selecedtime = mTime_Formatter.format(date);
-            String displaytime = mFormatter.format(date);
+            String displaytime = coupon_mFormatter.format(date);
 
-            Toast.makeText(getApplicationContext(),mFormatter.format(date), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),coupon_mFormatter.format(date), Toast.LENGTH_SHORT).show();
 
             System.out.println("-----------------current date---------------------" + currenttime);
             System.out.println("-----------------selected date---------------------" + selecedtime);
@@ -356,14 +361,119 @@ public class EndTrip_EnterDetails extends FragmentActivity {
             }
         });
 
+    }
+
+    //-----------------------Post Request Enter Trip Details Details-----------------
+    private void postRequest_EnterTripdetails(String Url) {
+        dialog = new Dialog(EndTrip_EnterDetails.this);
+        dialog.getWindow();
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.custom_loading);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+
+        final TextView dialog_title = (TextView) dialog.findViewById(R.id.custom_loading_textview);
+        dialog_title.setText(getResources().getString(R.string.action_loading));
+
+        System.out.println("-------------endtripenter----------------" + Url);
+        HashMap<String, String> jsonParams = new HashMap<String, String>();
+        jsonParams.put("driver_id",driver_id);
+        jsonParams.put("ride_id",Str_rideid);
+        jsonParams.put("drop_lat",Slattitude);
+        jsonParams.put("drop_lon",Slongitude);
+        jsonParams.put("interrupted","YES");
+        jsonParams.put("drop_loc",Et_drop_location.getText().toString());
+        jsonParams.put("distance",Et_distance.getText().toString());
+        jsonParams.put("wait_time",wait_time);
+        jsonParams.put("drop_time",Et_drop_time.getText().toString());
+
+        System.out.println("driver_id----------" + driver_id);
+
+        System.out.println("drop_loc----------" + Et_drop_location.getText().toString());
+
+        System.out.println("distance----------" + Et_distance.getText().toString());
+
+        System.out.println("drop_time----------" + Et_drop_time.getText().toString());
+
+        System.out.println("wait_time----------" +wait_time);
+
+        System.out.println("drop_lat----------" +Slattitude);
+
+        System.out.println("drop_lon----------" +Slongitude);
+
+        System.out.println("interrupted----------" +"YES");
+
+        System.out.println("ride_id----------" +Str_rideid);
+
+
+        mRequest = new ServiceRequest(EndTrip_EnterDetails.this);
+        mRequest.makeServiceRequest(Url, Request.Method.POST, jsonParams, new ServiceRequest.ServiceListener() {
+
+            @Override
+            public void onCompleteListener(String response) {
+                Log.e("endtripresponse",response);
+
+                System.out.println("response-----------------" + response);
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    Str_status = object.getString("status");
+
+                    System.out.println("status--------------"+Str_status);
+
+                    if (Str_status.equalsIgnoreCase("1")){
+                        JSONObject jsonObject= object.getJSONObject("response");
+                        JSONObject jobject = jsonObject.getJSONObject("fare_details");
+
+                        Str_currency = jobject.getString("currency");
+
+                        Currency currencycode = Currency.getInstance(getLocale(Str_currency));
+                        Str_ridefare = currencycode.getSymbol()+jobject.getString("ride_fare");
+                        Str_timetaken = jobject.getString("ride_duration");
+                        Str_waitingtime = jobject.getString("waiting_duration");
+                        Str_ride_distance = jobject.getString("ride_distance");
+                        Str_need_payment = jobject.getString("need_payment");
+                    }else{
+
+                        Str_response = object.getString("response");
+
+                    }
+
+                }catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                dialog.dismiss();
+                if (Str_status.equalsIgnoreCase("1")){
+                    if (Str_need_payment.equalsIgnoreCase("YES")){
+                        System.out.println("sucess------------"+Str_need_payment);
+                        showfaresummerydetails();
+                    }else{
+
+                        Intent intent= new Intent(EndTrip_EnterDetails.this,RatingsPage.class);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+                    }
+
+                }else {
+                    Alert(getResources().getString(R.string.alert_sorry_label_title), Str_response);
+
+                }
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onErrorListener() {
+                dialog.dismiss();
+
+            }
+
+        });
 
     }
 
 
-
-
-    //-----------------------Post Request Enter Trip Details Details-----------------
-    private void postRequest_EnterTripdetails(String Url) {
+/*            private void postRequest_EnterTripdetails1(String Url) {
         dialog = new Dialog(EndTrip_EnterDetails.this);
         dialog.getWindow();
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -376,24 +486,33 @@ public class EndTrip_EnterDetails extends FragmentActivity {
                     @Override
                     public void onResponse(String response) {
 
+                        Log.e("endtripresponse",response);
+
                         System.out.println("response-----------------" + response);
 
                     try {
                             JSONObject object = new JSONObject(response);
                             Str_status = object.getString("status");
-                            Str_response = object.getString("response");
 
-                            JSONObject jsonObject= object.getJSONObject("response");
-                            JSONObject jobject = jsonObject.getJSONObject("fare_details");
+                        System.out.println("status--------------"+Str_status);
 
-                            Str_currency = jobject.getString("currency");
+                            if (Str_status.equalsIgnoreCase("1")){
+                                JSONObject jsonObject= object.getJSONObject("response");
+                                JSONObject jobject = jsonObject.getJSONObject("fare_details");
 
-                            Currency currencycode = Currency.getInstance(getLocale(Str_currency));
-                            Str_ridefare = currencycode.getSymbol()+jobject.getString("ride_fare");
-                            Str_timetaken = jobject.getString("ride_duration");
-                            Str_waitingtime = jobject.getString("waiting_duration");
-                            Str_ride_distance = jobject.getString("ride_distance");
-                            Str_need_payment = jobject.getString("need_payment");
+                                Str_currency = jobject.getString("currency");
+
+                                Currency currencycode = Currency.getInstance(getLocale(Str_currency));
+                                Str_ridefare = currencycode.getSymbol()+jobject.getString("ride_fare");
+                                Str_timetaken = jobject.getString("ride_duration");
+                                Str_waitingtime = jobject.getString("waiting_duration");
+                                Str_ride_distance = jobject.getString("ride_distance");
+                                Str_need_payment = jobject.getString("need_payment");
+                            }else{
+
+                                Str_response = object.getString("response");
+
+                            }
 
                         }catch (Exception e) {
                             // TODO Auto-generated catch block
@@ -477,10 +596,78 @@ public class EndTrip_EnterDetails extends FragmentActivity {
         postrequest.setShouldCache(false);
 
         AppController.getInstance().addToRequestQueue(postrequest);
-    }
+    }*/
 
     //-----------------------Code for arrived post request-----------------
     private void postRequest_Reqqustpayment(String Url) {
+        dialog = new Dialog(EndTrip_EnterDetails.this);
+        dialog.getWindow();
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.custom_loading);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+
+        final TextView dialog_title = (TextView) dialog.findViewById(R.id.custom_loading_textview);
+        dialog_title.setText(getResources().getString(R.string.action_loading));
+
+        System.out.println("-------------endtripenter----------------" + Url);
+        HashMap<String, String> jsonParams = new HashMap<String, String>();
+        jsonParams.put("driver_id", driver_id);
+        jsonParams.put("ride_id", Str_rideid);
+
+        System.out
+                .println("--------------driver_id-------------------"
+                        + driver_id);
+        System.out
+                .println("--------------ride_id-------------------"
+                        + Str_rideid);
+
+        mRequest = new ServiceRequest(EndTrip_EnterDetails.this);
+        mRequest.makeServiceRequest(Url, Request.Method.POST, jsonParams, new ServiceRequest.ServiceListener() {
+            @Override
+            public void onCompleteListener(String response) {
+                Log.e("requestpayment", response);
+
+                System.out.println("response---------"+response);
+
+                String Str_status = "",Str_response="",Str_currency="",Str_rideid="",Str_action="";
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    Str_response = object.getString("response");
+                    Str_status = object.getString("status");
+
+                }catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+                if (Str_status.equalsIgnoreCase("0"))
+                {
+                    Alert(getResources().getString(R.string.alert_sorry_label_title), Str_response);
+
+                }else{
+
+                    Alert(getResources().getString(R.string.label_pushnotification_cashreceived), Str_response);
+
+                }
+
+            }
+
+            @Override
+            public void onErrorListener() {
+
+                dialog.dismiss();
+
+            }
+
+
+        });
+
+
+    }
+
+    /*        private void postRequest_Reqqustpayment1(String Url) {
         dialog = new Dialog(EndTrip_EnterDetails.this);
         dialog.getWindow();
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -570,7 +757,7 @@ public class EndTrip_EnterDetails extends FragmentActivity {
 
         AppController.getInstance().addToRequestQueue(postrequest);
     }
-
+*/
 
 
     //method to convert currency code to currency symbol

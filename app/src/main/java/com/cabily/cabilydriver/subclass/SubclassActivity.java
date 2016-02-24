@@ -27,6 +27,9 @@ public class SubclassActivity extends ActivityHockeyApp {
         filter.addAction("com.finish.tripsummerydetail");
         filter.addAction("com.finish.endtripenterdetail");
         filter.addAction("com.finish.tripsummerylist");
+        filter.addAction("com.finish.loadingpage");
+
+
 
         receiver = new BroadcastReceiver() {
             @Override
@@ -48,6 +51,8 @@ public class SubclassActivity extends ActivityHockeyApp {
                 }else if(intent.getAction().equals("com.finish.endtripenterdetail")){
                     finish();
                 }else if (intent.getAction().equals("com.finish.tripsummerylist")){
+                    finish();
+                }else if(intent.getAction().equals("com.finish.loadingpage")){
                     finish();
                 }
             }

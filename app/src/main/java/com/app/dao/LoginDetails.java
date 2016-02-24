@@ -37,6 +37,21 @@ public class LoginDetails  extends  ServiceResponse{
     @Expose
     private String key;
 
+    @SerializedName("is_alive_other")
+    @Expose
+    private String is_alive_other;
+
+    public String getIs_alive_other() {
+        return is_alive_other;
+    }
+
+    public void setIs_alive_other(String is_alive_other) {
+        this.is_alive_other = is_alive_other;
+    }
+
+
+
+
     public String getSec_key() {
         return sec_key;
     }

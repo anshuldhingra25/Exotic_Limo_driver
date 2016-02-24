@@ -7,6 +7,7 @@ import android.location.Location;
 import android.media.MediaPlayer;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import at.grabner.circleprogress.CircleProgressView;
+import at.grabner.circleprogress.TextMode;
 import me.drakeet.materialdialog.MaterialDialog;
 
 /**
@@ -45,6 +47,8 @@ public class ContinuousRequestAdapter {
     private Activity context;
     private LinearLayout listview;
 
+    public int req_count;
+
     private CircleProgressView mCircleView;
     private CountDownTimer timer;
     private String KEY1 = "key1";
@@ -56,18 +60,24 @@ public class ContinuousRequestAdapter {
     private MediaPlayer mediaPlayer;
     private Location myLocation;
     private DriverAlertActivity.TimerCompletCallback timerCompletCallback;
+    private Handler mHandler = new Handler();
+    public static String userID;
+
     public class ViewHolder {
         public  int count;
         public Button accept;
         public  Button decline;
         public  CircleProgressView circularProgressBar;
         public  TextView cabily_alert_address;
+        private  LinearLayout Ll_ride_Requst_layout;
         public  JSONObject data;
+
+
     }
 
-    public ContinuousRequestAdapter(SessionManager sm, Activity context, Location myLocation,LinearLayout listview) {
-        this.sm = sm;
+    public ContinuousRequestAdapter(Activity context, Location myLocation,LinearLayout listview) {
         this.context = context;
+        sm = new SessionManager(context);
         mInflater = LayoutInflater.from(context);
         this.listview = listview;
     }
@@ -89,47 +99,75 @@ public class ContinuousRequestAdapter {
         holder.decline = (Button) view.findViewById(R.id.cabily_driver_alert_reject_btn);
         holder.cabily_alert_address = (TextView) view.findViewById(R.id.cabily_alert_address);
         holder.circularProgressBar = (CircleProgressView) view.findViewById(R.id.timer_circleView);
+        holder.Ll_ride_Requst_layout  = (LinearLayout)view.findViewById(R.id.Ll_ride_request_layout);
         view.setTag(holder);
+
+        HashMap<String, Integer> user = sm.getRequestCount();
+        req_count = user.get(SessionManager.KEY_COUNT);
+
+        System.out.println("---------------req_count top-------------------"+req_count);
+
         holder.accept.setTag(holder);
         holder.decline.setTag(holder);
         holder.accept.setOnClickListener(acceptBtnlistener);
-        holder.decline.setOnClickListener(declineBtnListener);
+        holder.decline.setOnClickListener(new DeclineBtnListener(i));
         holder.cabily_alert_address.setText("" + getDataForPosition(i, KEY3,data));
         holder.circularProgressBar.setEnabled(false);
         String position = getDataForPosition(i, KEY3,data);
         holder.circularProgressBar.setFocusable(false);
-        holder.circularProgressBar.setMaxValue(15);
+        holder.circularProgressBar.setMaxValue(Integer.parseInt(getDataForPosition(i, KEY2,data)));
         holder.circularProgressBar.setValueAnimated(0);
-        holder.circularProgressBar.setTextSize(12);
+        holder.circularProgressBar.setTextSize(30);
         holder.circularProgressBar.setAutoTextSize(true);
         holder.circularProgressBar.setTextScale(0.6f);
         holder.circularProgressBar.setTextColor(context.getResources().getColor(R.color.progress_ripplecolor));
-        mHandler.post(new CircularHandler(holder));
+        mHandler.post(new CircularHandler(holder,Integer.parseInt(getDataForPosition(i, KEY2,data))));
         return view;
     }
 
-    private Handler mHandler = new Handler();
-
     private class CircularHandler implements Runnable {
         ViewHolder holder;
-        float value = 15;
+        Integer value ;
         boolean isRunning;
 
-        public CircularHandler(ViewHolder holder) {
+        public CircularHandler(ViewHolder holder,Integer val) {
             this.holder = holder;
             isRunning = true;
+            value=val;
         }
 
         @Override
         public void run() {
             if (isRunning) {
                 value = value - 1;
-                holder.circularProgressBar.setValue(value);
+
+                holder.circularProgressBar.setText(String.valueOf(Math.abs(value)));
+                holder.circularProgressBar.setTextMode(TextMode.TEXT);
+                holder.circularProgressBar.setValueAnimated(value, 500);
                 mHandler.postDelayed(this, 1000);
+
                 if (value == 0) {
                     mHandler.removeCallbacks(this);
                     if (timerCompletCallback != null){
-                       // timerCompletCallback.timerCompleteCallBack(holder);
+                        holder.Ll_ride_Requst_layout.setVisibility(View.GONE);
+
+                        System.out.println("requestcount2 above------------------"+req_count);
+
+                        req_count=req_count-1;
+                        SessionManager session=new SessionManager(context);
+                        session.setRequestCount(req_count);
+
+                        System.out.println("requestcount2 below------------------"+req_count);
+
+                        if(req_count==0)
+                        {
+
+                            System.out.println("activity  finished------------------"+req_count);
+                            sm.setRequestCount(0);
+                            context.finish();
+                            stopPlayer();
+                            context.overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+                        }
                     }
                     isRunning = false;
                 }
@@ -168,6 +206,10 @@ public class ContinuousRequestAdapter {
             }
             ServiceManager manager = new ServiceManager(context, acceptServicelistener);
             manager.makeServiceRequest(ServiceConstant.ACCEPTING_RIDE_REQUEST, Request.Method.POST, jsonParams);
+
+            System.out.println("acceptrideurl------------"+ServiceConstant.ACCEPTING_RIDE_REQUEST);
+
+
             showDialog();
             stopPlayer();
         }
@@ -177,11 +219,15 @@ public class ContinuousRequestAdapter {
         @Override
         public void onCompleteListener(Object object) {
             dismissDialog();
-            String Sstatus = "",SResponse="", Str_Username = "", Str_User_email = "", Str_Userphoneno = "", Str_Userrating = "", Str_userimg = "", Str_pickuplocation = "", Str_pickuplat = "", Str_pickup_long = "", Str_pickup_time = "", Str_message = "";
+            String Sstatus = "",SResponse="", Str_Username = "",Str_UserId="", Str_User_email = "", Str_Userphoneno = "", Str_Userrating = "", Str_userimg = "", Str_pickuplocation = "", Str_pickuplat = "", Str_pickup_long = "",
+                    Str_pickup_time = "", Str_message = "",Str_droplat="",Str_droplon="",str_drop_location="";
 
             if (object instanceof String) {
                 String jsonString = (String) object;
                 System.out.println("Responseaccept---------" + jsonString);
+
+                Log.e("accept",jsonString);
+
                 try {
                     JSONObject object1 = new JSONObject(jsonString);
                     Sstatus = object1.getString("status");
@@ -191,6 +237,10 @@ public class ContinuousRequestAdapter {
                         JSONObject jobject2 = jobject.getJSONObject("user_profile");
                         Str_message = jobject.getString("message");
                         Str_Username = jobject2.getString("user_name");
+
+                       //Str_UserId = jobject2.getString("user_id");
+                        userID = jobject2.getString("user_id");
+
                         Str_User_email = jobject2.getString("user_email");
                         Str_Userphoneno = jobject2.getString("phone_number");
                         Str_Userrating = jobject2.getString("user_review");
@@ -199,6 +249,11 @@ public class ContinuousRequestAdapter {
                         Str_pickup_long = jobject2.getString("pickup_lon");
                         Str_pickup_time = jobject2.getString("pickup_time");
                         Str_userimg = jobject2.getString("user_image");
+                        Str_droplat = jobject2.getString("drop_lat");
+                        Str_droplon = jobject2.getString("drop_lon");
+                        str_drop_location = jobject2.getString("drop_loc");
+                       // System.out.println("userid-------------"+Str_UserId);
+
                     }
                     if (Sstatus.equalsIgnoreCase("1")) {
                         Intent intent = new Intent(context, ArrivedTrip.class);
@@ -210,6 +265,11 @@ public class ContinuousRequestAdapter {
                         intent.putExtra("userrating", Str_Userrating);
                         intent.putExtra("phoneno", Str_Userphoneno);
                         intent.putExtra("userimg", Str_userimg);
+                        intent.putExtra("UserId",Str_UserId);
+                        intent.putExtra("drop_lat",Str_droplat);
+                        intent.putExtra("drop_lon",Str_droplon);
+                        intent.putExtra("drop_location",str_drop_location);
+
                         context.startActivity(intent);
                         context.finish();
                     } else {
@@ -268,21 +328,6 @@ public class ContinuousRequestAdapter {
         }
     }
 
-    private View.OnClickListener declineBtnListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            stopPlayer();
-            ViewHolder holder = (ViewHolder) view.getTag();
-            try {
-                if (timerCompletCallback != null){
-                  holder.count = holder.count-1;
-                    timerCompletCallback.timerCompleteCallBack(holder);
-                }
-            } catch (Exception e) {
-            }
-            context.finish();
-        }
-    };
 
     private void stopPlayer() {
         try {
@@ -307,6 +352,55 @@ public class ContinuousRequestAdapter {
             }
         });
         mDialog.show();
+    }
+
+
+
+
+    public class DeclineBtnListener implements View.OnClickListener
+    {
+
+        int mPosition;
+        DeclineBtnListener(int position)
+        {
+            mPosition=position;
+        }
+        @Override
+        public void onClick(View v) {
+
+            ViewHolder holder = (ViewHolder) v.getTag();
+            try {
+
+                if (timerCompletCallback != null){
+                    holder.count = holder.count-1;
+
+                    HashMap<String, Integer> user = sm.getRequestCount();
+                    int req_count = user.get(SessionManager.KEY_COUNT);
+                    req_count=req_count-1;
+
+                    System.out.println("----------inside declineBtnListener req_count----------------"+req_count);
+
+                    sm.setRequestCount(req_count);
+                    holder.Ll_ride_Requst_layout.setVisibility(View.GONE);
+
+                    if(req_count==0)
+                    {
+                        sm.setRequestCount(0);
+                        context.finish();
+                        if (DriverAlertActivity.mediaPlayer != null && DriverAlertActivity.mediaPlayer.isPlaying()) {
+                            DriverAlertActivity.mediaPlayer.stop();
+                        }
+                    }
+
+                    //req_count=req_count-1;
+                    // sm.setRequestCount(req_count);
+
+                    // timerCompletCallback.timerCompleteCallBack(holder);
+
+                }
+            } catch (Exception e) {
+            }
+        }
     }
 
 

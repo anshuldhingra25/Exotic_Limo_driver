@@ -20,7 +20,6 @@ public class ChatHandler {
 
     private Context context;
     private IntentService service;
-
     public ChatHandler(Context context, IntentService service) {
         this.context = context;
         this.service = service;

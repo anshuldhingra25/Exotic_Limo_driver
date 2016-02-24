@@ -18,6 +18,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.app.service.ServiceConstant;
+import com.app.service.ServiceRequest;
 import com.cabily.cabilydriver.Utils.AppController;
 import com.cabily.cabilydriver.Utils.ConnectionDetector;
 import com.cabily.cabilydriver.Utils.VolleyErrorResponse;
@@ -37,6 +38,7 @@ public class ForgotPassword extends ActionBarActivity {
     private RelativeLayout Rl_layout_email_send, layout_forgot_pwd_back;
     private Dialog dialog;
     private StringRequest postrequest;
+    private ServiceRequest mRequest;
 
     private Boolean isInternetPresent = false;
     private ConnectionDetector cd;
@@ -100,6 +102,62 @@ public class ForgotPassword extends ActionBarActivity {
 
     //--------------------------code for post forgot password-----------------------
     private void forgotpassword_PostRequest(String Url) {
+        dialog = new Dialog(ForgotPassword.this);
+        dialog.getWindow();
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.custom_loading);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+
+        TextView dialog_title = (TextView) dialog.findViewById(R.id.custom_loading_textview);
+        dialog_title.setText(getResources().getString(R.string.action_loading));
+
+        System.out.println("-------------forgotpwd----------------" + Url);
+
+        HashMap<String, String> jsonParams = new HashMap<String, String>();
+        jsonParams.put("email", Et_email.getText().toString());
+
+        System.out.println("--------------email-------------------" + Et_email.getText().toString());
+
+        mRequest = new ServiceRequest(ForgotPassword.this);
+        mRequest.makeServiceRequest(Url, Request.Method.POST, jsonParams, new ServiceRequest.ServiceListener() {
+            @Override
+            public void onCompleteListener(String response) {
+                Log.e("forgotpwd", response);
+
+                System.out.println("forgotpwdresponse---------" + response);
+
+                String Str_status = "", Str_response = "";
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    Str_status = object.getString("status");
+                    Str_response = object.getString("response");
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+                if (Str_status.equalsIgnoreCase("1")) {
+                    Alert(getResources().getString(R.string.label_pushnotification_cashreceived), Str_response);
+
+                } else {
+                    Alert(getResources().getString(R.string.alert_sorry_label_title), Str_response);
+                }
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onErrorListener() {
+                dialog.dismiss();
+            }
+        });
+
+    }
+
+/*
+
+    private void forgotpassword_PostRequest1(String Url) {
         dialog = new Dialog(ForgotPassword.this);
         dialog.getWindow();
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -178,6 +236,7 @@ public class ForgotPassword extends ActionBarActivity {
 
         AppController.getInstance().addToRequestQueue(postrequest);
     }
+*/
 
 
 }

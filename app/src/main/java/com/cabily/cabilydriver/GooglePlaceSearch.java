@@ -46,16 +46,16 @@ import me.drakeet.materialdialog.MaterialDialog;
  */
 public class GooglePlaceSearch extends Activity {
 
-    ArrayList<String> itemList_location=new ArrayList<String>();
-    ArrayList<String> itemList_placeId=new ArrayList<String>();
+    ArrayList<String> itemList_location = new ArrayList<String>();
+    ArrayList<String> itemList_placeId = new ArrayList<String>();
     PlaceSearchAdapter adapter;
-    private boolean isdataAvailable=false;
+    private boolean isdataAvailable = false;
 
     private RelativeLayout alert_layout;
     private TextView alert_textview;
     private TextView tv_emptyText;
     private RelativeLayout back;
-    private  EditText Et_search;
+    public static EditText Et_search;
 
     private String driver_id = "";
     private Boolean isInternetPresent = false;
@@ -68,11 +68,9 @@ public class GooglePlaceSearch extends Activity {
     private ProgressBar progresswheel;
     private ListView list_view;
 
-    private String Slatitude="",Slongitude="",Sdrop_location="";
+    private String Slatitude = "", Slongitude = "", Sdrop_location = "";
 
     private StringRequest postrequest;
-
-
 
 
     @Override
@@ -85,7 +83,7 @@ public class GooglePlaceSearch extends Activity {
         list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-               Sdrop_location = itemList_location.get(position);
+                Sdrop_location = itemList_location.get(position);
 
                 cd = new ConnectionDetector(GooglePlaceSearch.this);
                 isInternetPresent = cd.isConnectingToInternet();
@@ -100,7 +98,6 @@ public class GooglePlaceSearch extends Activity {
         });
 
 
-
         Et_search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -112,18 +109,28 @@ public class GooglePlaceSearch extends Activity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
                 cd = new ConnectionDetector(GooglePlaceSearch.this);
                 isInternetPresent = cd.isConnectingToInternet();
 
-                if (isInternetPresent) {
-                    if (postrequest != null) {
-                        postrequest.cancel();
+
+                try {
+                    if (isInternetPresent) {
+                        if (postrequest != null) {
+                            postrequest.cancel();
+                        }
+                       // Intent returnIntent = new Intent();
+                        //returnIntent.putExtra("Selected_location", Et_search.getText().toString());
+                        //setResult(RESULT_OK, returnIntent);
+                        //onBackPressed();
+                       // finish();
+                        CitySearchRequest(ServiceConstant.place_search_url + Et_search.getText().toString().toLowerCase());
+                    } else {
+                        alert_layout.setVisibility(View.VISIBLE);
+                        alert_textview.setText(getResources().getString(R.string.alert_nointernet));
                     }
-                    CitySearchRequest(ServiceConstant.place_search_url + Et_search.getText().toString().toLowerCase());
-                } else {
-                    alert_layout.setVisibility(View.VISIBLE);
-                    alert_textview.setText(getResources().getString(R.string.alert_nointernet));
+
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
             }
@@ -151,11 +158,10 @@ public class GooglePlaceSearch extends Activity {
         alert_textview = (TextView) findViewById(R.id.droplocation_alert_textView);
         back = (RelativeLayout) findViewById(R.id.droplocation_back_layout);
         tv_emptyText = (TextView) findViewById(R.id.estimate_price_empty_textview);
-        list_view = (ListView)findViewById(R.id.droplocation_listView);
-        Et_search = (EditText)findViewById(R.id.droplocation_editText);
+        list_view = (ListView) findViewById(R.id.droplocation_listView);
+        Et_search = (EditText) findViewById(R.id.droplocation_editText);
 
     }
-
 
 
     //--------------Alert Method-----------
@@ -173,7 +179,6 @@ public class GooglePlaceSearch extends Activity {
     }
 
 
-
     //-------------------Search Place Request----------------
     private void CitySearchRequest(String Url) {
 
@@ -185,39 +190,32 @@ public class GooglePlaceSearch extends Activity {
             public void onResponse(String response) {
 
                 System.out.println("--------------Search city  reponse-------------------" + response);
-                String status="";
+                String status = "";
                 try {
                     JSONObject object = new JSONObject(response);
                     if (object.length() > 0) {
 
-                        status=object.getString("status");
+                        status = object.getString("status");
                         JSONArray place_array = object.getJSONArray("predictions");
-                        if(status.equalsIgnoreCase("OK"))
-                        {
-                            if(place_array.length()>0)
-                            {
+                        if (status.equalsIgnoreCase("OK")) {
+                            if (place_array.length() > 0) {
                                 itemList_location.clear();
                                 itemList_placeId.clear();
-                                for (int i = 0; i < place_array.length(); i++)
-                                {
+                                for (int i = 0; i < place_array.length(); i++) {
                                     JSONObject place_object = place_array.getJSONObject(i);
                                     itemList_location.add(place_object.getString("description"));
                                     itemList_placeId.add(place_object.getString("place_id"));
                                 }
-                                isdataAvailable=true;
-                            }
-                            else
-                            {
+                                isdataAvailable = true;
+                            } else {
                                 itemList_location.clear();
                                 itemList_placeId.clear();
-                                isdataAvailable=false;
+                                isdataAvailable = false;
                             }
-                        }
-                        else
-                        {
+                        } else {
                             itemList_location.clear();
                             itemList_placeId.clear();
-                            isdataAvailable=false;
+                            isdataAvailable = false;
                         }
                     }
                 } catch (JSONException e) {
@@ -227,15 +225,12 @@ public class GooglePlaceSearch extends Activity {
 
                 progresswheel.setVisibility(View.INVISIBLE);
                 alert_layout.setVisibility(View.GONE);
-                if(isdataAvailable)
-                {
+                if (isdataAvailable) {
                     tv_emptyText.setVisibility(View.GONE);
-                }
-                else
-                {
+                } else {
                     tv_emptyText.setVisibility(View.VISIBLE);
                 }
-                adapter=new PlaceSearchAdapter(GooglePlaceSearch.this,itemList_location);
+                adapter = new PlaceSearchAdapter(GooglePlaceSearch.this, itemList_location);
                 list_view.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
 
@@ -264,7 +259,6 @@ public class GooglePlaceSearch extends Activity {
         in.hideSoftInputFromWindow(edittext.getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
-
     //-------------------Get Latitude and Longitude from Address(Place ID) Request----------------
     private void LatLongRequest(String Url) {
 
@@ -275,7 +269,7 @@ public class GooglePlaceSearch extends Activity {
         mdialog.setCanceledOnTouchOutside(false);
         mdialog.show();
 
-        TextView dialog_title=(TextView)mdialog.findViewById(R.id.custom_loading_textview);
+        TextView dialog_title = (TextView) mdialog.findViewById(R.id.custom_loading_textview);
         dialog_title.setText(getResources().getString(R.string.action_loading));
 
         System.out.println("--------------LatLong url-------------------" + Url);
@@ -318,10 +312,10 @@ public class GooglePlaceSearch extends Activity {
                     e.printStackTrace();
                 }
                 if (isdataAvailable) {
-                    Intent intent=new Intent();
-                    intent.putExtra("Lattitude",Slatitude);
-                    intent.putExtra("Longitude",Slongitude);
-                    intent.putExtra("address",Sdrop_location);
+                    Intent intent = new Intent();
+                    intent.putExtra("Lattitude", Slatitude);
+                    intent.putExtra("Longitude", Slongitude);
+                    intent.putExtra("address", Sdrop_location);
 
                     System.out.println("msg-------------" + Sdrop_location);
                     System.out.println("Lattitude-------------" + Slatitude);
@@ -349,12 +343,6 @@ public class GooglePlaceSearch extends Activity {
         postrequest.setShouldCache(false);
         AppController.getInstance().addToRequestQueue(postrequest);
     }
-
-
-
-
-
-
 
 
 }

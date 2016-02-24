@@ -30,6 +30,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import at.grabner.circleprogress.CircleProgressView;
 
@@ -66,7 +67,7 @@ public class DriverAlertActivity extends ActionBarActivityHockeyApp implements c
         }
         mediaPlayer = MediaPlayer.create(this, Settings.System.DEFAULT_RINGTONE_URI);
         //alertAdapter = new DriverAlertAdapter(sessionManager, this, myLocation);
-        continuousRequestAdapter = new ContinuousRequestAdapter(sessionManager,this,myLocation,listView);
+        continuousRequestAdapter = new ContinuousRequestAdapter(this,myLocation,listView);
         continuousRequestAdapter.setTimerCompleteCallBack(timerCompletCallback);
         setLocationRequest();
         buildGoogleApiClient();
@@ -83,8 +84,24 @@ public class DriverAlertActivity extends ActionBarActivityHockeyApp implements c
         @Override
         public void timerCompleteCallBack(ContinuousRequestAdapter.ViewHolder holder) {
             try {
-                System.out.println("count---------------" + count);
-                //listView.removeViewAt(holder.count);
+
+                HashMap<String, Integer> user = sessionManager.getRequestCount();
+                int req_count = user.get(SessionManager.KEY_COUNT);
+                req_count=req_count-1;
+                sessionManager.setRequestCount(req_count);
+
+                System.out.println("------- req_count inside decline--------------"+req_count);
+
+                if(req_count==0)
+                {
+                    sessionManager.setRequestCount(0);
+                    finish();
+                    if (DriverAlertActivity.mediaPlayer != null && DriverAlertActivity.mediaPlayer.isPlaying()) {
+                        DriverAlertActivity.mediaPlayer.stop();
+                    }
+                }
+
+                listView.removeViewAt(holder.count);
 
             }catch (Exception e){
                 e.printStackTrace();
@@ -99,8 +116,19 @@ public class DriverAlertActivity extends ActionBarActivityHockeyApp implements c
     private void addData(Intent intent) {
         if (!mediaPlayer.isPlaying()) {
             mediaPlayer.start();
+            mediaPlayer.setLooping(true);
+
         }
         if (intent != null) {
+
+            HashMap<String, Integer> user = sessionManager.getRequestCount();
+            int req_count = user.get(SessionManager.KEY_COUNT);
+            req_count=req_count+1;
+            sessionManager.setRequestCount(req_count);
+
+            System.out.println("=-----------------start req_count---------------"+req_count);
+
+
             Bundle extra = intent.getExtras();
             if (extra != null) {
                 String data = (String) extra.get(EXTRA);

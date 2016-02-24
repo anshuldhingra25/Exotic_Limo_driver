@@ -23,6 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.app.service.ServiceConstant;
+import com.app.service.ServiceRequest;
 import com.cabily.cabilydriver.Pojo.Reviwes_Pojo;
 import com.cabily.cabilydriver.Utils.AppController;
 import com.cabily.cabilydriver.Utils.ConnectionDetector;
@@ -55,6 +56,7 @@ public class RatingsPage extends ActivityHockeyApp
     private ArrayList<Reviwes_Pojo>reivweslist;
     private boolean show_progress_status=false;
     Dialog dialog;
+    private ServiceRequest mRequest;
 
     private TextView Tv_skip;
     ListView listview;
@@ -91,6 +93,15 @@ public class RatingsPage extends ActivityHockeyApp
                 broadcastIntent_drivermap.setAction("com.finish.canceltrip.DriverMapActivity");
                 sendBroadcast(broadcastIntent_drivermap);
                 finish();
+
+
+                Intent broadcastIntent_loading= new Intent();
+                broadcastIntent_loading.setAction("com.finish.loadingpage");
+                sendBroadcast(broadcastIntent_loading);
+                finish();
+
+
+
 
 
             }
@@ -215,6 +226,105 @@ public class RatingsPage extends ActivityHockeyApp
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
 
+        TextView dialog_title = (TextView) dialog.findViewById(R.id.custom_loading_textview);
+        dialog_title.setText(getResources().getString(R.string.action_loading));
+
+        System.out.println("-------------dashboard----------------" + Url);
+
+        HashMap<String, String> jsonParams = new HashMap<String, String>();
+        jsonParams.put("optionsFor", "rider");
+        jsonParams.put("ride_id", Str_rideid);
+
+
+        mRequest = new ServiceRequest(RatingsPage.this);
+        mRequest.makeServiceRequest(Url, Request.Method.POST, jsonParams, new ServiceRequest.ServiceListener() {
+            @Override
+            public void onCompleteListener(String response) {
+
+                Log.e("reviwes", response);
+
+                String ride_ratting_status = "";
+
+                String status = "", Str_total = "", Str_Rating = "";
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    status = object.getString("status");
+                    Str_total = object.getString("total");
+                    ride_ratting_status = object.getString("ride_ratting_status");
+
+                    if (ride_ratting_status.equalsIgnoreCase("1")) {
+                        Intent i =new Intent(RatingsPage.this,HomePage.class);
+                        startActivity(i);
+                        finish();
+
+
+                    }
+
+                    System.out.println("status---------" + object.getString("status"));
+
+                    JSONArray jarry = object.getJSONArray("review_options");
+
+                    if (jarry.length() > 0) {
+
+                        for (int i = 0; i < jarry.length(); i++) {
+
+                            JSONObject jobject = jarry.getJSONObject(i);
+
+                            Reviwes_Pojo item = new Reviwes_Pojo();
+
+                            item.setOptions_title(jobject.getString("option_title"));
+                            item.setRatings_count("");
+                            item.setOptions_id(jobject.getString("option_id"));
+
+                            reivweslist.add(item);
+
+                        }
+                        show_progress_status = true;
+
+                    } else {
+                        show_progress_status = false;
+                    }
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+                if (status.equalsIgnoreCase("1")) {
+                    adapter = new Reviwes_adapter(RatingsPage.this, reivweslist);
+                    listview.setAdapter(adapter);
+                    dialog.dismiss();
+                } else {
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.fetchdatatoast), Toast.LENGTH_SHORT).show();
+                }
+                if (show_progress_status) {
+                    empty_Tv.setVisibility(View.GONE);
+                } else {
+                    empty_Tv.setVisibility(View.VISIBLE);
+                    listview.setEmptyView(empty_Tv);
+                }
+
+            }
+
+            @Override
+            public void onErrorListener() {
+
+                dialog.dismiss();
+            }
+
+        });
+    }
+
+
+
+ /*           private void PostRequest1(String Url) {
+            dialog = new Dialog(RatingsPage.this);
+           dialog.getWindow();
+             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.custom_loading);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+
         TextView dialog_title=(TextView)dialog.findViewById(R.id.custom_loading_textview);
         dialog_title.setText(getResources().getString(R.string.action_loading));
 
@@ -307,10 +417,10 @@ public class RatingsPage extends ActivityHockeyApp
             }
         };
         AppController.getInstance().addToRequestQueue(postrequest);
-    }
+    }*/
 
-    //-----------------------Code for reviwes post request-----------------
-    private void Post_RequestReviwes(String Url, final Map<String, String>jsonParams) {
+
+      private void Post_RequestReviwes(String Url, final Map<String, String>jsonParams) {
         dialog = new Dialog(RatingsPage.this);
         dialog.getWindow();
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -361,8 +471,15 @@ public class RatingsPage extends ActivityHockeyApp
                                             Intent broadcastIntent_drivermap = new Intent();
                                             broadcastIntent_drivermap.setAction("com.finish.canceltrip.DriverMapActivity");
                                             sendBroadcast(broadcastIntent_drivermap);
-
                                             finish();
+
+                                            Intent broadcastIntent_loading= new Intent();
+                                            broadcastIntent_loading.setAction("com.finish.loadingpage");
+                                            sendBroadcast(broadcastIntent_loading);
+                                            finish();
+
+
+
                                         }
                                     }
                             );

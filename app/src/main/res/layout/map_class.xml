@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <RelativeLayout
+        android:id="@+id/map_header"
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/app_color">
+
+        <RelativeLayout
+            android:id="@+id/mappage_header_cancellayout"
+            android:layout_width="80dp"
+            android:layout_height="fill_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:clickable="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:text="Cancel"
+                android:textColor="#ffffff"
+                android:textSize="17sp"
+                android:typeface="sans" />
+
+        </RelativeLayout>
+        <EditText
+            android:id="@+id/txt_search"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            android:layout_toRightOf="@+id/mappage_header_cancellayout"
+            />
+        <Button
+            android:id="@+id/done"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DONE"
+            android:visibility="invisible"
+            android:layout_alignRight="@+id/txt_search"/>
+
+    </RelativeLayout>
+
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/map_header" />
+
+
+
+  <!--  <Button
+        android:id="@+id/mappage_select_location_button"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignTop="@+id/map"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:drawableTop="@drawable/marker"
+        android:drawablePadding="60dp"
+        android:clickable="true"
+        android:focusable="true"
+
+        android:text=""
+        android:textColor="#FFFFFF"
+
+        android:textSize="22sp"
+        android:typeface="sans" />-->
+
+
+    <!--  <RelativeLayout
+         android:id="@+id/mappage_select_location_layout"
+         android:layout_width="fill_parent"
+         android:layout_height="35dp"
+         android:layout_centerHorizontal="true"
+         android:layout_marginLeft="20dp"
+         android:layout_marginRight="20dp"
+         android:layout_marginTop="40dp"
+         android:layout_alignTop="@+id/map"
+         android:background="#007fff"
+         android:focusable="true" >
+
+         <TextView
+             android:id="@+id/selct_locationTv"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_centerInParent="true"
+             android:text="@string/label_regiser_selectloction_text"
+             android:textColor="#ffffff"
+             android:textSize="12sp"
+             android:typeface="sans" />
+     </RelativeLayout>  -->
+
+</RelativeLayout>

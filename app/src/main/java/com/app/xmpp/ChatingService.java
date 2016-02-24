@@ -3,9 +3,12 @@ package com.app.xmpp;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Messenger;
+import android.os.RemoteException;
 
 import com.app.service.ServiceConstant;
 import com.cabily.cabilydriver.Utils.SessionManager;
+
 import org.jivesoftware.smack.AbstractXMPPConnection;
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.ConnectionListener;
@@ -19,6 +22,7 @@ import org.jivesoftware.smack.chat.ChatMessageListener;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
+
 import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -29,13 +33,20 @@ import java.util.HashMap;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
+
 /**
  */
-public class ChatingService extends IntentService    implements ChatManagerListener, ChatMessageListener {
+public class ChatingService extends IntentService implements ChatManagerListener, ChatMessageListener {
     private static final String ACTION_FOO = "com.casperon.smackclient.action.FOO";
     private static AbstractXMPPConnection connection;
     private static boolean isConnected;
     private static SessionManager session;
+    private static ChatHandler chatHandler;
+    private static Chat chat;
+    private static ChatManager chatManager;
+    static boolean isChatEnabled;
+    private static Messenger chatMessenger;
+
 
     public static void startDriverAction(Context context) {
         Intent intent = new Intent(context, ChatingService.class);
@@ -43,13 +54,19 @@ public class ChatingService extends IntentService    implements ChatManagerListe
         session = new SessionManager(context);
         context.startService(intent);
     }
+
     public ChatingService() {
         super("ChatingService");
     }
+
     @Override
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
+            try {
                 handleActionFoo();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
 
@@ -57,8 +74,6 @@ public class ChatingService extends IntentService    implements ChatManagerListe
      * Handle action Foo in the provided background thread with the provided
      * parameters.
      */
-
-
 
     private void handleActionFoo() {
         XMPPTCPConnectionConfiguration.Builder configBuilder = XMPPTCPConnectionConfiguration.builder();
@@ -70,9 +85,11 @@ public class ChatingService extends IntentService    implements ChatManagerListe
                 public void checkClientTrusted(X509Certificate[] chain,
                                                String authType) throws CertificateException {
                 }
+
                 public void checkServerTrusted(X509Certificate[] chain,
                                                String authType) throws CertificateException {
                 }
+
                 public X509Certificate[] getAcceptedIssuers() {
                     return new X509Certificate[0];
                 }
@@ -94,21 +111,26 @@ public class ChatingService extends IntentService    implements ChatManagerListe
             @Override
             public void authenticated(XMPPConnection connection, boolean resumed) {
             }
+
             @Override
             public void connectionClosed() {
                 isConnected = false;
             }
+
             @Override
             public void connectionClosedOnError(Exception e) {
                 isConnected = false;
             }
+
             @Override
             public void reconnectionSuccessful() {
                 isConnected = true;
             }
+
             @Override
             public void reconnectingIn(int seconds) {
             }
+
             @Override
             public void reconnectionFailed(Exception e) {
                 isConnected = false;
@@ -124,43 +146,77 @@ public class ChatingService extends IntentService    implements ChatManagerListe
             e.printStackTrace();
         }
         try {
-            String userName ="";
-            String password ="";
-            if(session  != null && session.getUserDetails() != null){
+            String userName = "";
+            String password = "";
+            if (session != null && session.getUserDetails() != null) {
                 userName = session.getUserDetails().get(SessionManager.KEY_DRIVERID);
                 password = session.getUserDetails().get(SessionManager.KEY_SEC_KEY);
             }
-            connection.login(userName, password);
-            ChatManager chatmanager = ChatManager.getInstanceFor(connection);
-            chatmanager.addChatListener(this);
-
-            System.out.println("-------------Xmpp response conectd---------------------" );
-
+            if (userName.length() > 0 && password.length() > 0) {
+                connection.login(userName, password);
+                chatManager = ChatManager.getInstanceFor(connection);
+                chatManager.addChatListener(this);
+                System.out.println("-------------Xmpp response conectd---------------------");
+            }
         } catch (XMPPException e) {
             e.printStackTrace();
         } catch (SmackException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }    }
+        }
+    }
 
     @Override
     public void processMessage(Chat chat, final Message message) {
-
-        HashMap<String, String> online = session.getOnlineDetails();
-        String  checkonline = online.get(SessionManager.KEY_ONLINE);
-
-        if (checkonline.equalsIgnoreCase("1"))
-        {
-            System.out.println("-------------Xmpp response process recevied---------------------" );
-            ChatHandler chatHandler = new ChatHandler(getApplicationContext(),this);
-            chatHandler.onHandleChatMessage(message);
+        try {
+            if (chatHandler == null) {
+                chatHandler = new ChatHandler(getApplicationContext(), this);
+            }
+            HashMap<String, String> online = session.getOnlineDetails();
+            String checkonline = online.get(SessionManager.KEY_ONLINE);
+            if (checkonline.equalsIgnoreCase("1")) {
+                chatHandler.onHandleChatMessage(message);
+            }
+            processMessage(message);
+        } catch (Exception e) {
         }
-
     }
+
+    public void processMessage(Message message){
+        if (chatMessenger != null) {
+            android.os.Message chatMessage = android.os.Message.obtain();
+            chatMessage.obj = message.getBody();
+            try {
+                chatMessenger.send(chatMessage);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     @Override
     public void chatCreated(Chat chat, boolean createdLocally) {
         chat.addMessageListener(this);
     }
 
+    public static Chat createChat(String chatID) {
+        if (chatID != null && chatManager != null) {
+            chat = chatManager.createChat(chatID);
+        }
+        return chat;
+    }
+
+
+    public static void setChatMessenger(Messenger messenger) {
+        chatMessenger = messenger;
+    }
+
+    public static void enableChat() {
+        isChatEnabled = true;
+    }
+
+    public static void disableChat() {
+        isChatEnabled = false;
+    }
 }

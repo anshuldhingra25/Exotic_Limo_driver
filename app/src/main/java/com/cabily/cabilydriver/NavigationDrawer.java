@@ -138,7 +138,15 @@ public class NavigationDrawer extends BaseActivity implements View.OnClickListen
     }
 
     private void logout() {
-        session.logoutUser();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                session.logoutUser();
+            }
+        });
+
+            thread.start();
+       // session.logoutUser();
         showDialog("Logout");
         HashMap<String, String> jsonParams = new HashMap<String, String>();
         HashMap<String, String> userDetails = session.getUserDetails();

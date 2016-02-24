@@ -1,14 +1,39 @@
 package com.Hockeyapp;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.support.v7.app.ActionBarActivity;
 
 import com.app.service.ServiceConstant;
 
 
-
 public class ActionBarActivityHockeyApp extends ActionBarActivity
-{/*
+{
+
+
+    PowerManager.WakeLock mWakeLock;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        this.mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "My Tag");
+        this.mWakeLock.acquire();
+    }
+
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if(mWakeLock != null){
+            mWakeLock.release();
+        }
+    }
+/*
     private static  String APP_ID = ServiceConstant.ACTION_ACTION_HOCKYAPPID;
 
     @Override

@@ -26,6 +26,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.app.service.ServiceConstant;
+import com.app.service.ServiceRequest;
 import com.cabily.cabilydriver.Utils.AppController;
 import com.cabily.cabilydriver.Utils.ConnectionDetector;
 import com.cabily.cabilydriver.Utils.SessionManager;
@@ -46,7 +47,7 @@ public class ChangePassWord extends Fragment {
     private EditText Et_currrentpassword,Et_new_password,Et_new_confirm_password;
     private Dialog dialog;
     private RelativeLayout layout_done;
-
+    private ServiceRequest mRequest;
 
     private StringRequest postrequest;
     private String driver_id="";
@@ -160,6 +161,72 @@ public class ChangePassWord extends Fragment {
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
 
+        final TextView dialog_title = (TextView) dialog.findViewById(R.id.custom_loading_textview);
+        dialog_title.setText(getResources().getString(R.string.action_loading));
+
+        System.out.println("-------------password----------------" + Url);
+
+        HashMap<String, String> jsonParams = new HashMap<String, String>();
+        jsonParams.put("driver_id",driver_id);
+        jsonParams.put("password",Et_currrentpassword.getText().toString());
+        jsonParams.put("new_password",Et_new_password.getText().toString());
+
+        System.out.println("--------------driver_id-------------------" +driver_id);
+        System.out.println("--------------password-------------------" +Et_currrentpassword.getText().toString());
+        System.out.println("--------------new_password-------------------" + Et_currrentpassword.getText().toString());
+
+        mRequest = new ServiceRequest(getActivity());
+        mRequest.makeServiceRequest(Url, Request.Method.POST, jsonParams, new ServiceRequest.ServiceListener() {
+
+            @Override
+            public void onCompleteListener(String response) {
+
+                Log.e("changepwd", response);
+
+                System.out.println("changepwdresponse---------" + response);
+
+                String Str_status = "", Str_response = "";
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    Str_status = object.getString("status");
+                    Str_response = object.getString("response");
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+                if (Str_status.equalsIgnoreCase("1")){
+                    Alert(getResources().getString(R.string.label_pushnotification_cashreceived),Str_response);
+                }else{
+                    Alert(getResources().getString(R.string.alert_sorry_label_title),Str_response);
+                }
+
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onErrorListener() {
+
+                dialog.dismiss();
+
+            }
+
+        });
+
+    }
+
+
+
+/*
+            private void changepassword_PostRequest1(String Url) {
+        dialog = new Dialog(getActivity());
+        dialog.getWindow();
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.custom_loading);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+
         System.out.println("loadin-----------");
         TextView dialog_title = (TextView) dialog.findViewById(R.id.custom_loading_textview);
         dialog_title.setText(getResources().getString(R.string.action_loading));
@@ -237,6 +304,7 @@ public class ChangePassWord extends Fragment {
     }
 
 
+*/
 
 
 

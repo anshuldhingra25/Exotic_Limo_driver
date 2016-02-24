@@ -19,7 +19,7 @@
             android:layout_height="55dp"
             android:layout_centerHorizontal="true"
             android:background="@color/app_color"
-            android:visibility="gone">
+            android:visibility="visible">
 
 
             <com.cabily.cabilydriver.widgets.CustomTextView
@@ -173,6 +173,38 @@
         android:layout_height="fill_parent"
         android:layout_below="@+id/layout_begin_trip_details" />
 
+
+    <RelativeLayout
+        android:id="@+id/begin_trip_droplocation_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/grey_border_background"
+        android:layout_marginLeft="10dp"
+     >
+
+
+        <EditText
+            android:id="@+id/begin_trip_droplocation_Et"
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/grey_border_background"
+            android:hint="@string/begintrip_enterdrop_location_label"
+            android:imeOptions="actionDone"
+            android:paddingLeft="8dp"
+            android:textColor="#000000"
+            android:textColorHint="#4e4e4e"
+            android:textSize="13sp" />
+
+
+    </RelativeLayout>
+
+
+
+
     <RelativeLayout
         android:id="@+id/begintrip_alert_layout"
         android:layout_width="fill_parent"
@@ -197,11 +229,16 @@
 
     <RelativeLayout
         android:id="@+id/layout_begintrip"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="#31c3e7">
+
+        android:paddingBottom="10dp"
+        android:paddingLeft="60dp"
+        android:paddingRight="60dp"
+
+       >
 
         <com.romainpiel.shimmer.ShimmerButton
             android:id="@+id/btn_begintrip"
@@ -215,6 +252,7 @@
             android:layout_centerInParent="true"
             android:layout_marginRight="15dp"
             android:textStyle="bold"
+
             app:reflectionColor="#31c3e7"
             >
 
@@ -222,6 +260,8 @@
 
 
     </RelativeLayout>
+
+
 
 
 </RelativeLayout>

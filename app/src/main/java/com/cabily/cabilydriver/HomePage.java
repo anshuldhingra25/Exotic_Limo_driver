@@ -1,9 +1,15 @@
 package com.cabily.cabilydriver;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.StrictMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,20 +32,25 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 
+import org.jsoup.Jsoup;
+
+import java.io.File;
+
 import me.drakeet.materialdialog.MaterialDialog;
 
 
 public class HomePage extends ActivityHockeyApp implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
+
     private Button mSignIn;
     private Button mRegister;
-    SessionManager session;
-    GPSTracker gps;
-
-    LocationRequest mLocationRequest;
-    GoogleApiClient mGoogleApiClient;
-    PendingResult<LocationSettingsResult> result;
-    final static int REQUEST_LOCATION = 199;
+    private SessionManager session;
+    private GPSTracker gps;
+    private LocationRequest mLocationRequest;
+    private GoogleApiClient mGoogleApiClient;
+    private PendingResult<LocationSettingsResult> result;
+    private final static int REQUEST_LOCATION = 199;
+    private String package_name = "com.cabily.cabilydriver";
 
 
     @Override
@@ -48,36 +59,46 @@ public class HomePage extends ActivityHockeyApp implements GoogleApiClient.Conne
         setContentView(R.layout.homepage);
         mSignIn = (Button) findViewById(R.id.btn_signin);
         mRegister = (Button) findViewById(R.id.btn_register);
-
+        int SDK_INT = android.os.Build.VERSION.SDK_INT;
+        if (SDK_INT > 8)
+        {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                    .permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            //your codes here
+        }
+        web_update();
         gps = new GPSTracker(getApplicationContext());
-
         mGoogleApiClient = new GoogleApiClient.Builder(HomePage.this)
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this).build();
         mGoogleApiClient.connect();
-
-
-
         if(gps.isgpsenabled()&&gps.canGetLocation())
         {
-        //do nothing
+            //do nothing
         }
         else
         {
             enableGpsService();
         }
+        try {
 
+        }catch (Exception e){
 
-        session = new SessionManager(HomePage.this);
-
-        session.createSessionOnline("0");
-
-        if (session.isLoggedIn()) {
-            ChatingService.startDriverAction(HomePage.this);
-            Intent i = new Intent(getApplicationContext(), NavigationDrawer.class);
-            startActivity(i);
         }
+
+                session = new SessionManager(HomePage.this);
+                session.createSessionOnline("0");
+                session.setRequestCount(0);
+                if (session.isLoggedIn()) {
+                    ChatingService.startDriverAction(HomePage.this);
+                    Intent i = new Intent(getApplicationContext(), NavigationDrawer.class);
+                    startActivity(i);
+                    finish();
+                }
+
+
         mSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,10 +111,55 @@ public class HomePage extends ActivityHockeyApp implements GoogleApiClient.Conne
         mRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Alert(HomePage.this.getResources().getString(R.string.lbel_alert_inform), HomePage.this.getResources().getString(R.string.lbel_alert_inform2));
+                Intent intent = new Intent(HomePage.this,RegisterPageWebview.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+                //Alert(HomePage.this.getResources().getString(R.string.lbel_alert_inform), HomePage.this.getResources().getString(R.string.lbel_alert_inform2));
             }
         });
     }
+
+
+    private long value(String string) {
+        string = string.trim();
+        if( string.contains( "." )){
+            final int index = string.lastIndexOf( "." );
+            return value( string.substring( 0, index ))* 100 + value( string.substring( index + 1 ));
+        }
+        else {
+            return Long.valueOf( string );
+        }
+    }
+
+    //--------------------------code to update checker------------------
+    private boolean web_update(){
+        try {
+            String curVersion = HomePage.this.getPackageManager().getPackageInfo(package_name, 0).versionName;
+
+            System.out.println("currentversion-----------"+curVersion);
+
+            String newVersion = curVersion;
+
+            newVersion = Jsoup.connect("https://play.google.com/store/apps/details?id=" + package_name + "&hl=en")
+                    .timeout(30000)
+                    .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
+                    .referrer("http://www.google.com")
+                    .get()
+                    .select("div[itemprop=softwareVersion]")
+                    .first()
+                    .ownText();
+
+            System.out.println("Newversion-----------"+newVersion);
+
+            return (value(curVersion) < value(newVersion)) ? true : false;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
 
     private void Alert(String title, String message) {
         final PkDialog mDialog = new PkDialog(HomePage.this);
@@ -137,8 +203,6 @@ public class HomePage extends ActivityHockeyApp implements GoogleApiClient.Conne
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
     }
-
-
 
     //Enabling Gps Service
     private void enableGpsService()

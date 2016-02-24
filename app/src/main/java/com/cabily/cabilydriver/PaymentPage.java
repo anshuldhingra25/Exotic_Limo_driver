@@ -17,6 +17,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.app.service.ServiceRequest;
 import com.app.xmpp.ChatingService;
 import com.app.service.ServiceConstant;
 import com.cabily.cabilydriver.Utils.AppController;
@@ -53,6 +54,8 @@ public class PaymentPage extends SubclassActivity {
     private String Str_amount = "", Str_rideid = "",Str_currencycode="";
     Dialog dialog;
     StringRequest postrequest;
+
+    private ServiceRequest mRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +120,119 @@ public class PaymentPage extends SubclassActivity {
     }
 
     //-----------------------Code for begin trip post request-----------------
+
     private void PostRequest(String Url) {
+        dialog = new Dialog(PaymentPage.this);
+        dialog.getWindow();
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.custom_loading);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+
+        TextView dialog_title = (TextView) dialog.findViewById(R.id.custom_loading_textview);
+        dialog_title.setText(getResources().getString(R.string.action_loading));
+
+        System.out.println("-------------PaymentPage----------------" + Url);
+
+        HashMap<String, String> jsonParams = new HashMap<String, String>();
+        jsonParams.put("driver_id",driver_id);
+        jsonParams.put("ride_id",Str_rideid);
+        jsonParams.put("amount",Str_amount);
+
+        System.out
+                .println("--------------postdriver_id-------------------"
+                        + driver_id);
+
+        System.out
+                .println("--------------posstdriver_id-------------------"
+                        + Str_amount);
+
+        System.out
+                .println("--------------postrideid-------------------"
+                        + Str_rideid);
+
+        mRequest = new ServiceRequest(PaymentPage.this);
+        mRequest.makeServiceRequest(Url, Request.Method.POST, jsonParams, new ServiceRequest.ServiceListener() {
+            @Override
+            public void onCompleteListener(String response) {
+
+                Log.e("recev", response);
+
+                System.out.println("responsepayment---------" + response);
+
+                String Str_status = "", Str_response = "";
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    Str_status = object.getString("status");
+                    Str_response = object.getString("response");
+
+                    System.out.println("response----------" + object.getString("response"));
+
+                    System.out.println("status----------" + object.getString("status"));
+
+                    if (Str_status.equalsIgnoreCase("1")){
+
+                        final PkDialog mdialog = new PkDialog(PaymentPage.this);
+                        mdialog.setDialogTitle(getResources().getString(R.string.action_loading_sucess));
+                        mdialog.setDialogMessage(Str_response);
+                        mdialog.setPositiveButton(
+                                "OK", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        mdialog.dismiss();
+
+                                        Intent broadcastIntent_otp = new Intent();
+                                        broadcastIntent_otp.setAction("com.finish.OtpPage");
+                                        sendBroadcast(broadcastIntent_otp);
+
+                                        Intent broadcastIntent = new Intent();
+                                        broadcastIntent.setAction("com.finish.EndTrip");
+                                        sendBroadcast(broadcastIntent);
+                                        finish();
+
+                                        Intent intent = new Intent(PaymentPage.this, RatingsPage.class);
+                                        intent.putExtra("rideid", Str_rideid);
+                                        startActivity(intent);
+                                        //onBackPressed();
+                                    }
+                                }
+                        );
+                        mdialog.show();
+                    }else {
+                        final PkDialog mdialog = new PkDialog(PaymentPage.this);
+                        mdialog.setDialogTitle(getResources().getString(R.string.alert_sorry_label_title));
+                        mdialog.setDialogMessage(Str_response);
+                        mdialog.setCancelOnTouchOutside(false);
+                        mdialog.setPositiveButton(getResources().getString(R.string.alert_label_ok), new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        mdialog.dismiss();
+                                    }
+                                }
+                        );
+                        mdialog.show();
+
+                    }
+
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onErrorListener() {
+                dialog.dismiss();
+            }
+
+        });
+
+    }
+
+/*
+            private void PostRequest1(String Url) {
         dialog = new Dialog(PaymentPage.this);
         dialog.getWindow();
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -251,6 +366,7 @@ public class PaymentPage extends SubclassActivity {
 
         AppController.getInstance().addToRequestQueue(postrequest);
     }
+*/
 
 
 }

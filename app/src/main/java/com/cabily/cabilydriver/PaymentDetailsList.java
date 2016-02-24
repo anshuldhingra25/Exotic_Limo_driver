@@ -15,6 +15,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.app.service.ServiceConstant;
+import com.app.service.ServiceRequest;
 import com.cabily.cabilydriver.Pojo.PaymentDetailsListPojo;
 import com.cabily.cabilydriver.Utils.AppController;
 import com.cabily.cabilydriver.Utils.ConnectionDetector;
@@ -50,7 +51,7 @@ public class PaymentDetailsList extends ActivityHockeyApp {
     private RelativeLayout layout_back;
     private Dialog dialog;
     private TextView Emty_Text;
-
+    private ServiceRequest mRequest;
     private Boolean isInternetPresent = false;
     private ConnectionDetector cd;
 
@@ -116,8 +117,113 @@ public class PaymentDetailsList extends ActivityHockeyApp {
         mDialog.show();
     }
 
+          //------------------code for post--------------
+          private void paymentRequest(String Url) {
+        dialog = new Dialog(PaymentDetailsList.this);
+        dialog.getWindow();
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.custom_loading);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
 
-    private void paymentRequest(String Url) {
+        TextView dialog_title = (TextView) dialog.findViewById(R.id.custom_loading_textview);
+        dialog_title.setText(getResources().getString(R.string.action_loading));
+
+        System.out.println("-------------dashboard----------------" + Url);
+
+        HashMap<String, String> jsonParams = new HashMap<String, String>();
+
+        System.out.println("driver_id------------"+driver_id);
+        System.out.println("pay_id------------"+payid);
+
+        jsonParams.put("driver_id",driver_id);
+        jsonParams.put("pay_id",payid);
+
+        mRequest = new ServiceRequest(PaymentDetailsList.this);
+        mRequest.makeServiceRequest(Url, Request.Method.POST, jsonParams, new ServiceRequest.ServiceListener() {
+
+            @Override
+            public void onCompleteListener(String response) {
+                System.out.println("--------------Payment Details reponse-------------------" + response);
+
+                String status = "", response1 = "", pay_id = "", pay_duration_from = "", pay_duration_to = "", amount1 = "", pay_date = "";
+                try {
+                    JSONObject object = new JSONObject(response);
+                    status = object.getString("status");
+
+                    JSONObject jobject = object.getJSONObject("response");
+
+                    Str_currency_code = jobject.getString("currency");
+                    System.out.println("curr-----------" + Str_currency_code);
+                    Currency currencycode = Currency.getInstance(getLocale(Str_currency_code));
+
+                    JSONArray ride_array = jobject.getJSONArray("payments");
+                    paymentdetailList.clear();
+
+                    if (ride_array.length() > 0) {
+                        for (int k = 0; k < ride_array.length(); k++) {
+                            JSONObject product_object = ride_array.getJSONObject(k);
+                            PaymentDetailsListPojo items1 = new PaymentDetailsListPojo();
+                            pay_id = product_object.getString("pay_id");
+                            pay_duration_from = product_object.getString("pay_duration_from");
+                            pay_duration_to = product_object.getString("pay_duration_to");
+                            amount1 = currencycode.getSymbol() + product_object.getString("amount");
+                            pay_date = product_object.getString("pay_date");
+                        }
+                    }
+                    JSONArray ride_array1 = jobject.getJSONArray("listsArr");
+                    if (ride_array.length() > 0) {
+                        for (int k = 0; k < ride_array1.length(); k++) {
+                            JSONObject product_object = ride_array1.getJSONObject(k);
+                            PaymentDetailsListPojo items1 = new PaymentDetailsListPojo();
+                            items1.setride_id(product_object.getString("ride_id"));
+                            items1.setamount(currencycode.getSymbol() + product_object.getString("amount"));
+                            items1.setride_date(product_object.getString("ride_date"));
+                            paymentdetailList.add(items1);
+                        }
+                        show_progress_status = true;
+
+                    } else {
+                        paymentdetailList.clear();
+                        show_progress_status = false;
+                    }
+
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+
+                    System.out.println("try------------------"+e);
+
+                    e.printStackTrace();
+                }
+                payment.setText(pay_duration_from + " to " + pay_duration_to);
+                amount.setText(amount1);
+                recv_date.setText(pay_date);
+
+                System.out.println("pay-----------------" + paymentdetailList);
+
+                adapter = new PaymentDetailsListAdapter(PaymentDetailsList.this, paymentdetailList);
+                list.setAdapter(adapter);
+                dialog.dismiss();
+
+                if (show_progress_status) {
+                    Emty_Text.setVisibility(View.GONE);
+                } else {
+                    Emty_Text.setVisibility(View.VISIBLE);
+                    list.setEmptyView(Emty_Text);
+                }
+            }
+
+            @Override
+            public void onErrorListener() {
+                dialog.dismiss();
+            }
+
+        });
+
+     }
+
+
+/*      private void paymentRequest1(String Url) {
         dialog = new Dialog(PaymentDetailsList.this);
         dialog.getWindow();
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -232,7 +338,7 @@ public class PaymentDetailsList extends ActivityHockeyApp {
 
         };
         AppController.getInstance().addToRequestQueue(postrequest);
-    }
+    }*/
 
 
     //method to convert currency code to currency symbol

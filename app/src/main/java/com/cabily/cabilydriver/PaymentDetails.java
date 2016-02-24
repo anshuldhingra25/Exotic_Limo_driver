@@ -21,6 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.app.service.ServiceConstant;
+import com.app.service.ServiceRequest;
 import com.cabily.cabilydriver.Pojo.PaymentdetailsPojo;
 import com.cabily.cabilydriver.Utils.AppController;
 import com.cabily.cabilydriver.Utils.ConnectionDetector;
@@ -59,6 +60,8 @@ public class PaymentDetails extends FragmentHockeyApp {
     private ActionBar actionBar;
     private TextView empty_Tv;
     private boolean show_progress_status = false;
+
+    private ServiceRequest mRequest;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -140,6 +143,110 @@ public class PaymentDetails extends FragmentHockeyApp {
 
     //-----------------------Code for payment details post request-----------------
     private void PostRequest(String Url) {
+        dialog = new Dialog(getActivity());
+        dialog.getWindow();
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.custom_loading);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+
+        TextView dialog_title = (TextView) dialog.findViewById(R.id.custom_loading_textview);
+        dialog_title.setText(getResources().getString(R.string.action_loading));
+
+        System.out.println("-------------paymentdetails----------------" + Url);
+
+        HashMap<String, String> jsonParams = new HashMap<String, String>();
+        jsonParams.put("driver_id", driver_id);
+        System.out
+                .println("--------------driver_id-------------------"
+                        + driver_id);
+
+        mRequest = new ServiceRequest(getActivity());
+        mRequest.makeServiceRequest(Url, Request.Method.POST, jsonParams, new ServiceRequest.ServiceListener() {
+
+            @Override
+            public void onCompleteListener(String response) {
+                Log.e("paymrnt", response);
+
+                String status = "", Str_currency_code = "",Str_response="";
+                try {
+                    JSONObject object = new JSONObject(response);
+                    status = object.getString("status");
+
+                    if (status.equalsIgnoreCase("1")){
+
+                        JSONObject jsonObject = object.getJSONObject("response");
+
+                        Str_currency_code = jsonObject.getString("currency");
+
+                        System.out.println("currency--------------" + Str_currency_code);
+
+                        Currency currencycode = Currency.getInstance(getLocale(Str_currency_code));
+
+                        JSONArray jarry = jsonObject.getJSONArray("payments");
+
+                        if (jarry.length() > 0) {
+
+                            for (int i = 0; i<jarry.length(); i++) {
+
+                                JSONObject jobject = jarry.getJSONObject(i);
+
+                                PaymentdetailsPojo item = new PaymentdetailsPojo();
+
+                                item.setamount(currencycode.getSymbol() + jobject.getString("amount"));
+                                item.setpay_date(jobject.getString("pay_date"));
+                                item.setpay_duration_from(jobject.getString("pay_duration_from"));
+                                item.setpay_duration_to(jobject.getString("pay_duration_to"));
+                                item.setpay_id(jobject.getString("pay_id"));
+
+                                System.out.println("pay_id--------" + jobject.getString("pay_id"));
+
+                                paymentstatementList.add(item);
+                            }
+                            show_progress_status = true;
+
+                        } else {
+                            show_progress_status = false;
+                        }
+
+                    }else{
+                        Str_response = object.getString("response");
+                    }
+
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+                if (status.equalsIgnoreCase("1")){
+                    adapter = new PaymentDetailsAdapter(getActivity(), paymentstatementList);
+                    payment_list.setAdapter(adapter);
+                    dialog.dismiss();
+
+                    if (show_progress_status) {
+                        empty_Tv.setVisibility(View.GONE);
+                    } else {
+                        empty_Tv.setVisibility(View.VISIBLE);
+                        payment_list.setEmptyView(empty_Tv);
+                    }
+
+                }else{
+
+                    Alert(getResources().getString(R.string.alert_sorry_label_title),Str_response);
+                }
+            }
+
+            @Override
+            public void onErrorListener() {
+                dialog.dismiss();
+            }
+
+        });
+    }
+
+
+/*
+       private void PostRequest1(String Url) {
         dialog = new Dialog(getActivity());
         dialog.getWindow();
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -259,6 +366,8 @@ public class PaymentDetails extends FragmentHockeyApp {
         };
         AppController.getInstance().addToRequestQueue(postrequest);
     }
+
+*/
 
 
     //method to convert currency code to currency symbol

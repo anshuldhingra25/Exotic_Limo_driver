@@ -39,7 +39,7 @@ import java.util.regex.Pattern;
 
 import me.drakeet.materialdialog.MaterialDialog;
 
-public class LoginPage extends BaseActivity implements View.OnClickListener,GoogleApiClient.ConnectionCallbacks,
+public class LoginPage extends BaseActivity implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
 
@@ -79,9 +79,9 @@ public class LoginPage extends BaseActivity implements View.OnClickListener,Goog
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(LoginPage.this,ForgotPassword.class);
-                  startActivity(intent);
-                overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+                Intent intent = new Intent(LoginPage.this, ForgotPassword.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 
             }
         });
@@ -98,11 +98,10 @@ public class LoginPage extends BaseActivity implements View.OnClickListener,Goog
         emailid = (EditText) findViewById(R.id.email);
         password = (EditText) findViewById(R.id.password);
         signin = (Button) findViewById(R.id.signin_main_button);
-        layout_forgotpassword = (RelativeLayout)findViewById(R.id.layout_forgot_password);
+        layout_forgotpassword = (RelativeLayout) findViewById(R.id.layout_forgot_password);
 
 
-
-        slideUp = AnimationUtils.loadAnimation(LoginPage.this,R.anim.slide_up);
+        slideUp = AnimationUtils.loadAnimation(LoginPage.this, R.anim.slide_up);
         slideLeft = AnimationUtils.loadAnimation(LoginPage.this, R.anim.slide_left);
 
         signin.setOnClickListener(this);
@@ -114,6 +113,7 @@ public class LoginPage extends BaseActivity implements View.OnClickListener,Goog
                 GCM_Id = id;
                 dismissDialog();
             }
+
             @Override
             public void onError(String errorMsg) {
                 dismissDialog();
@@ -145,8 +145,7 @@ public class LoginPage extends BaseActivity implements View.OnClickListener,Goog
 
 
     //Enabling Gps Service
-    private void enableGpsService()
-    {
+    private void enableGpsService() {
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setInterval(30 * 1000);
@@ -198,7 +197,7 @@ public class LoginPage extends BaseActivity implements View.OnClickListener,Goog
             final String email = emailid.getText().toString();
             if (!isValidEmail(email)) {
                 emailid.setError(getResources().getString(R.string.action_alert_invalid_email));
-            } else if (pass.length()==0) {
+            } else if (pass.length() == 0) {
                 password.setError(getResources().getString(R.string.action_alert_invalid_password));
             } else {
                 gps = new GPSTracker(LoginPage.this);
@@ -206,7 +205,7 @@ public class LoginPage extends BaseActivity implements View.OnClickListener,Goog
                     showDialog(getResources().getString(R.string.lablesigningin_Textview));
                     postRequest(LOGIN_URL);
                 } else {
-                     enableGpsService();
+                    enableGpsService();
                 }
 
             }
@@ -221,6 +220,7 @@ public class LoginPage extends BaseActivity implements View.OnClickListener,Goog
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
+
     // validating password with retype password
     public boolean isValidPassword(String pass) {
         if (pass != null && pass.length() > 5) {
@@ -231,9 +231,9 @@ public class LoginPage extends BaseActivity implements View.OnClickListener,Goog
 
     private void postRequest(final String url) {
         HashMap<String, String> jsonParams = new HashMap<String, String>();
-        jsonParams.put("email",emailid.getText().toString());
-        jsonParams.put("password",password.getText().toString());
-        jsonParams.put("gcm_id",GCM_Id);
+        jsonParams.put("email", emailid.getText().toString());
+        jsonParams.put("password", password.getText().toString());
+        jsonParams.put("gcm_id", GCM_Id);
         ServiceManager manager = new ServiceManager(this, mServiceListener);
         manager.makeServiceRequest(url, Request.Method.POST, jsonParams);
     }
@@ -242,9 +242,9 @@ public class LoginPage extends BaseActivity implements View.OnClickListener,Goog
         @Override
         public void onCompleteListener(Object res) {
 
-            System.out.println("loginresponse-------------------"+res);
+            System.out.println("loginresponse-------------------" + res);
             dismissDialog();
-            String status = "", driver_img = "", driver_id = "", driver_name = "", email = "", vehicle_number = "", vehicle_model = "", key = "";
+            String status = "", driver_img = "", driver_id = "", driver_name = "", email = "", vehicle_number = "", vehicle_model = "", key = "", isalive = "",gcmid="";
             String sec_key = "";
             if (res instanceof LoginDetails) {
                 LoginDetails details = (LoginDetails) res;
@@ -259,21 +259,41 @@ public class LoginPage extends BaseActivity implements View.OnClickListener,Goog
                 sec_key = details.getSec_key();
                 key = details.getKey();
 
-                System.out.println("key--------------"+sec_key);
+                isalive = details.getIs_alive_other();
 
-                System.out.println("driverid--------------"+driver_id);
+                System.out.println("key--------------" + sec_key);
+
+                System.out.println("driverid--------------" + driver_id);
 
             }
             if (status.equalsIgnoreCase("1")) {
 
-                Toast.makeText(getApplicationContext(), "Logged in  successfully", Toast.LENGTH_LONG).show();
-                session.createLoginSession(driver_img, driver_id, driver_name, email, vehicle_number, vehicle_model, key, sec_key);
+                session.createLoginSession(driver_img, driver_id, driver_name, email, vehicle_number, vehicle_model, key, sec_key,gcmid);
                 session.setUserVehicle(vehicle_model);
+
                 ChatingService.startDriverAction(LoginPage.this);
                 Intent i = new Intent(LoginPage.this, NavigationDrawer.class);
                 slideLeft();
                 startActivity(i);
                 finish();
+
+
+                if (isalive.equalsIgnoreCase("No")) {
+                    // Toast.makeText(getApplicationContext(), "Logged in  successfully", Toast.LENGTH_LONG).show();
+                    session.createLoginSession(driver_img, driver_id, driver_name, email, vehicle_number, vehicle_model, key, sec_key,gcmid);
+                    session.setUserVehicle(vehicle_model);
+
+                    ChatingService.startDriverAction(LoginPage.this);
+                    Intent ii = new Intent(LoginPage.this, NavigationDrawer.class);
+                    slideLeft();
+                    startActivity(ii);
+                    finish();
+                }
+                else
+                {
+                    Alert(getResources().getString(R.string.action_alert_multidevicelogin), getResources().getString(R.string.action_alert_multideviceloginmsg));
+                }
+
             }
         }
 

@@ -53,5 +53,15 @@
 
     </RelativeLayout>
 
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/refresh"
+        android:paddingTop="15dp"
+        android:src="@drawable/refresh1"
+        android:layout_above="@+id/go_offline"
+        android:layout_alignRight="@+id/go_offline"
+        android:layout_alignEnd="@+id/go_offline" />
+
 
 </RelativeLayout>

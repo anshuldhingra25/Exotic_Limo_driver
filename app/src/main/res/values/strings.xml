@@ -59,6 +59,7 @@
     <string name="alert_label_ok">OK</string>
     <string name="alert_label_content1">We could not accepte your request</string>
     <string name="alert_label_content2">No cabs has been available at your place.Kindly try again after sometime</string>
+    <string name="alert_enter_drop_location">Please enter Drop Location</string>
     <string name="alert_nointernet">No Internet Connection</string>
     <string name="alert_servererror">Server Error</string>
     <string name="alert_gpsEnable">Enable GPS to locate your location</string>
@@ -71,6 +72,8 @@
     <string name="action_alert_invalid_email">Email address is invalid</string>
     <string name="action_alert_invalid_password">Password is invalid</string>
     <string name="action_alert_SigninFaild">Sign In Failed</string>
+    <string name="action_alert_multidevicelogin">Sorry</string>
+    <string name="action_alert_multideviceloginmsg">Already Loggedin other device </string>
     <string name="action_alert_signinfaildmsg">Invalid username or  password </string>
     <string name="action_alert_unabletocreatemap"> Sorry! unable to create maps </string>
 
@@ -96,6 +99,11 @@
     <string name="cabily_driver_main_lable_register_Textview">REGISTER</string>
     <string name="cabily_driver_main_lable_tripsummery_Textview">Trip Summery</string>
     <string name="cabily_driver_tip_amount">Your Tip Amount :</string>
+
+    <string name="cabily_wallet_used_label">Wallet used</string>
+
+
+
 
 
     <!--accept-->
@@ -172,6 +180,8 @@
     <string name="label_no">NO</string>
 
 
+
+
     <!--UserInfo-->
     <string name="userinfo_cancel_label">Cancel Trip</string>
     <string name="goonline_label">Go Online</string>
@@ -194,7 +204,10 @@
     <string name="voice_navigationlabel">Start navigation</string>
 
 
-
+    <string name="bepatient">This Process may take few seconds.so,please be patient.</string>
+    <string name="PaymentRequest">Your Payment Request is send to the User.</string>
+    <string name="PleaseWait">Please Wait....</string>
+    <string name="checkstatus">Check Status</string>
 
     <string name="please_collect_the_below_amount_from_the_customer">Please collect the below amount from the customer</string>
     <string name="static_rupee">176</string>
@@ -207,6 +220,10 @@
     <string name="label_rate_rider">Rate Rider</string>
     <string name="label_cashreceived">Received</string>
 
+    <!-- Estimate Price Activity -->
+    <string name="estimate_price_label_search">Enter Place to Search</string>
+    <string name="estimate_price_label_place_notAvailable">No Search Found</string>
+    <string name="estimate_price_label_not_found">No Rate Available</string>
 
     <!--Begin Trip-->
     <string name="lbel_begintrip_label_cancel">Cancel</string>
@@ -217,6 +234,8 @@
     <string name="lbel_currentride">Current Ride</string>
     <string name="lbel_wait">Start wait</string>
     <string name="lbel_stopwait">Stop wait</string>
+    <string name="lbel_Note">Note:</string>
+    <string name="lbel_Note_Detail">Please make sure that drop time is before atleast an hour from now and waiting time is between of pickup and drop time</string>
 
 
     <!--FareSummery details-->
@@ -278,11 +297,21 @@
     <string name="alert_label_trip_title">Invalid  time</string>
     <string name="alert_label_trip_content">Please make sure that drop time is before atleast an hour from now</string>
 
+    <string name="action_session_expired_title">Session Expired</string>
+    <string name="action_session_expired_message">Please re-login to renew your session</string>
 
-      <!--hange Password-->
+
+
+    <!--change Password-->
     <string name="changepassword_currentpwd_label">currentpassword can\'t be empty</string>
     <string name="changepassword_newpwd_label">newpassword can\'t be empty</string>
     <string name="changepassword_confirmpwd_label">confirmpassword can\'t be empty</string>
+
+
+        <!--Begin Trip-->
+
+    <string name="begintrip_enterdrop_location_label">Enter drop location</string>
+    <string name="alert_label_title">Alert</string>
 
 
 </resources>

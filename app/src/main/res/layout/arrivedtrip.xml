@@ -185,12 +185,16 @@
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="#80000000">
+       >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
-            android:background="#00000000">
+            android:paddingLeft="60dp"
+            android:paddingRight="60dp"
+            android:paddingBottom="10dp"
+
+           >
 
 
             <com.romainpiel.shimmer.ShimmerButton
@@ -205,6 +209,7 @@
                 android:textColor="#ffffff"
                 android:textSize="18sp"
                 android:textStyle="bold"
+
                 app:reflectionColor="#31c3e7" />
 
 

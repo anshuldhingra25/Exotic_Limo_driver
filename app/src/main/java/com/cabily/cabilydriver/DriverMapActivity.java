@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -87,6 +88,18 @@ public class DriverMapActivity extends ActivityHockeyApp implements View.OnClick
         HashMap<String, String> user = session.getUserDetails();
         driver_id = user.get(SessionManager.KEY_DRIVERID);
 
+        ImageButton refresh_button = (ImageButton)findViewById(R.id.refresh);
+
+        refresh_button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Perform action on click
+
+                Intent i = new Intent(DriverMapActivity.this, DriverMapActivity.class);
+finish();
+                startActivity(i);
+            }
+        });
+
         //Code for broadcat receive
         IntentFilter filter = new IntentFilter();
         filter.addAction("com.finish.canceltrip.DriverMapActivity");
@@ -99,8 +112,14 @@ public class DriverMapActivity extends ActivityHockeyApp implements View.OnClick
             }
         };
 
+try{
+    registerReceiver(receiver, filter);
+}
+catch(Exception e)
+{
 
-        registerReceiver(receiver, filter);
+}
+
 
         //Starting Xmpp service
         ChatingService.startDriverAction(DriverMapActivity.this);
@@ -193,7 +212,6 @@ public class DriverMapActivity extends ActivityHockeyApp implements View.OnClick
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
-
 
 
     public void dismissDialog() {
@@ -354,7 +372,9 @@ public class DriverMapActivity extends ActivityHockeyApp implements View.OnClick
                     16));
             MarkerOptions marker = new MarkerOptions();
             marker.position(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
-            marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+            //marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+            marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.red_car));
+
             currentMarker =  googleMap.addMarker(marker);
             postRequest(ServiceConstant.UPDATE_CURRENT_LOCATION);
 

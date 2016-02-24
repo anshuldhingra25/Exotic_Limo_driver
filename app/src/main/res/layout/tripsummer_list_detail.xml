@@ -572,7 +572,7 @@
         <Button
             android:id="@+id/trip_summerydetail_cancelride_button"
             android:layout_width="fill_parent"
-            android:layout_height="45dp"
+            android:layout_height="40dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:background="@drawable/button_background_red_curve"
@@ -585,7 +585,7 @@
         <Button
             android:id="@+id/trip_summerydetail_continue_ride_button"
             android:layout_width="fill_parent"
-            android:layout_height="45dp"
+            android:layout_height="40dp"
             android:layout_below="@+id/trip_summerydetail_cancelride_button"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
@@ -595,6 +595,24 @@
             android:textColor="#ffffff"
             android:textSize="15sp"
             android:visibility="gone" />
+
+
+
+        <Button
+            android:id="@+id/trip_summerydetail_requestpayment_button"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_below="@+id/trip_summerydetail_continue_ride_button"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button_curve_background_blue"
+            android:text="@string/lbel_fare_summery_requestpayment"
+            android:textColor="#ffffff"
+            android:textSize="15sp"
+            android:visibility="gone" />
+
+
 
     </RelativeLayout>
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
 
     <RelativeLayout
@@ -99,15 +99,16 @@
                     android:textColor="#000000"
                     android:textColorHint="#4e4e4e"
                     android:textSize="13sp" />
+
                 <ProgressBar
+                    android:id="@+id/locationplace_progressBar"
                     style="?android:attr/progressBarStyleSmall"
                     android:layout_width="28dp"
                     android:layout_height="28dp"
-                    android:id="@+id/locationplace_progressBar"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
-                    android:visibility="invisible"/>
+                    android:visibility="invisible" />
 
             </RelativeLayout>
 
@@ -164,8 +165,8 @@
                     android:layout_below="@+id/arrived_drop_time_star"
                     android:layout_marginLeft="149dp"
                     android:layout_marginStart="149dp"
-                    android:visibility="gone"
-                    android:layout_toRightOf="@+id/arrived_drop_time_star" />
+                    android:layout_toRightOf="@+id/arrived_drop_time_star"
+                    android:visibility="gone" />
 
 
             </RelativeLayout>
@@ -293,6 +294,52 @@
                     android:textSize="13sp" />
 
 
+                <RelativeLayout
+                    android:id="@+id/Rl_layout_note"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/arrived_ridedistance_Et"
+                    android:layout_marginTop="10dp">
+
+
+                    <TextView
+                        android:id="@+id/endtrip_note"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/lbel_Note"
+                        android:textColor="#000000"
+                        android:textSize="13sp" />
+
+
+                    <TextView
+                        android:id="@+id/endtrip_note_details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_toRightOf="@+id/endtrip_note"
+                        android:text="@string/lbel_Note_Detail"
+                        android:textColor="#000000"
+                        android:textSize="12sp" />
+
+
+                </RelativeLayout>
+
+
+                <TextView
+                    android:id="@+id/dummyTv_note"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/Rl_layout_note"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/lbel_Note_Detail"
+                    android:textColor="#000000"
+                    android:textSize="15sp"
+                    android:visibility="gone" />
+
+
             </RelativeLayout>
 
 
@@ -322,7 +369,7 @@
             android:textColor="#ffffff"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:reflectionColor="#31c3e7"/>
+            app:reflectionColor="#31c3e7" />
 
 
     </RelativeLayout>

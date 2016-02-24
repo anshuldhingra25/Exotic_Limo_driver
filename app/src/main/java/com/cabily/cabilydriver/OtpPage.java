@@ -16,10 +16,12 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.app.service.ServiceRequest;
 import com.app.xmpp.ChatingService;
 import com.app.service.ServiceConstant;
 import com.cabily.cabilydriver.Utils.AppController;
 import com.cabily.cabilydriver.Utils.ConnectionDetector;
+import com.cabily.cabilydriver.Utils.CurrencySymbolConverter;
 import com.cabily.cabilydriver.Utils.SessionManager;
 import com.cabily.cabilydriver.Utils.VolleyErrorResponse;
 import com.cabily.cabilydriver.subclass.SubclassActivity;
@@ -46,13 +48,14 @@ public class OtpPage extends SubclassActivity {
          Button BT_otp_confirm;
 
       Dialog dialog;
+    private ServiceRequest mRequest;
 
     StringRequest postrequest;
 
     String Str_otp="",Str_amount="";
     private  String Str_rideId="",driver_id="";
 
-
+    private String sCurrencySymbol="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +91,8 @@ public class OtpPage extends SubclassActivity {
         BT_otp_confirm = (Button)findViewById(R.id.otp_request_btn);
         Intent i = getIntent();
         Str_rideId = i.getStringExtra("rideid");
+
+        System.out.println("inside-------------"+Str_rideId);
 
        // Et_otp.setSelection(Et_otp.getText().length());
 
@@ -130,6 +135,90 @@ public class OtpPage extends SubclassActivity {
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
 
+        final TextView dialog_title = (TextView) dialog.findViewById(R.id.custom_loading_textview);
+        dialog_title.setText(getResources().getString(R.string.action_loading));
+
+        System.out.println("-------------otp----------------" + Url);
+
+        HashMap<String, String> jsonParams = new HashMap<String, String>();
+        jsonParams.put("driver_id",driver_id);
+        jsonParams.put("ride_id",Str_rideId);
+
+        System.out.println("otp-------driver_id---------"+driver_id);
+
+        System.out.println("otp-------ride_id---------"+Str_rideId);
+        mRequest = new ServiceRequest(OtpPage.this);
+        mRequest.makeServiceRequest(Url, Request.Method.POST, jsonParams, new ServiceRequest.ServiceListener() {
+
+            @Override
+            public void onCompleteListener(String response) {
+                Log.e("otp", response);
+
+                System.out.println("otp---------"+response);
+
+                String Str_status = "",Str_response="",Str_otp_status="",Str_ride_id="",Str_currency="";
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    Str_status = object.getString("status");
+
+                    if (Str_status.equalsIgnoreCase("1")){
+
+                        Str_response = object.getString("response");
+                        Str_currency = object.getString("currency");
+                        //    Currency currencycode = Currency.getInstance(getLocale(Str_currency));
+
+                        sCurrencySymbol = CurrencySymbolConverter.getCurrencySymbol(Str_currency);
+
+                        Str_otp_status = object.getString("otp_status");
+                        Str_otp  = object.getString("otp");
+                        Str_ride_id = object.getString("ride_id");
+                        Str_amount = sCurrencySymbol + object.getString("amount");
+
+                        System.out.println("otp--------"+Str_otp);
+
+                        System.out.println("Str_otp_status--------"+Str_otp_status);
+
+                    }else{
+
+                        Str_response = object.getString("response");
+                    }
+                }catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                dialog.dismiss();
+
+
+                if (Str_status.equalsIgnoreCase("1")){
+
+                    if (Str_otp_status.equalsIgnoreCase("development")){
+                        Et_otp.setText(Str_otp);
+                    }
+
+                }else{
+                    Alert(getResources().getString(R.string.alert_sorry_label_title), Str_response);  }
+            }
+
+            @Override
+            public void onErrorListener() {
+
+                dialog.dismiss();
+            }
+        });
+
+    }
+
+
+/*
+    private void PostRequest1(String Url) {
+        dialog = new Dialog(OtpPage.this);
+        dialog.getWindow();
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.custom_loading);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+
         System.out.println("loadin-----------");
         TextView dialog_title=(TextView)dialog.findViewById(R.id.custom_loading_textview);
         dialog_title.setText(getResources().getString(R.string.action_loading));
@@ -149,18 +238,30 @@ public class OtpPage extends SubclassActivity {
                         try {
                             JSONObject object = new JSONObject(response);
                             Str_status = object.getString("status");
-                            Str_response = object.getString("response");
-                            Str_currency = object.getString("currency");
-                            Currency currencycode = Currency.getInstance(getLocale(Str_currency));
 
-                            Str_otp_status = object.getString("otp_status");
-                            Str_otp  = object.getString("otp");
-                            Str_ride_id = object.getString("ride_id");
-                            Str_amount = currencycode.getSymbol()+object.getString("amount");
+                            if (Str_status.equalsIgnoreCase("1")){
 
-                            System.out.println("otp--------"+Str_otp);
+                                Str_response = object.getString("response");
+                                Str_currency = object.getString("currency");
+                            //    Currency currencycode = Currency.getInstance(getLocale(Str_currency));
 
-                            System.out.println("Str_otp_status--------"+Str_otp_status);
+                                sCurrencySymbol = CurrencySymbolConverter.getCurrencySymbol(Str_currency);
+
+                                Str_otp_status = object.getString("otp_status");
+                                Str_otp  = object.getString("otp");
+                                Str_ride_id = object.getString("ride_id");
+                                Str_amount = sCurrencySymbol + object.getString("amount");
+
+                                System.out.println("otp--------"+Str_otp);
+
+                                System.out.println("Str_otp_status--------"+Str_otp_status);
+
+                            }else{
+
+                                Str_response = object.getString("response");
+
+                            }
+
 
 
                         }catch (Exception e) {
@@ -203,6 +304,13 @@ public class OtpPage extends SubclassActivity {
                 Map<String, String> jsonParams = new HashMap<String, String>();
                 jsonParams.put("driver_id",driver_id);
                 jsonParams.put("ride_id",Str_rideId);
+
+                System.out.println("otp-------driver_id---------"+driver_id);
+
+                System.out.println("otp-------ride_id---------"+Str_rideId);
+
+
+
                 return jsonParams;
             }
         };
@@ -213,6 +321,7 @@ public class OtpPage extends SubclassActivity {
 
         AppController.getInstance().addToRequestQueue(postrequest);
     }
+*/
 
 
 

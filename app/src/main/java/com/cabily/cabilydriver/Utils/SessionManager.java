@@ -35,6 +35,9 @@ public class SessionManager {
     public static final String KEY_SEC_KEY = "vehiclemodel";
     public static final String KEY_VEHICLE_NAME = "VEHICLE_NAME";
     public static final String KEY_ONLINE = "online";
+    public static final String KEY_COUNT = "keycount";
+    public static final String KEY_GCM_ID = "gcmId";
+
 
     // Constructor
     @SuppressLint("CommitPrefEdits")
@@ -47,7 +50,8 @@ public class SessionManager {
     /**
      * Create login session
      */
-    public void createLoginSession(String image, String driverid, String name, String email, String vehicleno, String vechilemodel, String key, String sec_key) {
+    public void createLoginSession(String image, String driverid, String name, String email, String vehicleno,
+                                   String vechilemodel, String key, String sec_key,String gcmID) {
         editor.putBoolean(IS_LOGIN, true);
         editor.putString(KEY_DRIVER_IMAGE, image);
         editor.putString(KEY_DRIVERID, driverid);
@@ -57,6 +61,7 @@ public class SessionManager {
         editor.putString(KEY_VEHICLE_MODEL, vechilemodel);
         editor.putString(KEY_SEC_KEY, sec_key);
         editor.putString(KEY, key);
+        editor.putString(KEY_GCM_ID, gcmID);
         editor.commit();
     }
 
@@ -76,6 +81,7 @@ public class SessionManager {
         user.put(KEY_VEHICLENO, pref.getString(KEY_VEHICLENO, ""));
         user.put(KEY_VEHICLE_MODEL, pref.getString(KEY_VEHICLE_MODEL, ""));
         user.put(KEY, pref.getString(KEY, ""));
+        user.put(KEY_GCM_ID, pref.getString(KEY_GCM_ID, ""));
         return user;
     }
 
@@ -85,6 +91,18 @@ public class SessionManager {
         return online;
     }
 
+
+
+    public void setRequestCount(int count){
+        editor.putInt(KEY_COUNT, count);
+        editor.commit();
+    }
+
+    public HashMap<String, Integer> getRequestCount(){
+        HashMap<String, Integer> count = new HashMap<String, Integer>();
+        count.put(KEY_COUNT, pref.getInt(KEY_COUNT, 0));
+        return count;
+    }
 
 
 

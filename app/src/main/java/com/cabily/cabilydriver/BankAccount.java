@@ -1,13 +1,16 @@
 package com.cabily.cabilydriver;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.Hockeyapp.FragmentHockeyApp;
@@ -22,6 +25,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.app.service.ServiceConstant;
+import com.app.service.ServiceRequest;
 import com.cabily.cabilydriver.Utils.AppController;
 import com.cabily.cabilydriver.Utils.SessionManager;
 import com.cabily.cabilydriver.widgets.PkDialog;
@@ -47,6 +51,10 @@ public class BankAccount extends FragmentHockeyApp implements View.OnClickListen
     private ResideMenu resideMenu;
     private EditText holder_name, holder_address, account_no, bankname, branchname, branchaddress, ifsccode, routingno;
     private Button save_btn;
+    private Dialog dialog;
+
+    private ServiceRequest mRequest;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -163,8 +171,80 @@ public class BankAccount extends FragmentHockeyApp implements View.OnClickListen
     }
 
 
+
     private void postRequest(String Url) {
-        postrequest = new StringRequest(Request.Method.POST, Url, new Response.Listener<String>() {
+        dialog = new Dialog(getActivity());
+        dialog.getWindow();
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.custom_loading);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+
+        TextView dialog_title = (TextView) dialog.findViewById(R.id.custom_loading_textview);
+        dialog_title.setText(getResources().getString(R.string.action_loading));
+
+        System.out.println("-------------bank----------------" + Url);
+
+        HashMap<String, String> jsonParams = new HashMap<String, String>();
+        jsonParams.put("driver_id", driver_id);
+
+        mRequest = new ServiceRequest(getActivity());
+        mRequest.makeServiceRequest(Url, Request.Method.POST, jsonParams, new ServiceRequest.ServiceListener() {
+
+            @Override
+            public void onCompleteListener(String response) {
+
+                String status = "", response1 = "", detail = "", acc_holder_name = "", acc_holder_address = "", acc_number = "", bank_name = "", branch_name = "", branch_address = "", swift_code = "", routing_number = "";
+                try {
+                    JSONObject object = new JSONObject(response);
+                    status = object.getString("status");
+                    response1 = object.getString("response");
+                    JSONObject object1 = new JSONObject(response1);
+                    detail = object1.getString("banking");
+                    JSONObject object2 = new JSONObject(detail);
+                    acc_holder_name = object2.getString("acc_holder_name");
+                    acc_holder_address = object2.getString("acc_holder_address");
+                    acc_number = object2.getString("acc_number");
+                    bank_name = object2.getString("bank_name");
+                    branch_name = object2.getString("branch_name");
+                    branch_address = object2.getString("branch_address");
+                    swift_code = object2.getString("swift_code");
+                    routing_number = object2.getString("routing_number");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    dialog.dismiss();
+
+                }
+                if (status.equalsIgnoreCase("1")) {
+                    holder_name.setText(acc_holder_name);
+                    holder_address.setText(acc_holder_address);
+                    account_no.setText(acc_number);
+                    bankname.setText(bank_name);
+                    branchname.setText(branch_name);
+                    branchaddress.setText(branch_address);
+                    ifsccode.setText(swift_code);
+                    routingno.setText(routing_number);
+                } else {
+                    Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.action_alert_bankinfo_invails));
+                }
+            }
+            @Override
+            public void onErrorListener() {
+
+                dialog.dismiss();
+
+            }
+
+        });
+
+
+    }
+
+
+/*
+
+            private void postRequest1(String Url) {
+          postrequest = new StringRequest(Request.Method.POST, Url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 String status = "", response1 = "", detail = "", acc_holder_name = "", acc_holder_address = "", acc_number = "", bank_name = "", branch_name = "", branch_address = "", swift_code = "", routing_number = "";
@@ -237,13 +317,79 @@ public class BankAccount extends FragmentHockeyApp implements View.OnClickListen
         };
         AppController.getInstance().addToRequestQueue(postrequest);
     }
+*/
 
 
     //-------------------------------save data--------------------------------------------------//
-
     private void save(String Url) {
+        dialog = new Dialog(getActivity());
+        dialog.getWindow();
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.custom_loading);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
 
-        postrequest = new StringRequest(Request.Method.POST, Url, new Response.Listener<String>() {
+        TextView dialog_title = (TextView) dialog.findViewById(R.id.custom_loading_textview);
+        dialog_title.setText(getResources().getString(R.string.action_loading));
+
+        System.out.println("-------------dashboard----------------" + Url);
+
+        HashMap<String, String> jsonParams = new HashMap<String, String>();
+        jsonParams.put("driver_id", driver_id);
+        jsonParams.put("acc_holder_name", holder_name.getText().toString());
+        jsonParams.put("acc_holder_address", holder_address.getText().toString());
+        jsonParams.put("acc_number", account_no.getText().toString());
+        jsonParams.put("bank_name", bankname.getText().toString());
+        jsonParams.put("branch_name", branchname.getText().toString());
+        jsonParams.put("branch_address", branchaddress.getText().toString());
+        jsonParams.put("swift_code", ifsccode.getText().toString());
+        jsonParams.put("routing_number", routingno.getText().toString());
+
+        mRequest = new ServiceRequest(getActivity());
+        mRequest.makeServiceRequest(Url, Request.Method.POST, jsonParams, new ServiceRequest.ServiceListener() {
+
+            @Override
+            public void onCompleteListener(String response) {
+
+                System.out.println("--------------Bank Details reponse-------------------" + response);
+                String status = "", response1 = "", detail = "", acc_holder_name = "", acc_holder_address = "", acc_number = "", bank_name = "", branch_name = "", branch_address = "", swift_code = "", routing_number = "";
+
+                try {
+
+                    JSONObject object = new JSONObject(response);
+                    status = object.getString("status");
+                    response1 = object.getString("response");
+
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                if (status.equalsIgnoreCase("1")) {
+                    Toast.makeText(getActivity(), getResources().getString(R.string.alertsaved_label_title), Toast.LENGTH_LONG).show();
+                } else {
+                    //work
+                    Alert(getResources().getString(R.string.alert_sorry_label_title),response1);
+                }
+
+            }
+
+            @Override
+            public void onErrorListener() {
+
+                dialog.dismiss();
+            }
+
+
+        });
+
+
+    }
+
+
+
+/*            private void save1(String Url) {
+
+          postrequest = new StringRequest(Request.Method.POST, Url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 System.out.println("--------------Bank Details reponse-------------------" + response);
@@ -304,7 +450,7 @@ public class BankAccount extends FragmentHockeyApp implements View.OnClickListen
 
         };
         AppController.getInstance().addToRequestQueue(postrequest);
-    }
+    }*/
 
 
 }

@@ -19,6 +19,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.Hockeyapp.FragmentHockeyApp;
@@ -28,6 +29,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.app.service.ServiceConstant;
+import com.app.service.ServiceRequest;
 import com.cabily.cabilydriver.Utils.AppController;
 import com.cabily.cabilydriver.Utils.ConnectionDetector;
 import com.cabily.cabilydriver.Utils.SessionManager;
@@ -56,6 +58,8 @@ public class BankDetails extends FragmentHockeyApp {
     private static View rootview;
     Context context;
     Dialog dialog;
+    private ServiceRequest mRequest;
+
     private ActionBar actionBar;
     private View mCustomView;
     private Boolean isInternetPresent = false;
@@ -145,8 +149,6 @@ public class BankDetails extends FragmentHockeyApp {
     }
 
 
-
-
     private void initialize(View rootview) {
         session = new SessionManager(getActivity());
 
@@ -175,8 +177,6 @@ public class BankDetails extends FragmentHockeyApp {
 
     }
 
-
-
     private void erroredit(EditText editname, String msg) {
         Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
         editname.startAnimation(shake);
@@ -188,6 +188,111 @@ public class BankDetails extends FragmentHockeyApp {
 
     //-----------------------Post Request-----------------
     private void postRequest_savebank(String Url) {
+        dialog = new Dialog(getActivity());
+        dialog.getWindow();
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.custom_loading);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+
+        final TextView dialog_title = (TextView) dialog.findViewById(R.id.custom_loading_textview);
+        dialog_title.setText(getResources().getString(R.string.action_loading));
+
+        System.out.println("-------------savebank----------------" + Url);
+
+        HashMap<String, String> jsonParams = new HashMap<String, String>();
+        jsonParams.put("driver_id", driver_id);
+        jsonParams.put("acc_holder_name", holder_name.getText().toString());
+        jsonParams.put("acc_holder_address", holder_address.getText().toString());
+        jsonParams.put("acc_number", account_no.getText().toString());
+        jsonParams.put("bank_name", bankname.getText().toString());
+        jsonParams.put("branch_name", branchname.getText().toString());
+        jsonParams.put("branch_address", branchaddress.getText().toString());
+        jsonParams.put("swift_code", ifsccode.getText().toString());
+        jsonParams.put("routing_number", routingno.getText().toString());
+
+        System.out.println("driver_id----------" + driver_id);
+
+        System.out.println("acc_holder_name----------" + holder_name.getText().toString());
+
+        System.out.println("acc_holder_address----------" + holder_address.getText().toString());
+
+        System.out.println("acc_number----------" + account_no.getText().toString());
+
+        System.out.println("bank_name----------" + bankname.getText().toString());
+
+        System.out.println("branch_address----------" + branchaddress.getText().toString());
+
+        System.out.println("swift_code----------" + ifsccode.getText().toString());
+
+        System.out.println("routing_number----------" + routingno.getText().toString());
+        mRequest = new ServiceRequest(getActivity());
+        mRequest.makeServiceRequest(Url, Request.Method.POST, jsonParams, new ServiceRequest.ServiceListener() {
+
+            @Override
+            public void onCompleteListener(String response) {
+
+                String Strstatus = "", Sresponse = "", Str_accountholder_name = "", Str_accountholder_address = "", Str_account_number = "", Str_bank_name = "",
+                        Str_branch_name = "", Str_branch_address = "", Str_swift_code = "", Str_routing_number = "";
+
+                System.out.println("bank-----------------" + response);
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    Strstatus = object.getString("status");
+
+                    if (Strstatus.equalsIgnoreCase("1")){
+
+                        JSONObject jsonObject = object.getJSONObject("response");
+                        JSONObject jobjct = jsonObject.getJSONObject("banking");
+
+                        Str_accountholder_name = jobjct.getString("acc_holder_name");
+                        Str_accountholder_address = jobjct.getString("acc_holder_address");
+                        Str_account_number = jobjct.getString("acc_number");
+                        Str_bank_name = jobjct.getString("bank_name");
+                        Str_branch_name = jobjct.getString("branch_name");
+                        Str_branch_address = jobjct.getString("branch_address");
+                        Str_swift_code = jobjct.getString("swift_code");
+                        Str_routing_number = jobjct.getString("routing_number");
+                    }else{
+                        Sresponse = object.getString("response");
+                    }
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+                if (Strstatus.equalsIgnoreCase("1")) {
+                    Toast.makeText(getActivity(), getResources().getString(R.string.alertsaved_label_title), Toast.LENGTH_LONG).show();
+                    holder_name.setText(Str_accountholder_name);
+                    holder_address.setText(Str_accountholder_address);
+                    account_no.setText(Str_account_number);
+                    bankname.setText(Str_bank_name);
+                    branchname.setText(Str_branch_name);
+                    ifsccode.setText(Str_swift_code);
+                    routingno.setText(Str_routing_number);
+
+                } else {
+                    Alert(getResources().getString(R.string.alert_sorry_label_title), Sresponse);
+                }
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onErrorListener() {
+
+                dialog.dismiss();
+
+            }
+
+        });
+
+
+    }
+
+
+/*
+    private void postRequest_savebank1(String Url) {
         dialog = new Dialog(getActivity());
         dialog.getWindow();
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -300,10 +405,93 @@ public class BankDetails extends FragmentHockeyApp {
         };
         AppController.getInstance().addToRequestQueue(postrequest);
     }
+*/
 
 
     //-----------------------Post Request-----------------
     private void postRequest_getbank(String Url) {
+        dialog = new Dialog(getActivity());
+        dialog.getWindow();
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.custom_loading);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+
+        TextView dialog_title = (TextView) dialog.findViewById(R.id.custom_loading_textview);
+        dialog_title.setText(getResources().getString(R.string.action_loading));
+
+        System.out.println("-------------dashboard----------------" + Url);
+
+        HashMap<String, String> jsonParams = new HashMap<String, String>();
+        jsonParams.put("driver_id", driver_id);
+        System.out.println("driver_id----------" + driver_id);
+
+        mRequest = new ServiceRequest(getActivity());
+        mRequest.makeServiceRequest(Url, Request.Method.POST, jsonParams, new ServiceRequest.ServiceListener() {
+
+            @Override
+            public void onCompleteListener(String response) {
+                String Strstatus = "", Smessage = "", Str_accountholder_name = "", Str_accountholder_address = "", Str_account_number = "", Str_bank_name = "",
+                        Str_branch_name = "", Str_branch_address = "", Str_swift_code = "", Str_routing_number = "";
+                System.out.println("bank-----------------" + response);
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    Strstatus = object.getString("status");
+
+                    if (Strstatus.equalsIgnoreCase("1")){
+                        JSONObject jsonObject = object.getJSONObject("response");
+                        JSONObject jobjct = jsonObject.getJSONObject("banking");
+
+                        Str_accountholder_name = jobjct.getString("acc_holder_name");
+                        Str_accountholder_address = jobjct.getString("acc_holder_address");
+                        Str_account_number = jobjct.getString("acc_number");
+                        Str_bank_name = jobjct.getString("bank_name");
+                        Str_branch_name = jobjct.getString("branch_name");
+                        Str_branch_address = jobjct.getString("branch_address");
+                        Str_swift_code = jobjct.getString("swift_code");
+                        Str_routing_number = jobjct.getString("routing_number");
+
+                    }else{
+                        Smessage = object.getString("response");
+                    }
+
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                    dialog.dismiss();
+                }
+
+                if (Strstatus.equalsIgnoreCase("1")) {
+                    holder_name.setText(Str_accountholder_name);
+                    holder_address.setText(Str_accountholder_address);
+                    account_no.setText(Str_account_number);
+                    bankname.setText(Str_bank_name);
+                    branchname.setText(Str_branch_name);
+                    ifsccode.setText(Str_swift_code);
+                    routingno.setText(Str_routing_number);
+                    branchaddress.setText(Str_branch_address);
+
+                } else {
+                    Alert(getResources().getString(R.string.alert_sorry_label_title), Smessage);
+                }
+
+                dialog.dismiss();
+
+
+            }
+
+            @Override
+            public void onErrorListener() {
+
+                dialog.dismiss();
+
+            }
+
+        });
+    }
+
+  /*  private void postRequest_getbank1(String Url) {
         dialog = new Dialog(getActivity());
         dialog.getWindow();
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -390,7 +578,7 @@ public class BankDetails extends FragmentHockeyApp {
             }
         };
         AppController.getInstance().addToRequestQueue(postrequest);
-    }
+    }*/
 
 
 }
