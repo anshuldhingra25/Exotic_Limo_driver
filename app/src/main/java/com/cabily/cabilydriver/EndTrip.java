@@ -494,6 +494,7 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
             e.printStackTrace();
         }
     }
+    JSONObject job;
 
     @Override
     public void onLocationChanged(Location location) {
@@ -521,11 +522,13 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
                     current_lon = location.getLongitude();
                     String sendlat = Double.valueOf(current_lat).toString();
                     String sendlng = Double.valueOf(current_lon).toString();
-                    JSONObject job = new JSONObject();
-                    job.accumulate("action", "driver_loc");
-                    job.accumulate("latitude", sendlat);
-                    job.accumulate("longitude", sendlng);
-                    job.accumulate("ride_id", "");
+                    if(job == null){
+                        job = new JSONObject();
+                    }
+                    job.put("action", "driver_loc");
+                    job.put("latitude", sendlat);
+                    job.put("longitude", sendlng);
+                    job.put("ride_id", "");
                    /* HashMap<String, String> jsonParams = new HashMap<String, String>();
                     jsonParams.put("action","driver_loc");
                     jsonParams.put("latitude",sendlat);

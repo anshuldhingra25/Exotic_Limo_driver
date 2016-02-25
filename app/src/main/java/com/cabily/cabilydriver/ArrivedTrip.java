@@ -400,10 +400,7 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
             alert_layout.setVisibility(View.VISIBLE);
             alert_textview.setText(getResources().getString(R.string.alert_gpsEnable));
         }
-
         markerOptions = new MarkerOptions();
-
-
         try {
             System.out.println("to----------" + toPosition);
             System.out.println("from----------" + fromPosition);
@@ -515,7 +512,7 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
 
     MarkerOptions mm = new MarkerOptions();
     Marker drivermarker;
-
+    JSONObject job;
     @Override
     public void onLocationChanged(Location location) {
 
@@ -523,26 +520,25 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
         System.out.println("locatbegintrip-----------" + location);
         if (myLocation != null && currentMarker != null) {
             try {
-                if (chat != null) {
-                    //LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                    //current_lat = location.getLatitude();
-                    // current_lon = location.getLongitude();
-                    // String sendlat = Double.valueOf(current_lat).toString();
-                    // String sendlng = Double.valueOf(current_lon).toString();
-                    // JSONObject job = new JSONObject();
-                    // job.accumulate("action", "driver_loc");
-                    // job.accumulate("latitude", sendlat);
-                    //job.accumulate("longitude", sendlng);
-                    // job.accumulate("ride_id", "");
-                    //String sToID = ContinuousRequestAdapter.userID + "@" + ServiceConstant.XMPP_SERVICE_NAME;
-                    // chat = ChatingService.createChat(sToID);
-                    // chat.sendMessage(job.toString());
-                    // if (drivermarker != null) {
-                    //     drivermarker.remove();
-                    // }
+                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                if (drivermarker != null) {
+                    drivermarker.remove();
                 }
                 drivermarker = googleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.orange)));
-
+                current_lat = location.getLatitude();
+                current_lon = location.getLongitude();
+                String sendlat = Double.valueOf(current_lat).toString();
+                String sendlng = Double.valueOf(current_lon).toString();
+                if(job == null){
+                    job = new JSONObject();
+                }
+                job.put("action", "driver_loc");
+                job.put("latitude", sendlat);
+                job.put("longitude", sendlng);
+                job.put("ride_id", "");
+                String sToID = ContinuousRequestAdapter.userID + "@" + ServiceConstant.XMPP_SERVICE_NAME;
+                chat = ChatingService.createChat(sToID);
+                chat.sendMessage(job.toString());
             } catch (Exception e) {
             }
             System.out.println("mylocatiobegintrip-----------" + myLocation);
