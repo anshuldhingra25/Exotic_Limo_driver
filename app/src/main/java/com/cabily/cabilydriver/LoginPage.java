@@ -128,7 +128,6 @@ public class LoginPage extends BaseActivity implements View.OnClickListener, Goo
         signin.setVisibility(View.INVISIBLE);
     }
 
-
     //--------------Alert Method-----------
     private void Alert(String title, String message) {
         final PkDialog mDialog = new PkDialog(LoginPage.this);
@@ -276,8 +275,6 @@ public class LoginPage extends BaseActivity implements View.OnClickListener, Goo
                 slideLeft();
                 startActivity(i);
                 finish();
-
-
                 if (isalive.equalsIgnoreCase("No")) {
                     // Toast.makeText(getApplicationContext(), "Logged in  successfully", Toast.LENGTH_LONG).show();
                     session.createLoginSession(driver_img, driver_id, driver_name, email, vehicle_number, vehicle_model, key, sec_key,gcmid);
@@ -293,7 +290,6 @@ public class LoginPage extends BaseActivity implements View.OnClickListener, Goo
                 {
                     Alert(getResources().getString(R.string.action_alert_multidevicelogin), getResources().getString(R.string.action_alert_multideviceloginmsg));
                 }
-
             }
         }
 

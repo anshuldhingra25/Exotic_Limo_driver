@@ -13,9 +13,9 @@ import java.util.HashMap;
 
 public class SessionManager {
     // Shared Preferences
-    SharedPreferences pref;
+    static SharedPreferences pref;
     // Editor for Shared preferences
-    Editor editor;
+    static Editor editor;
     // Context
     Context _context;
     // Shared pref mode
@@ -43,8 +43,11 @@ public class SessionManager {
     @SuppressLint("CommitPrefEdits")
     public SessionManager(Context context) {
         this._context = context;
-        pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
-        editor = pref.edit();
+        if(pref == null && editor == null) {
+            pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+            editor = pref.edit();
+        }
+
     }
 
     /**

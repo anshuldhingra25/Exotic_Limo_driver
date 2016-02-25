@@ -23,28 +23,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.app.service.ServiceConstant;
 import com.app.service.ServiceManager;
 import com.app.service.ServiceRequest;
 import com.app.xmpp.ChatingService;
-import com.cabily.cabilydriver.Pojo.Driver_Dashborad_Pojo;
-import com.cabily.cabilydriver.Pojo.TripSummaryPojo;
-import com.cabily.cabilydriver.Utils.AppController;
 import com.cabily.cabilydriver.Utils.ConnectionDetector;
 import com.cabily.cabilydriver.Utils.CurrencySymbolConverter;
 import com.cabily.cabilydriver.Utils.GPSTracker;
 import com.cabily.cabilydriver.Utils.RoundedImageView;
 import com.cabily.cabilydriver.Utils.SessionManager;
-import com.cabily.cabilydriver.Utils.VolleyErrorResponse;
 import com.cabily.cabilydriver.widgets.PkDialog;
-import com.github.paolorotolo.expandableheightlistview.ExpandableHeightListView;
-import com.github.siyamed.shapeimageview.CircularImageView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -63,23 +53,15 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.romainpiel.shimmer.Shimmer;
-import com.romainpiel.shimmer.ShimmerButton;
 import com.special.ResideMenu.ResideMenu;
-import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.Currency;
 import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 /**
- * Created by user88 on 12/22/2015.
  */
 public class DashBoardDriver extends Fragment implements View.OnClickListener, com.google.android.gms.location.LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private static View parentView;
@@ -91,12 +73,10 @@ public class DashBoardDriver extends Fragment implements View.OnClickListener, c
     private Dialog dialog;
     private StringRequest postrequest;
     private String driver_id = "";
-
     private ServiceRequest mRequest;
-
-      private  String Str_currencglobal="";
-     private   Currency  currency_code;
-    private String sCurrencySymbol="";
+    private String Str_currencglobal = "";
+    private Currency currency_code;
+    private String sCurrencySymbol = "";
 
     private Boolean isInternetPresent = false;
     private ConnectionDetector cd;
@@ -109,9 +89,9 @@ public class DashBoardDriver extends Fragment implements View.OnClickListener, c
     private boolean isTodayEarningsAvailable = false;
     private boolean isTodayTipsAvailable = false;
 
-    private  Currency currencycode1;
-    private  Currency currencycode2;
-    private   Currency currencycode;
+    private Currency currencycode1;
+    private Currency currencycode2;
+    private Currency currencycode;
 
 
     GPSTracker gps;
@@ -124,7 +104,7 @@ public class DashBoardDriver extends Fragment implements View.OnClickListener, c
     private boolean show_progress_status = false;
     private String Str_currency_code = "";
 
-    private TextView Tv_driver_name, Tv_Driver_Vechile_no, Tv_Driver_vechile_model,Tv_car_category;
+    private TextView Tv_driver_name, Tv_Driver_Vechile_no, Tv_Driver_vechile_model, Tv_car_category;
 
     private TextView Tv_lasttrip_ridetime, Tv_lasttrip_ridedate, Tv_lasttrip_earnings;
     private TextView Tv_today_earnings_onlinehours, Tv_todayearnigs_trips, Tv_todayearnings_earnings;
@@ -173,12 +153,10 @@ public class DashBoardDriver extends Fragment implements View.OnClickListener, c
         Bt_Go_Online.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(gps.isgpsenabled()&&gps.canGetLocation())
-                {
+                if (gps.isgpsenabled() && gps.canGetLocation()) {
                     cd = new ConnectionDetector(getActivity());
                     isInternetPresent = cd.isConnectingToInternet();
-
-                    if (isInternetPresent){
+                    if (isInternetPresent) {
                         session.createSessionOnline("1");
                         session.createSessionOnline("1");
                         ChatingService.startDriverAction(getContext());
@@ -186,28 +164,19 @@ public class DashBoardDriver extends Fragment implements View.OnClickListener, c
                         HashMap<String, String> jsonParams = new HashMap<String, String>();
                         HashMap<String, String> userDetails = session.getUserDetails();
                         HashMap<String, String> onlinedetails = session.getOnlineDetails();
-
                         String driverId = userDetails.get("driverid");
                         jsonParams.put("driver_id", "" + driverId);
                         jsonParams.put("availability", "" + "Yes");
-
                         System.out.println("availability-----" + "Yes");
-
-                        System.out.println("driver_id-----"+driverId);
-
+                        System.out.println("driver_id-----" + driverId);
                         ServiceManager manager = new ServiceManager(getActivity(), updateAvailablityServiceListener);
                         manager.makeServiceRequest(ServiceConstant.UPDATE_AVAILABILITY, Request.Method.POST, jsonParams);
-
                         System.out.println("go_onlineurl-----" + ServiceConstant.UPDATE_AVAILABILITY);
 
-                    }else{
-
+                    } else {
                         Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
                     }
-
-                }
-                else
-                {
+                } else {
                     enableGpsService();
                 }
             }
@@ -236,42 +205,30 @@ public class DashBoardDriver extends Fragment implements View.OnClickListener, c
         session = new SessionManager(getActivity());
         gps = new GPSTracker(getActivity());
         shimmer = new Shimmer();
-
         HashMap<String, String> user = session.getUserDetails();
         driver_id = user.get(SessionManager.KEY_DRIVERID);
         driver_img = user.get(SessionManager.KEY_DRIVER_IMAGE);
         driver_name = user.get(SessionManager.KEY_DRIVER_NAME);
         vehicle_no = user.get(SessionManager.KEY_VEHICLENO);
         vehicle_name = user.get(SessionManager.KEY_VEHICLE_MODEL);
-
         Tv_lasttrip_ridetime = (TextView) rootview.findViewById(R.id.dashboard_ride_time);
         Tv_lasttrip_ridedate = (TextView) rootview.findViewById(R.id.dashboard_last_trip_ride_date);
         Tv_lasttrip_earnings = (TextView) rootview.findViewById(R.id.netAmount_price_last_trips);
-
         Tv_today_earnings_onlinehours = (TextView) rootview.findViewById(R.id.dashboard_today_earnings_onlinetime);
         Tv_todayearnigs_trips = (TextView) rootview.findViewById(R.id.dashboard_today_earnings_trips);
         Tv_todayearnings_earnings = (TextView) rootview.findViewById(R.id.netAmount_price_today_earnings);
-
         Tv_todaytips_trips = (TextView) rootview.findViewById(R.id.dashboard_todays_trips);
         Tv_todaytips_tips = (TextView) rootview.findViewById(R.id.netAmount_price_today_tips);
-
-
         Bt_Go_Online = (Button) rootview.findViewById(R.id.Bt_gonlinebutton);
         Tv_driver_name = (TextView) rootview.findViewById(R.id.home_user_name);
         Tv_Driver_vechile_model = (TextView) rootview.findViewById(R.id.home_car_name);
         user_img = (RoundedImageView) rootview.findViewById(R.id.dasboard_driverimg);
         Tv_Driver_Vechile_no = (TextView) rootview.findViewById(R.id.home_car_no);
-        Tv_car_category = (TextView)rootview.findViewById(R.id.home_car_category);
-
-
+        Tv_car_category = (TextView) rootview.findViewById(R.id.home_car_category);
         driver_rating = (RatingBar) rootview.findViewById(R.id.driver_dashboard_ratting);
-
-
-       // shimmer = new Shimmer();
-       // shimmer.start(Bt_Go_Online);
-
+        // shimmer = new Shimmer();
+        // shimmer.start(Bt_Go_Online);
         Picasso.with(getActivity()).load(driver_img).placeholder(R.drawable.nouserimg).into(user_img);
-
         ActionBarActivity actionBarActivity = (ActionBarActivity) getActivity();
         actionBar = actionBarActivity.getSupportActionBar();
         actionBar.setHomeButtonEnabled(true);
@@ -328,15 +285,18 @@ public class DashBoardDriver extends Fragment implements View.OnClickListener, c
 
     }
 
+    public static boolean isOnline = false;
+
     private ServiceManager.ServiceListener updateAvailablityServiceListener = new ServiceManager.ServiceListener() {
         @Override
         public void onCompleteListener(Object object) {
             try {
                 dismissDialog();
                 String response = (String) object;
+                isOnline = true;
                 Intent i = new Intent(getActivity(), DriverMapActivity.class);
                 startActivity(i);
-                System.out.println("onlineresponse-------"+response);
+                System.out.println("onlineresponse-------" + response);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -439,7 +399,7 @@ public class DashBoardDriver extends Fragment implements View.OnClickListener, c
 
                 Log.e("dashboards", response);
                 System.out.println("dashboards---------" + response);
-                String Str_status = "", Str_response = "", Str_driver_name = "", Str_driver_img = "",Str_driver_category="", Str_vechile_no = "", Str_vechile_model = "", Str_driver_id = "",
+                String Str_status = "", Str_response = "", Str_driver_name = "", Str_driver_img = "", Str_driver_category = "", Str_vechile_no = "", Str_vechile_model = "", Str_driver_id = "",
                         Str_driver_lattitude = "", Str_driver_longitude = "", Str_driver_ratting = "", Str_lasttrip_ridetime = "", Str_lasttrip_ridedate = "",
                         Str_lasttrip_earnings = "", Str_lasttrip_currencycode = "", Str_todayearnings_onlinehours = "", Str_todayearnings_trips = "",
                         Str_todayearnings_earnings = "", Str_todayearnings_currencycode = "", Str_todaytips_trips = "", Str_todaytips_tips = "", Str_todaytips_currencycode = "";
@@ -481,22 +441,22 @@ public class DashBoardDriver extends Fragment implements View.OnClickListener, c
 
                                 sCurrencySymbol = CurrencySymbolConverter.getCurrencySymbol(Str_lasttrip_currencycode);
 
-                                Str_lasttrip_earnings = sCurrencySymbol+ jobject1.getString("earnings");
-                                isLastTripAvailable =true;
+                                Str_lasttrip_earnings = sCurrencySymbol + jobject1.getString("earnings");
+                                isLastTripAvailable = true;
 
-                                System.out.println("ridetim------"+Str_lasttrip_ridetime);
-                                System.out.println("ridedate------"+Str_lasttrip_ridedate);
-                                System.out.println("amount------"+Str_lasttrip_earnings);
+                                System.out.println("ridetim------" + Str_lasttrip_ridetime);
+                                System.out.println("ridedate------" + Str_lasttrip_ridedate);
+                                System.out.println("amount------" + Str_lasttrip_earnings);
 
-                            }else{
-                                isLastTripAvailable =false;
+                            } else {
+                                isLastTripAvailable = false;
                             }
-                        }else{
-                            isLastTripAvailable =false;
+                        } else {
+                            isLastTripAvailable = false;
                         }
 
                         Object check_today_earnings_object = object.get("today_earnings");
-                        if (check_today_earnings_object instanceof JSONObject){
+                        if (check_today_earnings_object instanceof JSONObject) {
                             JSONObject jobject2 = object.getJSONObject("today_earnings");
                             if (jobject2.length() > 0) {
                                 Str_todayearnings_onlinehours = jobject2.getString("online_hours");
@@ -509,15 +469,15 @@ public class DashBoardDriver extends Fragment implements View.OnClickListener, c
 
                                 Str_todayearnings_earnings = sCurrencySymbol + jobject2.getString("earnings");
                                 isTodayEarningsAvailable = true;
-                            }else{
+                            } else {
                                 isTodayEarningsAvailable = false;
                             }
-                        }else{
+                        } else {
                             isTodayEarningsAvailable = false;
                         }
 
                         Object check_today_tips_object = object.get("today_tips");
-                        if (check_today_tips_object instanceof JSONObject){
+                        if (check_today_tips_object instanceof JSONObject) {
                             JSONObject jobject3 = object.getJSONObject("today_tips");
                             if (jobject3.length() > 0) {
                                 Str_todaytips_trips = jobject3.getString("trips");
@@ -528,10 +488,10 @@ public class DashBoardDriver extends Fragment implements View.OnClickListener, c
 
                                 Str_todaytips_tips = sCurrencySymbol + jobject3.getString("tips");
                                 isTodayTipsAvailable = true;
-                            }else{
+                            } else {
                                 isTodayTipsAvailable = false;
                             }
-                        }else{
+                        } else {
                             isTodayTipsAvailable = false;
                         }
 
@@ -546,34 +506,31 @@ public class DashBoardDriver extends Fragment implements View.OnClickListener, c
                         driver_rating.setRating(Float.parseFloat(Str_driver_ratting));
                         Tv_car_category.setText(Str_driver_category);
 
-                        if (isLastTripAvailable==true)
-                        {
+                        if (isLastTripAvailable == true) {
                             Tv_lasttrip_ridetime.setText(Str_lasttrip_ridetime);
                             Tv_lasttrip_ridedate.setText(Str_lasttrip_ridedate);
                             Tv_lasttrip_earnings.setText(Str_lasttrip_earnings);
-                        }else {
+                        } else {
                             Tv_lasttrip_ridetime.setText(getResources().getString(R.string.lasttrip_emtpy_label));
                             Tv_lasttrip_ridedate.setText(getResources().getString(R.string.lasttrip_emtpy_label));
-                            Tv_lasttrip_earnings.setText(sCurrencySymbol+"0.00");
+                            Tv_lasttrip_earnings.setText(sCurrencySymbol + "0.00");
                         }
 
-                        if (isTodayEarningsAvailable==true)
-                        {
+                        if (isTodayEarningsAvailable == true) {
                             Tv_today_earnings_onlinehours.setText(Str_todayearnings_onlinehours);
-                            Tv_todayearnigs_trips.setText(Str_todayearnings_trips+" "+"Trips");
+                            Tv_todayearnigs_trips.setText(Str_todayearnings_trips + " " + "Trips");
                             Tv_todayearnings_earnings.setText(Str_todayearnings_earnings);
-                        }else{
+                        } else {
                             Tv_today_earnings_onlinehours.setText(getResources().getString(R.string.todayearning_no_online_label));
                             Tv_todayearnigs_trips.setText(getResources().getString(R.string.todayearning_no_trips_label));
-                            Tv_todayearnings_earnings.setText(sCurrencySymbol+"0.00");
+                            Tv_todayearnings_earnings.setText(sCurrencySymbol + "0.00");
                         }
 
-                        if (isTodayTipsAvailable==true)
-                        {
+                        if (isTodayTipsAvailable == true) {
                             Tv_todaytips_tips.setText(Str_todaytips_tips);
-                            Tv_todaytips_trips.setText(Str_todaytips_trips+" "+"Trips");
-                        }else{
-                            Tv_todaytips_tips.setText(sCurrencySymbol+"0.00");
+                            Tv_todaytips_trips.setText(Str_todaytips_trips + " " + "Trips");
+                        } else {
+                            Tv_todaytips_tips.setText(sCurrencySymbol + "0.00");
                             Tv_todaytips_trips.setText((getResources().getString(R.string.lasttrip_emtpy_label)));
                         }
 

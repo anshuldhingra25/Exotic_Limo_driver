@@ -21,26 +21,20 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.app.latlnginterpolation.LatLngInterpolator;
+import com.app.latlnginterpolation.MarkerAnimation;
 import com.app.service.ServiceRequest;
 import com.app.xmpp.ChatingService;
 import com.app.service.ServiceConstant;
-import com.cabily.cabilydriver.Utils.AppController;
 import com.cabily.cabilydriver.Utils.ConnectionDetector;
 import com.cabily.cabilydriver.Utils.CurrencySymbolConverter;
 import com.cabily.cabilydriver.Utils.GPSTracker;
 import com.cabily.cabilydriver.Utils.SessionManager;
-import com.cabily.cabilydriver.Utils.VolleyErrorResponse;
 import com.cabily.cabilydriver.adapter.ContinuousRequestAdapter;
 import com.cabily.cabilydriver.googlemappath.GMapV2GetRouteDirection;
 import com.cabily.cabilydriver.subclass.SubclassActivity;
@@ -70,56 +64,48 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.romainpiel.shimmer.Shimmer;
 import com.romainpiel.shimmer.ShimmerButton;
-
 import org.jivesoftware.smack.chat.Chat;
 import org.json.JSONObject;
 import org.w3c.dom.Document;
-
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
-
 import me.drakeet.materialdialog.MaterialDialog;
 
 /**
  * Created by user88 on 10/29/2015.
  */
-public class EndTrip extends SubclassActivity implements  com.google.android.gms.location.LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener  {
-
-    final static int REQUEST_LOCATION = 199;
-    PendingResult<LocationSettingsResult> result;
-
+public class EndTrip extends SubclassActivity implements com.google.android.gms.location.LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+    private final static int REQUEST_LOCATION = 199;
+    private PendingResult<LocationSettingsResult> result;
     private static final String TAG = "swipe";
     private String driver_id = "";
     private Boolean isInternetPresent = false;
     private ConnectionDetector cd;
     private SessionManager session;
-    private TextView Tv_name,Tv_mobilno,Tv_rideid,Tv_start_wait,Tv_stop_wait;
+    private TextView Tv_name, Tv_mobilno, Tv_rideid, Tv_start_wait, Tv_stop_wait;
     private RelativeLayout Rl_layout_back;
     private Button Bt_Endtrip;
-    private String Str_name="",Str_mobilno="",Str_rideid="";
+    private String Str_name = "", Str_mobilno = "", Str_rideid = "";
     private RelativeLayout alert_layout;
     private TextView alert_textview;
-
     private ShimmerButton Bt_Shimmer_End_trip;
-    float initialX, initialY;
-    Shimmer shimmer;
+    private float initialX, initialY;
+    private Shimmer shimmer;
     private Marker currentMarkerto;
     public MarkerOptions markerto;
-    String droplocation[];
-    String startlocation [];
-    MarkerOptions marker;
-    double previous_lat, previous_lon, current_lat, current_lon, dis=0.0;
+    private String droplocation[];
+    private String startlocation[];
+    private MarkerOptions marker;
+    private double previous_lat, previous_lon, current_lat, current_lon, dis = 0.0;
     public static Location myLocation;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private Marker currentMarker;
     private ServiceRequest mRequest;
-
     private GoogleMap googleMap;
-    Dialog dialog;
+    private Dialog dialog;
     StringRequest postrequest;
     MediaPlayer mediaPlayer;
 
@@ -131,34 +117,33 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
     private int secs;
     private int milliseconds;
     private Button Bt_Enable_voice;
-    private String Str_status = "",Str_response="",Str_ridefare="",Str_timetaken="",Str_waitingtime="",Str_need_payment="",Str_currency="",Str_ride_distance="",str_recievecash="";
+    private String Str_status = "", Str_response = "", Str_ridefare = "", Str_timetaken = "", Str_waitingtime = "", Str_need_payment = "", Str_currency = "", Str_ride_distance = "", str_recievecash = "";
     private GPSTracker gps;
-    private LatLng fromPosition,toposition;
-    private LatLng destlatlng,startlatlng;
+    private LatLng fromPosition, toposition;
+    private LatLng destlatlng, startlatlng;
 
     private double MyCurrent_lat = 0.0, MyCurrent_long = 0.0;
     private TextView timerValue;
-    private  RelativeLayout layout_timer;
+    private RelativeLayout layout_timer;
     private long startTime = 0L;
     private Handler customHandler = new Handler();
-    private  long timeInMilliseconds = 0L;
-    private   long timeSwapBuff = 0L;
+    private long timeInMilliseconds = 0L;
+    private long timeSwapBuff = 0L;
     private long updatedTime = 0L;
-    private  LatLng start = new LatLng(18.015365, -77.499382);
-    LatLng waypoint= new LatLng(18.01455, -77.499333);
+    private LatLng start = new LatLng(18.015365, -77.499382);
+    LatLng waypoint = new LatLng(18.01455, -77.499333);
     LatLng end = new LatLng(18.012590, -77.500659);
     float[] results;
     LocationManager locationManager;
     Barcode.GeoPoint geoPoint;
     double location;
 
-    private String sCurrencySymbol="";
+    private String sCurrencySymbol = "";
 
-    private String distance= "";
+    private String distance = "";
 
     private LatLng latLng;
     private PolylineOptions mPolylineOptions;
-
 
 
     static Chat chat;
@@ -224,9 +209,7 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
                     case MotionEvent.ACTION_UP:
                         float finalX = event.getX();
                         float finalY = event.getY();
-
                         Log.d(TAG, "Action was UP");
-
                         if (initialX < finalX) {
                             cd = new ConnectionDetector(EndTrip.this);
                             isInternetPresent = cd.isConnectingToInternet();
@@ -238,7 +221,6 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
 
                                 Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
                             }
-
 
 
                             Log.d(TAG, "Left to Right swipe performed");
@@ -259,7 +241,7 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
                         break;
 
                     case MotionEvent.ACTION_CANCEL:
-                        Log.d(TAG,"Action was CANCEL");
+                        Log.d(TAG, "Action was CANCEL");
                         break;
 
                     case MotionEvent.ACTION_OUTSIDE:
@@ -269,7 +251,6 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
                 return true;
             }
         });
-
 
 
         Tv_start_wait.setOnClickListener(new View.OnClickListener() {
@@ -313,8 +294,7 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(chat!=null)
-        {
+        if (chat != null) {
             chat.close();
         }
 
@@ -333,63 +313,50 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
 
 
         Bundle b = getIntent().getExtras();
-        if(b!=null&&b.containsKey("pickuplatlng"))
-        {
+        if (b != null && b.containsKey("pickuplatlng")) {
             droplocation = b.getString("pickuplatlng").split(",");
-             Log.d("LATLONG",droplocation.toString());
+            Log.d("LATLONG", droplocation.toString());
         }
-        if(b!=null&&b.containsKey("startpoint"))
-        {
+        if (b != null && b.containsKey("startpoint")) {
             startlocation = b.getString("startpoint").split(",");
-
-
-
-            Log.d("LATLONGccccccc",startlocation.toString());
+            Log.d("LATLONGccccccc", startlocation.toString());
             try {
                 double latitude = Double.parseDouble(droplocation[0]);
                 double longitude = Double.parseDouble(droplocation[1]);
                 double startlatitude = Double.parseDouble(startlocation[0]);
                 double startlongitude = Double.parseDouble(startlocation[1]);
-                destlatlng = new LatLng(latitude,longitude);
-                startlatlng = new LatLng(startlatitude,startlongitude);
-            }catch (Exception e){
+                destlatlng = new LatLng(latitude, longitude);
+                startlatlng = new LatLng(startlatitude, startlongitude);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
       /*  if (isInternetPresent=true)
         {
          }else {
             mediaPlayer = MediaPlayer.create(this,R.raw.jinngle);
         }
 */
-
         //endTripHandler.post(endTripRunnable);
-
         //---------------set polyline color and width----------------
         mPolylineOptions = new PolylineOptions();
         mPolylineOptions.color(Color.BLUE).width(10);
-
         Intent i = getIntent();
         Str_rideid = i.getStringExtra("rideid");
-        Str_name  = i.getStringExtra("name");
+        Str_name = i.getStringExtra("name");
         Str_mobilno = i.getStringExtra("mobilno");
-
-        Tv_name = (TextView)findViewById(R.id.end_trip_name);
-        Tv_mobilno = (TextView)findViewById(R.id.end_trip_mobilno);
-        Tv_rideid = (TextView)findViewById(R.id.beginendtrip_rideid);
-        Bt_Shimmer_End_trip = (ShimmerButton)findViewById(R.id.btn_end_trip);
-        Tv_start_wait = (TextView)findViewById(R.id.begin_waitingtime_tv_start);
-        Tv_stop_wait = (TextView)findViewById(R.id.begin_waitingtime_tv_stop);
-        timerValue = (TextView)findViewById(R.id.timerValue);
-        layout_timer = (RelativeLayout)findViewById(R.id.layout_timer);
-
+        Tv_name = (TextView) findViewById(R.id.end_trip_name);
+        Tv_mobilno = (TextView) findViewById(R.id.end_trip_mobilno);
+        Tv_rideid = (TextView) findViewById(R.id.beginendtrip_rideid);
+        Bt_Shimmer_End_trip = (ShimmerButton) findViewById(R.id.btn_end_trip);
+        Tv_start_wait = (TextView) findViewById(R.id.begin_waitingtime_tv_start);
+        Tv_stop_wait = (TextView) findViewById(R.id.begin_waitingtime_tv_stop);
+        timerValue = (TextView) findViewById(R.id.timerValue);
+        layout_timer = (RelativeLayout) findViewById(R.id.layout_timer);
         shimmer = new Shimmer();
         shimmer.start(Bt_Shimmer_End_trip);
-
-        alert_layout = (RelativeLayout)findViewById(R.id.end_trip_alert_layout);
-        alert_textview = (TextView)findViewById(R.id.end_trip_alert_textView);
-
+        alert_layout = (RelativeLayout) findViewById(R.id.end_trip_alert_layout);
+        alert_textview = (TextView) findViewById(R.id.end_trip_alert_textView);
         Tv_name.setText(Str_name);
         Tv_mobilno.setText(Str_mobilno);
         //Tv_rideid.setText(Str_rideid);
@@ -397,11 +364,9 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
     }
 
 
-
-
     private void updatePolyline() {
         // googleMap.clear();
-        Toast.makeText(EndTrip.this, "distance for endtrip "+String.valueOf(dis), Toast.LENGTH_SHORT).show();
+        Toast.makeText(EndTrip.this, "distance for endtrip " + String.valueOf(dis), Toast.LENGTH_SHORT).show();
         googleMap.addPolyline(mPolylineOptions.add(latLng));
     }
 
@@ -427,15 +392,11 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
                 Intent broadcastIntent_endtrip = new Intent();
                 broadcastIntent_endtrip.setAction("com.finish.EndTrip");
                 sendBroadcast(broadcastIntent_endtrip);
-
-
-                       Intent intent = new Intent(EndTrip.this, LoadingPage.class);
-                        intent.putExtra("Driverid",driver_id);
-                        intent.putExtra("RideId",Str_rideid);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-
-
+                Intent intent = new Intent(EndTrip.this, LoadingPage.class);
+                intent.putExtra("Driverid", driver_id);
+                intent.putExtra("RideId", Str_rideid);
+                startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 finish();
             }
         });
@@ -471,13 +432,19 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
                 .addApi(LocationServices.API)
                 .build();
     }
+
     @Override
     public void onStart() {
         super.onStart();
         if (mGoogleApiClient != null)
             mGoogleApiClient.connect();
+    }
 
-
+    @Override
+    public void onStop(){
+        super.onStop();
+        if (mGoogleApiClient != null)
+            mGoogleApiClient.disconnect();
     }
 
 
@@ -513,73 +480,77 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
     public void onConnectionSuspended(int i) {
 
     }
+
     MarkerOptions mm = new MarkerOptions();
     Marker drivermarker;
+    boolean isFirstTime;
+
+    static LatLngInterpolator latLngInterpolator = new LatLngInterpolator.Spherical();
+
+    public static void updateMap(LatLng latLng,Marker drivermarker) {
+        try {
+            MarkerAnimation.animateMarkerToICS(drivermarker, latLng, latLngInterpolator);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void onLocationChanged(Location location) {
 
         this.myLocation = location;
         System.out.println("locat-----------" + location);
-        if (myLocation != null && currentMarker != null) {
+        if (myLocation != null) {
             try {
+                LatLng latLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+                if (drivermarker != null) {
+                    drivermarker.remove();
+                }
+                drivermarker = googleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.orange)));
+                /*if (drivermarker != null && !isFirstTime) {
+                    drivermarker.remove();
+                    isFirstTime = true;
+                    drivermarker = googleMap.addMarker(new MarkerOptions()
+                            .position(latLng).draggable(true)
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.orange)));
+                }else{
+                    updateMap(latLng,drivermarker);
+                }*/
                 if (chat != null) {
-                    LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                     current_lat = location.getLatitude();
                     current_lon = location.getLongitude();
-
                     String sendlat = Double.valueOf(current_lat).toString();
                     String sendlng = Double.valueOf(current_lon).toString();
-
                     JSONObject job = new JSONObject();
-
-                    job.accumulate("action","driver_loc");
-                    job.accumulate("latitude",sendlat);
-                    job.accumulate("longitude",sendlng);
-                    job.accumulate("ride_id","");
-
+                    job.accumulate("action", "driver_loc");
+                    job.accumulate("latitude", sendlat);
+                    job.accumulate("longitude", sendlng);
+                    job.accumulate("ride_id", "");
                    /* HashMap<String, String> jsonParams = new HashMap<String, String>();
                     jsonParams.put("action","driver_loc");
                     jsonParams.put("latitude",sendlat);
                     jsonParams.put("longitude",sendlng);
-                    jsonParams.put("ride_id","");
-*/
-
-                  //  JSONObject job = new JSONObject();
-
+                    jsonParams.put("ride_id","");*/
+                    //  JSONObject job = new JSONObject();
                     // String sSenderID = "56b2f9d9219a4da531e0e59a";
                     String sToID = ContinuousRequestAdapter.userID + "@" + ServiceConstant.XMPP_SERVICE_NAME;
                     chat = ChatingService.createChat(sToID);
                     chat.sendMessage(job.toString());
-
-
                   /*  MarkerOptions m =new MarkerOptions();
-
                     m.position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.dot));*/
-                    if(drivermarker!=null)
-                    {
-                        drivermarker.remove();
-                    }
-
-                    drivermarker =    googleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.orange)));
-
                     //markerOptions.
                 }
             } catch (Exception e) {
             }
 
-            System.out.println("mylocatuon-----------" + myLocation);
-            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            current_lat = location.getLatitude();
-            current_lon = location.getLongitude();
-            currentMarker.setPosition(latLng);
-
-
-          //  googleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.dot)));
-
-
-            // Toast.makeText(EndTrip.this, "distance in metres1:" + "MY current" , Toast.LENGTH_SHORT).show();
-
+            if (currentMarker != null) {
+                System.out.println("mylocatuon-----------" + myLocation);
+                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                current_lat = location.getLatitude();
+                current_lon = location.getLongitude();
+                currentMarker.setPosition(latLng);
+            }
+            //  googleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.dot)));
             //markerOptionsnew = new MarkerOptions();
             //  markernew = new MarkerOptions();
             //  markernew.position((fromPosition));
@@ -592,25 +563,18 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
             markerto.position((destlatlng));
             markerto.icon(BitmapDescriptorFactory.fromResource(R.drawable.flagimage));
             //currentMarkerto = googleMap.addMarker(markerto);
-
-
             System.out.println("online------------------" + ServiceConstant.UPDATE_CURRENT_LOCATION);
             toposition = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
             float[] f = new float[1];
             if (current_lat != previous_lat || current_lon != previous_lon) {
-                // dis += getDistance(previous_lat, previous_lon, current_lat, current_lon);
-
-                // previous_lat =13.052562;
-                // previous_lon= 80.251086;
-
-                // current_lat =13.054046;
-                // current_lon   =80.253275;
-
-
+                //dis += getDistance(previous_lat, previous_lon, current_lat, current_lon);
+                //previous_lat =13.052562;
+                //previous_lon= 80.251086;
+                //current_lat =13.054046;
+                //current_lon   =80.253275;
                 Location.distanceBetween(previous_lat, previous_lon, current_lat, current_lon, f);
-
                 dis += Double.parseDouble(String.valueOf(f[0]));
-                //  Toast.makeText(EndTrip.this, "distance in metres2:" + String.valueOf(dis) , Toast.LENGTH_SHORT).show();
+                //Toast.makeText(EndTrip.this, "distance in metres2:" + String.valueOf(dis) , Toast.LENGTH_SHORT).show();
                 previous_lat = current_lat;
                 previous_lon = current_lon;
                 System.out.println("distanceinside----------------------" + dis);
@@ -623,11 +587,10 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
             previous_lon = current_lon;
             // Toast.makeText(EndTrip.this, "distance in metres3:" + String.valueOf(dis), Toast.LENGTH_SHORT).show();
             if (googleMap != null) {
-               // googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()),
+                // googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()),
                 //        16));
             }
             toposition = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-
         }
     }
 
@@ -647,7 +610,6 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
         //print out in degrees
         System.out.println(Math.toDegrees(lat3) + " " + Math.toDegrees(lon3));
     }
-
 
 
     private class GetRouteTask extends AsyncTask<String, Void, String> {
@@ -679,8 +641,6 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
             m[1] = googleMap.addMarker(new MarkerOptions().position(destlatlng).icon(BitmapDescriptorFactory.fromResource(R.drawable.flagimage)));
 
 
-
-
             LatLngBounds.Builder builder = new LatLngBounds.Builder();
             for (Marker marker : m) {
                 builder.include(marker.getPosition());
@@ -702,7 +662,6 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
             marker.position(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
             marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.cargreens));
             currentMarker = googleMap.addMarker(marker);*/
-
 
 
             // Adding route on the map
@@ -727,10 +686,10 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
         double lonA = Math.toRadians(lon1);
         double latB = Math.toRadians(lat2);
         double lonB = Math.toRadians(lon2);
-        double cosAng = (Math.cos(latA) * Math.cos(latB) * Math.cos(lonB-lonA)) +
+        double cosAng = (Math.cos(latA) * Math.cos(latB) * Math.cos(lonB - lonA)) +
                 (Math.sin(latA) * Math.sin(latB));
         double ang = Math.acos(cosAng);
-        double dist = ang *6371;
+        double dist = ang * 6371;
         return dist;
     }
 
@@ -767,7 +726,7 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
     private void initilizeMap() {
         /// myLocation = googleMap.getMyLocation();
         if (googleMap == null) {
-            googleMap = ((MapFragment)EndTrip.this.getFragmentManager().findFragmentById(R.id.arrived_trip_view_map)).getMap();
+            googleMap = ((MapFragment) EndTrip.this.getFragmentManager().findFragmentById(R.id.arrived_trip_view_map)).getMap();
             // check if map is created successfully or not
             if (googleMap == null) {
                 Toast.makeText(EndTrip.this, getResources().getString(R.string.action_alert_unabletocreatemap), Toast.LENGTH_SHORT).show();
@@ -797,7 +756,8 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
             MyCurrent_lat = Dlatitude;
             MyCurrent_long = Dlongitude;
 
-            previous_lat=MyCurrent_lat; previous_lon=MyCurrent_long;
+            previous_lat = MyCurrent_lat;
+            previous_lon = MyCurrent_long;
             // Move the camera to last position with a zoom level
             CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(Dlatitude, Dlongitude)).zoom(17).build();
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
@@ -805,7 +765,8 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
             // create marker double Dlatitude = gps.getLatitude();
 
             //----------------------set marker------------------
-            marker  = new MarkerOptions().position(new LatLng(Dlatitude, Dlongitude));marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.red_car));
+            marker = new MarkerOptions().position(new LatLng(Dlatitude, Dlongitude));
+            marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.red_car));
 
             currentMarker = googleMap.addMarker(marker);
 
@@ -824,18 +785,13 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
     }
 
 
-
     public static final float[] calculateDistanceTo(Location fromLocation, Location toLocation) {
         float[] results = new float[0];
-
         double startLatitude = fromLocation.getLatitude();
         double startLongitude = fromLocation.getLongitude();
-
         double endLatitude = toLocation.getLatitude();
         double endLongitude = toLocation.getLongitude();
-
         fromLocation.distanceBetween(startLatitude, startLongitude, endLatitude, endLongitude, results);
-
         return results;
     }
 
@@ -856,36 +812,31 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
 */
 
 
-
-
     //-------------------Show Summery fare  Method--------------------
     private void showfaresummerydetails() {
 
         final MaterialDialog dialog = new MaterialDialog(EndTrip.this);
         View view = LayoutInflater.from(EndTrip.this).inflate(R.layout.fare_summery_alert_dialog, null);
-        final TextView Tv_reqest = (TextView)view.findViewById(R.id.requst);
+        final TextView Tv_reqest = (TextView) view.findViewById(R.id.requst);
         TextView tv_fare_totalamount = (TextView) view.findViewById(R.id.fare_summery_total_amount);
         TextView tv_ridedistance = (TextView) view.findViewById(R.id.fare_summery_ride_distance_value);
         TextView tv_timetaken = (TextView) view.findViewById(R.id.fare_summery_ride_timetaken_value);
         TextView tv_waittime = (TextView) view.findViewById(R.id.fare_summery_wait_time_value);
-        RelativeLayout layout_request_payment = (RelativeLayout)view.findViewById(R.id.layout_faresummery_requstpayment);
-        RelativeLayout layout_receive_cash = (RelativeLayout)view.findViewById(R.id.fare_summery_receive_cash_layout);
+        RelativeLayout layout_request_payment = (RelativeLayout) view.findViewById(R.id.layout_faresummery_requstpayment);
+        RelativeLayout layout_receive_cash = (RelativeLayout) view.findViewById(R.id.fare_summery_receive_cash_layout);
         tv_fare_totalamount.setText(Str_ridefare);
         tv_ridedistance.setText(Str_ride_distance);
         tv_timetaken.setText(Str_timetaken);
         tv_waittime.setText(Str_waitingtime);
         dialog.setView(view).show();
-
-
         //if (Str_need_payment.equalsIgnoreCase("YES")){
-
-            layout_receive_cash.setVisibility(View.VISIBLE);
-            layout_request_payment.setVisibility(View.VISIBLE);
-            Tv_reqest.setText(EndTrip.this.getResources().getString(R.string.lbel_fare_summery_requestpayment));
+        layout_receive_cash.setVisibility(View.VISIBLE);
+        layout_request_payment.setVisibility(View.VISIBLE);
+        Tv_reqest.setText(EndTrip.this.getResources().getString(R.string.lbel_fare_summery_requestpayment));
 
         //}else{
-          //  layout_receive_cash.setVisibility(View.GONE);
-           // Tv_reqest.setText(EndTrip.this.getResources().getString(R.string.alert_label_ok));
+        //  layout_receive_cash.setVisibility(View.GONE);
+        // Tv_reqest.setText(EndTrip.this.getResources().getString(R.string.alert_label_ok));
 
         //}
 
@@ -928,13 +879,13 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
 
         final MaterialDialog dialog = new MaterialDialog(EndTrip.this);
         View view = LayoutInflater.from(EndTrip.this).inflate(R.layout.fare_summery_alert_dialog, null);
-        final TextView Tv_reqest = (TextView)view.findViewById(R.id.requst);
+        final TextView Tv_reqest = (TextView) view.findViewById(R.id.requst);
         TextView tv_fare_totalamount = (TextView) view.findViewById(R.id.fare_summery_total_amount);
         TextView tv_ridedistance = (TextView) view.findViewById(R.id.fare_summery_ride_distance_value);
         TextView tv_timetaken = (TextView) view.findViewById(R.id.fare_summery_ride_timetaken_value);
         TextView tv_waittime = (TextView) view.findViewById(R.id.fare_summery_wait_time_value);
-        RelativeLayout layout_request_payment = (RelativeLayout)view.findViewById(R.id.layout_faresummery_requstpayment);
-        RelativeLayout layout_receive_cash = (RelativeLayout)view.findViewById(R.id.fare_summery_receive_cash_layout);
+        RelativeLayout layout_request_payment = (RelativeLayout) view.findViewById(R.id.layout_faresummery_requstpayment);
+        RelativeLayout layout_receive_cash = (RelativeLayout) view.findViewById(R.id.fare_summery_receive_cash_layout);
         tv_fare_totalamount.setText(Str_ridefare);
         tv_ridedistance.setText(Str_ride_distance);
         tv_timetaken.setText(Str_timetaken);
@@ -942,17 +893,17 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
         dialog.setView(view).show();
 
 
-       // if (Str_need_payment.equalsIgnoreCase("YES")){
+        // if (Str_need_payment.equalsIgnoreCase("YES")){
 
-            layout_receive_cash.setVisibility(View.GONE);
-            layout_request_payment.setVisibility(View.VISIBLE);
-            Tv_reqest.setText(EndTrip.this.getResources().getString(R.string.lbel_fare_summery_requestpayment));
+        layout_receive_cash.setVisibility(View.GONE);
+        layout_request_payment.setVisibility(View.VISIBLE);
+        Tv_reqest.setText(EndTrip.this.getResources().getString(R.string.lbel_fare_summery_requestpayment));
 
-      //  }else{
-           // layout_receive_cash.setVisibility(View.GONE);
-          //  Tv_reqest.setText(EndTrip.this.getResources().getString(R.string.alert_label_ok));
+        //  }else{
+        // layout_receive_cash.setVisibility(View.GONE);
+        //  Tv_reqest.setText(EndTrip.this.getResources().getString(R.string.alert_label_ok));
 
-       // }
+        // }
 //
         /*layout_receive_cash.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -994,13 +945,13 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
 
         final MaterialDialog dialog = new MaterialDialog(EndTrip.this);
         View view = LayoutInflater.from(EndTrip.this).inflate(R.layout.fare_summery_alert_dialog, null);
-        final TextView Tv_reqest = (TextView)view.findViewById(R.id.requst);
+        final TextView Tv_reqest = (TextView) view.findViewById(R.id.requst);
         TextView tv_fare_totalamount = (TextView) view.findViewById(R.id.fare_summery_total_amount);
         TextView tv_ridedistance = (TextView) view.findViewById(R.id.fare_summery_ride_distance_value);
         TextView tv_timetaken = (TextView) view.findViewById(R.id.fare_summery_ride_timetaken_value);
         TextView tv_waittime = (TextView) view.findViewById(R.id.fare_summery_wait_time_value);
-        RelativeLayout layout_request_payment = (RelativeLayout)view.findViewById(R.id.layout_faresummery_requstpayment);
-        RelativeLayout layout_receive_cash = (RelativeLayout)view.findViewById(R.id.fare_summery_receive_cash_layout);
+        RelativeLayout layout_request_payment = (RelativeLayout) view.findViewById(R.id.layout_faresummery_requstpayment);
+        RelativeLayout layout_receive_cash = (RelativeLayout) view.findViewById(R.id.fare_summery_receive_cash_layout);
         tv_fare_totalamount.setText(Str_ridefare);
         tv_ridedistance.setText(Str_ride_distance);
         tv_timetaken.setText(Str_timetaken);
@@ -1027,7 +978,6 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
                 intent.putExtra("rideid", Str_rideid);
                 startActivity(intent);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-
             }
         });*/
 
@@ -1039,9 +989,9 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
                 if (isInternetPresent) {
 
 
-                        Intent intent = new Intent(EndTrip.this, RatingsPage.class);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                    Intent intent = new Intent(EndTrip.this, RatingsPage.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 
 
                 } else {
@@ -1067,12 +1017,12 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
         System.out.println("-------------endtrip----------------" + Url);
 
         HashMap<String, String> jsonParams = new HashMap<String, String>();
-        jsonParams.put("driver_id",driver_id);
-        jsonParams.put("ride_id",Str_rideid);
-        jsonParams.put("drop_lat",String.valueOf(MyCurrent_lat));
-        jsonParams.put("drop_lon",String.valueOf(MyCurrent_long));
-        jsonParams.put("distance",String.valueOf(dis/1000));
-        jsonParams.put("wait_time","0");
+        jsonParams.put("driver_id", driver_id);
+        jsonParams.put("ride_id", Str_rideid);
+        jsonParams.put("drop_lat", String.valueOf(MyCurrent_lat));
+        jsonParams.put("drop_lon", String.valueOf(MyCurrent_long));
+        jsonParams.put("distance", String.valueOf(dis / 1000));
+        jsonParams.put("wait_time", "0");
 
         //jsonParams.put("wait_time",String.valueOf(mins).replace(":","."));
                /* jsonParams.put("wait_time",String.valueOf( String.valueOf("" + mins + ":"
@@ -1090,7 +1040,7 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
 
         System.out
                 .println("--------------postdistance-------------------"
-                        +String.valueOf(dis/1000));
+                        + String.valueOf(dis / 1000));
         mRequest = new ServiceRequest(EndTrip.this);
         mRequest.makeServiceRequest(Url, Request.Method.POST, jsonParams, new ServiceRequest.ServiceListener() {
 
@@ -1099,7 +1049,7 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
 
                 Log.e("end", response);
 
-                System.out.println("endtrip---------"+response);
+                System.out.println("endtrip---------" + response);
 
                 //  String Str_status = "",Str_response="",Str_ridefare="",Str_timetaken="",Str_waitingtime="",Str_currency="",Str_ride_distance="";
 
@@ -1108,7 +1058,7 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
                     Str_status = object.getString("status");
                     Str_response = object.getString("response");
 
-                    JSONObject jsonObject= object.getJSONObject("response");
+                    JSONObject jsonObject = object.getJSONObject("response");
                     JSONObject jobject = jsonObject.getJSONObject("fare_details");
                     Str_need_payment = jsonObject.getString("need_payment");
                     str_recievecash = jsonObject.getString("receive_cash");
@@ -1124,40 +1074,36 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
                     Str_need_payment = jobject.getString("need_payment");
 
 
-                    Log.d("RECEIVE",str_recievecash);
+                    Log.d("RECEIVE", str_recievecash);
 
 
-                }catch (Exception e) {
+                } catch (Exception e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
                 dialog.dismiss();
 
 
-                    if (Str_status.equalsIgnoreCase("1")){
+                if (Str_status.equalsIgnoreCase("1")) {
 
-                        //  endTripHandler.removeCallbacks(endTripRunnable);
+                    //  endTripHandler.removeCallbacks(endTripRunnable);
 
 
-                        if (Str_need_payment.equalsIgnoreCase("YES")){
-                            System.out.println("sucess------------"+Str_need_payment);
-                            if(str_recievecash.matches("Enable")) {
-                                showfaresummerydetails();
-                            }
-                            else
-                            {
-                                showfaresummerydetails1();
-                            }
-
-                        }else{
-                            showfaresummerydetails2();
+                    if (Str_need_payment.equalsIgnoreCase("YES")) {
+                        System.out.println("sucess------------" + Str_need_payment);
+                        if (str_recievecash.matches("Enable")) {
+                            showfaresummerydetails();
+                        } else {
+                            showfaresummerydetails1();
                         }
 
-                    }else {
-                        Alert(getResources().getString(R.string.alert_sorry_label_title), Str_response);
+                    } else {
+                        showfaresummerydetails2();
                     }
 
-
+                } else {
+                    Alert(getResources().getString(R.string.alert_sorry_label_title), Str_response);
+                }
 
 
                 dialog.dismiss();
@@ -1166,9 +1112,7 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
 
             @Override
             public void onErrorListener() {
-
                 dialog.dismiss();
-
             }
 
         });
@@ -1303,7 +1247,6 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
     }*/
 
 
-
     //-----------------------Code for arrived post request-----------------
     private void postRequest_Reqqustpayment(String Url) {
         dialog = new Dialog(EndTrip.this);
@@ -1344,28 +1287,28 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
 
                 Log.e("requestpayment", response);
 
-                System.out.println("response---------"+response);
+                System.out.println("response---------" + response);
 
-                String Str_status = "",Str_response="",Str_currency="",Str_rideid="",Str_action="";
+                String Str_status = "", Str_response = "", Str_currency = "", Str_rideid = "", Str_action = "";
 
                 try {
                     JSONObject object = new JSONObject(response);
                     Str_response = object.getString("response");
                     Str_status = object.getString("status");
 
-                }catch (Exception e) {
+                } catch (Exception e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
 
-                if (Str_status.equalsIgnoreCase("0"))
-                {
+                if (Str_status.equalsIgnoreCase("0")) {
                     Alert(getResources().getString(R.string.alert_sorry_label_title), Str_response);
 
-                }else{
+                } else {
                     Alert(getResources().getString(R.string.label_pushnotification_cashreceived), Str_response);
                 }
             }
+
             @Override
             public void onErrorListener() {
 
@@ -1479,8 +1422,7 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
     }
 
 
-    public void onRoutingSuccess(PolylineOptions mPolyOptions)
-    {
+    public void onRoutingSuccess(PolylineOptions mPolyOptions) {
         PolylineOptions polyoptions = new PolylineOptions();
         polyoptions.color(Color.BLUE);
         polyoptions.width(10);
@@ -1498,6 +1440,7 @@ public class EndTrip extends SubclassActivity implements  com.google.android.gms
         }
         return false;
     }
+
     //Enabling Gps Service
     private void enableGpsService() {
         mLocationRequest = LocationRequest.create();

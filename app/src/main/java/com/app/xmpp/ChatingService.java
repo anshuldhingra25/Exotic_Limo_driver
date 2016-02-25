@@ -7,6 +7,7 @@ import android.os.Messenger;
 import android.os.RemoteException;
 
 import com.app.service.ServiceConstant;
+import com.cabily.cabilydriver.DashBoardDriver;
 import com.cabily.cabilydriver.Utils.SessionManager;
 
 import org.jivesoftware.smack.AbstractXMPPConnection;
@@ -64,7 +65,7 @@ public class ChatingService extends IntentService implements ChatManagerListener
         if (intent != null) {
             try {
                 handleActionFoo();
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -173,17 +174,17 @@ public class ChatingService extends IntentService implements ChatManagerListener
             if (chatHandler == null) {
                 chatHandler = new ChatHandler(getApplicationContext(), this);
             }
-            HashMap<String, String> online = session.getOnlineDetails();
-            String checkonline = online.get(SessionManager.KEY_ONLINE);
-            if (checkonline.equalsIgnoreCase("1")) {
+           // HashMap<String, String> online = session.getOnlineDetails();
+           // String checkonline = online.get(SessionManager.KEY_ONLINE);
+           // if (checkonline.equalsIgnoreCase("1")) {
+            if(DashBoardDriver.isOnline){
                 chatHandler.onHandleChatMessage(message);
             }
-            processMessage(message);
         } catch (Exception e) {
         }
     }
 
-    public void processMessage(Message message){
+    public void processMessage(Message message) {
         if (chatMessenger != null) {
             android.os.Message chatMessage = android.os.Message.obtain();
             chatMessage.obj = message.getBody();

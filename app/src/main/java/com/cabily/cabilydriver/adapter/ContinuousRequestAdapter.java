@@ -41,14 +41,11 @@ import me.drakeet.materialdialog.MaterialDialog;
  * Created by Administrator on 11/23/2015.
  */
 public class ContinuousRequestAdapter {
-
     private SessionManager sm;
     private LayoutInflater mInflater;
     private Activity context;
     private LinearLayout listview;
-
     public int req_count;
-
     private CircleProgressView mCircleView;
     private CountDownTimer timer;
     private String KEY1 = "key1";
@@ -206,10 +203,7 @@ public class ContinuousRequestAdapter {
             }
             ServiceManager manager = new ServiceManager(context, acceptServicelistener);
             manager.makeServiceRequest(ServiceConstant.ACCEPTING_RIDE_REQUEST, Request.Method.POST, jsonParams);
-
             System.out.println("acceptrideurl------------"+ServiceConstant.ACCEPTING_RIDE_REQUEST);
-
-
             showDialog();
             stopPlayer();
         }

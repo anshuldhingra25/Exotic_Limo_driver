@@ -69,7 +69,7 @@ public class EndTrip_EnterDetails extends FragmentActivity {
     private ServiceRequest mRequest;
 
 
-    private  String Str_status = "",Str_pickup_time="",Str_response="",Str_ridefare="",Str_timetaken="",Str_waitingtime="",Str_need_payment="",Str_currency="",Str_ride_distance="";
+    private  String Str_status = "",Str_pickup_time="",Str_response="",Str_ridefare="",Str_timetaken="",Str_waitingtime="",Str_need_payment="",Str_currency="",Str_ride_distance="",str_recievecash="";
 
     private StringRequest postrequest;
     private String Str_rideid = "";
@@ -85,7 +85,7 @@ public class EndTrip_EnterDetails extends FragmentActivity {
     private String hours;
     private String wait_time="";
 
-   // private SimpleDateFormat mFormatter = new SimpleDateFormat("MMM/dd,hh:mm aa");
+    // private SimpleDateFormat mFormatter = new SimpleDateFormat("MMM/dd,hh:mm aa");
     private SimpleDateFormat mFormatter = new SimpleDateFormat("ddMMM,yyyy hh:mm aa");
 
     private SimpleDateFormat coupon_mFormatter = new SimpleDateFormat("yyyy-MM-dd hh:mm aa");
@@ -322,19 +322,31 @@ public class EndTrip_EnterDetails extends FragmentActivity {
 
         final MaterialDialog dialog = new MaterialDialog(EndTrip_EnterDetails.this);
         View view = LayoutInflater.from(EndTrip_EnterDetails.this).inflate(R.layout.fare_summery_alert_dialog, null);
-
+        final TextView Tv_reqest = (TextView)view.findViewById(R.id.requst);
         TextView tv_fare_totalamount = (TextView) view.findViewById(R.id.fare_summery_total_amount);
         TextView tv_ridedistance = (TextView) view.findViewById(R.id.fare_summery_ride_distance_value);
         TextView tv_timetaken = (TextView) view.findViewById(R.id.fare_summery_ride_timetaken_value);
         TextView tv_waittime = (TextView) view.findViewById(R.id.fare_summery_wait_time_value);
         RelativeLayout layout_request_payment = (RelativeLayout)view.findViewById(R.id.layout_faresummery_requstpayment);
         RelativeLayout layout_receive_cash = (RelativeLayout)view.findViewById(R.id.fare_summery_receive_cash_layout);
-
         tv_fare_totalamount.setText(Str_ridefare);
         tv_ridedistance.setText(Str_ride_distance);
         tv_timetaken.setText(Str_timetaken);
         tv_waittime.setText(Str_waitingtime);
         dialog.setView(view).show();
+
+
+        //if (Str_need_payment.equalsIgnoreCase("YES")){
+
+        layout_receive_cash.setVisibility(View.VISIBLE);
+        layout_request_payment.setVisibility(View.VISIBLE);
+        Tv_reqest.setText(EndTrip_EnterDetails.this.getResources().getString(R.string.lbel_fare_summery_requestpayment));
+
+        //}else{
+        //  layout_receive_cash.setVisibility(View.GONE);
+        // Tv_reqest.setText(EndTrip.this.getResources().getString(R.string.alert_label_ok));
+
+        //}
 
         layout_receive_cash.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -353,8 +365,16 @@ public class EndTrip_EnterDetails extends FragmentActivity {
                 cd = new ConnectionDetector(EndTrip_EnterDetails.this);
                 isInternetPresent = cd.isConnectingToInternet();
                 if (isInternetPresent) {
-                    postRequest_Reqqustpayment(ServiceConstant.request_paymnet_url);
-                    System.out.println("arrived------------------" + ServiceConstant.request_paymnet_url);
+
+                    if (Tv_reqest.getText().toString().equalsIgnoreCase(EndTrip_EnterDetails.this.getResources().getString(R.string.lbel_fare_summery_requestpayment))) {
+                        postRequest_Reqqustpayment(ServiceConstant.request_paymnet_url);
+                        System.out.println("arrived------------------" + ServiceConstant.request_paymnet_url);
+                    } else {
+                        Intent intent = new Intent(EndTrip_EnterDetails.this, RatingsPage.class);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                    }
+
                 } else {
                     Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
                 }
@@ -362,6 +382,134 @@ public class EndTrip_EnterDetails extends FragmentActivity {
         });
 
     }
+    private void showfaresummerydetails1() {
+
+        final MaterialDialog dialog = new MaterialDialog(EndTrip_EnterDetails.this);
+        View view = LayoutInflater.from(EndTrip_EnterDetails.this).inflate(R.layout.fare_summery_alert_dialog, null);
+        final TextView Tv_reqest = (TextView)view.findViewById(R.id.requst);
+        TextView tv_fare_totalamount = (TextView) view.findViewById(R.id.fare_summery_total_amount);
+        TextView tv_ridedistance = (TextView) view.findViewById(R.id.fare_summery_ride_distance_value);
+        TextView tv_timetaken = (TextView) view.findViewById(R.id.fare_summery_ride_timetaken_value);
+        TextView tv_waittime = (TextView) view.findViewById(R.id.fare_summery_wait_time_value);
+        RelativeLayout layout_request_payment = (RelativeLayout)view.findViewById(R.id.layout_faresummery_requstpayment);
+        RelativeLayout layout_receive_cash = (RelativeLayout)view.findViewById(R.id.fare_summery_receive_cash_layout);
+        tv_fare_totalamount.setText(Str_ridefare);
+        tv_ridedistance.setText(Str_ride_distance);
+        tv_timetaken.setText(Str_timetaken);
+        tv_waittime.setText(Str_waitingtime);
+        dialog.setView(view).show();
+
+
+        // if (Str_need_payment.equalsIgnoreCase("YES")){
+
+        layout_receive_cash.setVisibility(View.GONE);
+        layout_request_payment.setVisibility(View.VISIBLE);
+        Tv_reqest.setText(EndTrip_EnterDetails.this.getResources().getString(R.string.lbel_fare_summery_requestpayment));
+
+        //  }else{
+        // layout_receive_cash.setVisibility(View.GONE);
+        //  Tv_reqest.setText(EndTrip.this.getResources().getString(R.string.alert_label_ok));
+
+        // }
+//
+        /*layout_receive_cash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EndTrip.this, OtpPage.class);
+                intent.putExtra("rideid", Str_rideid);
+                startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
+            }
+        });*/
+
+        layout_request_payment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cd = new ConnectionDetector(EndTrip_EnterDetails.this);
+                isInternetPresent = cd.isConnectingToInternet();
+                if (isInternetPresent) {
+
+                    if (Tv_reqest.getText().toString().equalsIgnoreCase(EndTrip_EnterDetails.this.getResources().getString(R.string.lbel_fare_summery_requestpayment))) {
+                        postRequest_Reqqustpayment(ServiceConstant.request_paymnet_url);
+                        System.out.println("arrived------------------" + ServiceConstant.request_paymnet_url);
+                    } else {
+                        Intent intent = new Intent(EndTrip_EnterDetails.this, RatingsPage.class);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                    }
+
+                } else {
+                    Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
+                }
+            }
+        });
+
+    }
+
+
+    private void showfaresummerydetails2() {
+
+        final MaterialDialog dialog = new MaterialDialog(EndTrip_EnterDetails.this);
+        View view = LayoutInflater.from(EndTrip_EnterDetails.this).inflate(R.layout.fare_summery_alert_dialog, null);
+        final TextView Tv_reqest = (TextView)view.findViewById(R.id.requst);
+        TextView tv_fare_totalamount = (TextView) view.findViewById(R.id.fare_summery_total_amount);
+        TextView tv_ridedistance = (TextView) view.findViewById(R.id.fare_summery_ride_distance_value);
+        TextView tv_timetaken = (TextView) view.findViewById(R.id.fare_summery_ride_timetaken_value);
+        TextView tv_waittime = (TextView) view.findViewById(R.id.fare_summery_wait_time_value);
+        RelativeLayout layout_request_payment = (RelativeLayout)view.findViewById(R.id.layout_faresummery_requstpayment);
+        RelativeLayout layout_receive_cash = (RelativeLayout)view.findViewById(R.id.fare_summery_receive_cash_layout);
+        tv_fare_totalamount.setText(Str_ridefare);
+        tv_ridedistance.setText(Str_ride_distance);
+        tv_timetaken.setText(Str_timetaken);
+        tv_waittime.setText(Str_waitingtime);
+        dialog.setView(view).show();
+
+
+        // if (Str_need_payment.equalsIgnoreCase("YES")){
+
+        layout_receive_cash.setVisibility(View.GONE);
+        layout_request_payment.setVisibility(View.VISIBLE);
+        Tv_reqest.setText(EndTrip_EnterDetails.this.getResources().getString(R.string.lbel_notification_ok));
+
+        //  }else{
+        // layout_receive_cash.setVisibility(View.GONE);
+        //  Tv_reqest.setText(EndTrip.this.getResources().getString(R.string.alert_label_ok));
+
+        // }
+//
+        /*layout_receive_cash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EndTrip.this, OtpPage.class);
+                intent.putExtra("rideid", Str_rideid);
+                startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
+            }
+        });*/
+
+        layout_request_payment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cd = new ConnectionDetector(EndTrip_EnterDetails.this);
+                isInternetPresent = cd.isConnectingToInternet();
+                if (isInternetPresent) {
+
+
+                    Intent intent = new Intent(EndTrip_EnterDetails.this, RatingsPage.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
+
+                } else {
+                    Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
+                }
+            }
+        });
+
+    }
+
 
     //-----------------------Post Request Enter Trip Details Details-----------------
     private void postRequest_EnterTripdetails(String Url) {
@@ -425,6 +573,9 @@ public class EndTrip_EnterDetails extends FragmentActivity {
                         JSONObject jsonObject= object.getJSONObject("response");
                         JSONObject jobject = jsonObject.getJSONObject("fare_details");
 
+                        Str_need_payment = jsonObject.getString("need_payment");
+                        str_recievecash = jsonObject.getString("receive_cash");
+
                         Str_currency = jobject.getString("currency");
 
                         Currency currencycode = Currency.getInstance(getLocale(Str_currency));
@@ -445,20 +596,29 @@ public class EndTrip_EnterDetails extends FragmentActivity {
                 }
                 dialog.dismiss();
                 if (Str_status.equalsIgnoreCase("1")){
-                    if (Str_need_payment.equalsIgnoreCase("YES")){
-                        System.out.println("sucess------------"+Str_need_payment);
-                        showfaresummerydetails();
-                    }else{
 
-                        Intent intent= new Intent(EndTrip_EnterDetails.this,RatingsPage.class);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+                    //  endTripHandler.removeCallbacks(endTripRunnable);
+
+
+                    if (Str_need_payment.equalsIgnoreCase("YES")){
+                        System.out.println("sucess------------" + Str_need_payment);
+                        if(str_recievecash.matches("Enable")) {
+                            showfaresummerydetails();
+                        }
+                        else
+                        {
+                            showfaresummerydetails1();
+                        }
+
+                    }else{
+                        showfaresummerydetails2();
                     }
 
                 }else {
                     Alert(getResources().getString(R.string.alert_sorry_label_title), Str_response);
-
                 }
+
+
                 dialog.dismiss();
             }
 
@@ -485,15 +645,11 @@ public class EndTrip_EnterDetails extends FragmentActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
                         Log.e("endtripresponse",response);
-
                         System.out.println("response-----------------" + response);
-
                     try {
                             JSONObject object = new JSONObject(response);
                             Str_status = object.getString("status");
-
                         System.out.println("status--------------"+Str_status);
 
                             if (Str_status.equalsIgnoreCase("1")){
@@ -758,7 +914,6 @@ public class EndTrip_EnterDetails extends FragmentActivity {
         AppController.getInstance().addToRequestQueue(postrequest);
     }
 */
-
 
     //method to convert currency code to currency symbol
     private static Locale getLocale(String strCode) {

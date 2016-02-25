@@ -60,8 +60,7 @@ public class HomePage extends ActivityHockeyApp implements GoogleApiClient.Conne
         mSignIn = (Button) findViewById(R.id.btn_signin);
         mRegister = (Button) findViewById(R.id.btn_register);
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
-        if (SDK_INT > 8)
-        {
+        if (SDK_INT > 8) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                     .permitAll().build();
             StrictMode.setThreadPolicy(policy);
@@ -74,30 +73,25 @@ public class HomePage extends ActivityHockeyApp implements GoogleApiClient.Conne
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this).build();
         mGoogleApiClient.connect();
-        if(gps.isgpsenabled()&&gps.canGetLocation())
-        {
+        if (gps.isgpsenabled() && gps.canGetLocation()) {
             //do nothing
-        }
-        else
-        {
+        } else {
             enableGpsService();
         }
         try {
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
-
-                session = new SessionManager(HomePage.this);
-                session.createSessionOnline("0");
-                session.setRequestCount(0);
-                if (session.isLoggedIn()) {
-                    ChatingService.startDriverAction(HomePage.this);
-                    Intent i = new Intent(getApplicationContext(), NavigationDrawer.class);
-                    startActivity(i);
-                    finish();
-                }
-
+        session = new SessionManager(HomePage.this);
+        session.createSessionOnline("0");
+        session.setRequestCount(0);
+        if (session.isLoggedIn()) {
+            ChatingService.startDriverAction(HomePage.this);
+            Intent i = new Intent(getApplicationContext(), NavigationDrawer.class);
+            startActivity(i);
+            finish();
+        }
 
         mSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,9 +105,9 @@ public class HomePage extends ActivityHockeyApp implements GoogleApiClient.Conne
         mRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomePage.this,RegisterPageWebview.class);
+                Intent intent = new Intent(HomePage.this, RegisterPageWebview.class);
                 startActivity(intent);
-                overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 //Alert(HomePage.this.getResources().getString(R.string.lbel_alert_inform), HomePage.this.getResources().getString(R.string.lbel_alert_inform2));
             }
         });
@@ -122,21 +116,20 @@ public class HomePage extends ActivityHockeyApp implements GoogleApiClient.Conne
 
     private long value(String string) {
         string = string.trim();
-        if( string.contains( "." )){
-            final int index = string.lastIndexOf( "." );
-            return value( string.substring( 0, index ))* 100 + value( string.substring( index + 1 ));
-        }
-        else {
-            return Long.valueOf( string );
+        if (string.contains(".")) {
+            final int index = string.lastIndexOf(".");
+            return value(string.substring(0, index)) * 100 + value(string.substring(index + 1));
+        } else {
+            return Long.valueOf(string);
         }
     }
 
     //--------------------------code to update checker------------------
-    private boolean web_update(){
+    private boolean web_update() {
         try {
             String curVersion = HomePage.this.getPackageManager().getPackageInfo(package_name, 0).versionName;
 
-            System.out.println("currentversion-----------"+curVersion);
+            System.out.println("currentversion-----------" + curVersion);
 
             String newVersion = curVersion;
 
@@ -149,7 +142,7 @@ public class HomePage extends ActivityHockeyApp implements GoogleApiClient.Conne
                     .first()
                     .ownText();
 
-            System.out.println("Newversion-----------"+newVersion);
+            System.out.println("Newversion-----------" + newVersion);
 
             return (value(curVersion) < value(newVersion)) ? true : false;
 
@@ -205,8 +198,7 @@ public class HomePage extends ActivityHockeyApp implements GoogleApiClient.Conne
     }
 
     //Enabling Gps Service
-    private void enableGpsService()
-    {
+    private void enableGpsService() {
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setInterval(30 * 1000);
@@ -235,7 +227,7 @@ public class HomePage extends ActivityHockeyApp implements GoogleApiClient.Conne
                         try {
                             // Show the dialog by calling startResolutionForResult(),
                             // and check the result in onActivityResult().
-                            status.startResolutionForResult(HomePage.this,REQUEST_LOCATION);
+                            status.startResolutionForResult(HomePage.this, REQUEST_LOCATION);
                         } catch (IntentSender.SendIntentException e) {
                             // Ignore the error.
                         }
@@ -252,34 +244,24 @@ public class HomePage extends ActivityHockeyApp implements GoogleApiClient.Conne
 
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        switch (requestCode)
-        {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
             case REQUEST_LOCATION:
-                switch (resultCode)
-                {
-                    case Activity.RESULT_OK:
-                    {
+                switch (resultCode) {
+                    case Activity.RESULT_OK: {
                         break;
                     }
-                    case Activity.RESULT_CANCELED:
-                    {
+                    case Activity.RESULT_CANCELED: {
                         finish();
                         break;
                     }
-                    default:
-                    {
+                    default: {
                         break;
                     }
                 }
                 break;
         }
     }
-
-
-
-
 
 
 }
