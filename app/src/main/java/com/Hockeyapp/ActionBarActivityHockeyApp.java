@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.support.v7.app.ActionBarActivity;
+import android.view.WindowManager;
 
 import com.app.service.ServiceConstant;
 
@@ -17,10 +18,10 @@ public class ActionBarActivityHockeyApp extends ActionBarActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        this.mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "My Tag");
-        this.mWakeLock.acquire();
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        //final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        //this.mWakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "My Tag");
+        //this.mWakeLock.acquire();
     }
 
 
@@ -28,10 +29,9 @@ public class ActionBarActivityHockeyApp extends ActionBarActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        if(mWakeLock != null){
-            mWakeLock.release();
-        }
+        //if(mWakeLock != null){
+       //     mWakeLock.release();
+       // }
     }
 /*
     private static  String APP_ID = ServiceConstant.ACTION_ACTION_HOCKYAPPID;
