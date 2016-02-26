@@ -30,26 +30,6 @@
                 android:layout_centerInParent="true"
                 android:src="@drawable/back_arrow" />
         </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/drop_location_select_done_layout"
-            android:layout_width="100dp"
-            android:layout_height="fill_parent"
-            android:layout_alignParentRight="true"
-            android:background="@color/app_color"
-            android:visibility="gone">
-
-            <com.cabily.cabilydriver.widgets.CustomTextView
-                android:id="@+id/begin_trip_deiver_cancel_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="@string/action_done"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-        </RelativeLayout>
     </RelativeLayout>
 
 
@@ -135,6 +115,29 @@
             android:layout_centerVertical="true"
             android:visibility="invisible" />
 
+
+        <RelativeLayout
+            android:id="@+id/drop_location_select_done_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="43dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@color/app_color"
+            android:visibility="gone">
+
+            <com.cabily.cabilydriver.widgets.CustomTextView
+                android:id="@+id/begin_trip_deiver_cancel_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/action_done"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
 
     </RelativeLayout>
 

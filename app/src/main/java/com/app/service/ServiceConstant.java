@@ -38,7 +38,8 @@ public interface ServiceConstant {
     String baseurl = "http://project.dectar.com/fortaxi/";
 
     String LOGIN_URL = BASE_URL + "provider/login";
- String Register_URL = baseurl + "driver/signup";
+    String Register_URL = baseurl + "app/driver/signup";
+    String Register_Return_URL = baseurl + "app/driver/signup/success";
     String UPDATE_CURRENT_LOCATION = BASE_URL + "provider/update-driver-geo";
     String UPDATE_AVAILABILITY = BASE_URL + "provider/update-availability";
     String ACCEPTING_RIDE_REQUEST = BASE_URL +"provider/accept-ride";

@@ -204,10 +204,10 @@
     <string name="voice_navigationlabel">Start navigation</string>
 
 
-    <string name="bepatient">This Process may take few seconds.so,please be patient.</string>
-    <string name="PaymentRequest">Your Payment Request is send to the User.</string>
-    <string name="PleaseWait">Please Wait....</string>
-    <string name="checkstatus">Check Status</string>
+    <string name="bepatient">This process may take few seconds.so,please be patient.</string>
+    <string name="PaymentRequest">Your payment request is send to the user.</string>
+    <string name="PleaseWait">Please wait....</string>
+    <string name="checkstatus">Check status</string>
 
     <string name="please_collect_the_below_amount_from_the_customer">Please collect the below amount from the customer</string>
     <string name="static_rupee">176</string>
@@ -302,7 +302,7 @@
     <string name="alert_label_trip_content">Please make sure that drop time is before atleast an hour from now</string>
 
     <string name="action_session_expired_title">Session Expired</string>
-    <string name="action_session_expired_message">Please re-login to renew your session</string>
+    <string name="action_session_expired_message">The same login is used in another devices.</string>
 
 
 
@@ -316,6 +316,9 @@
 
     <string name="begintrip_enterdrop_location_label">Enter drop location</string>
     <string name="alert_label_title">Alert</string>
+
+    <string name="alert_multiple_login">SignedOut on all other devices</string>
+
 
 
 </resources>

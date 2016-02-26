@@ -1,5 +1,6 @@
 package com.cabily.cabilydriver;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
@@ -48,6 +49,26 @@ public class RegisterPageWebview extends ActionBarActivityHockeyApp {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             return (false);
+        }
+
+        //Show loader on url load
+        @Override
+        public void onLoadResource(WebView view, String url) {
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+
+            try {
+
+                if (url.contains(ServiceConstant.Register_Return_URL)) {
+                    mWebView.clearHistory();
+                    finish();
+                }
+
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
         }
     }
 

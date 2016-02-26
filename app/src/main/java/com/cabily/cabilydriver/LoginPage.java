@@ -268,26 +268,33 @@ public class LoginPage extends BaseActivity implements View.OnClickListener, Goo
                 session.createLoginSession(driver_img, driver_id, driver_name, email, vehicle_number, vehicle_model, key, sec_key,key);
                 session.setUserVehicle(vehicle_model);
 
-                ChatingService.startDriverAction(LoginPage.this);
-                Intent i = new Intent(LoginPage.this, NavigationDrawer.class);
-                slideLeft();
-                startActivity(i);
-                finish();
-               /* if (isalive.equalsIgnoreCase("No")) {
-                    // Toast.makeText(getApplicationContext(), "Logged in  successfully", Toast.LENGTH_LONG).show();
-                    session.createLoginSession(driver_img, driver_id, driver_name, email, vehicle_number, vehicle_model, key, sec_key,gcmid);
-                    session.setUserVehicle(vehicle_model);
+                if (isalive.equalsIgnoreCase("Yes")) {
 
+                    final PkDialog mDialog = new PkDialog(LoginPage.this);
+                    mDialog.setDialogTitle(getResources().getString(R.string.app_name));
+                    mDialog.setDialogMessage(getResources().getString(R.string.alert_multiple_login));
+                    mDialog.setPositiveButton(getResources().getString(R.string.alert_label_ok), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mDialog.dismiss();
+
+                            ChatingService.startDriverAction(LoginPage.this);
+                            Intent i = new Intent(LoginPage.this, NavigationDrawer.class);
+                            slideLeft();
+                            startActivity(i);
+                            finish();
+
+                        }
+                    });
+                    mDialog.show();
+                }else
+                {
                     ChatingService.startDriverAction(LoginPage.this);
-                    Intent ii = new Intent(LoginPage.this, NavigationDrawer.class);
+                    Intent i = new Intent(LoginPage.this, NavigationDrawer.class);
                     slideLeft();
-                    startActivity(ii);
+                    startActivity(i);
                     finish();
                 }
-                else
-                {
-                    Alert(getResources().getString(R.string.action_alert_multidevicelogin), getResources().getString(R.string.action_alert_multideviceloginmsg));
-                }*/
             }
         }
 

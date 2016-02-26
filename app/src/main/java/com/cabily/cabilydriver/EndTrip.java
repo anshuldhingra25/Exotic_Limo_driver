@@ -473,13 +473,13 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
                     current_lon = location.getLongitude();
                     String sendlat = Double.valueOf(current_lat).toString();
                     String sendlng = Double.valueOf(current_lon).toString();
-                    if(job == null){
+                    /*if(job == null){
                         job = new JSONObject();
                     }
                     job.put("action", "driver_loc");
                     job.put("latitude", sendlat);
                     job.put("longitude", sendlng);
-                    job.put("ride_id", "");
+                    job.put("ride_id", "");*/
                    /* HashMap<String, String> jsonParams = new HashMap<String, String>();
                     jsonParams.put("action","driver_loc");
                     jsonParams.put("latitude",sendlat);
@@ -487,9 +487,9 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
                     jsonParams.put("ride_id","");*/
                     //  JSONObject job = new JSONObject();
                     // String sSenderID = "56b2f9d9219a4da531e0e59a";
-                    String sToID = ContinuousRequestAdapter.userID + "@" + ServiceConstant.XMPP_SERVICE_NAME;
+                  /*  String sToID = ContinuousRequestAdapter.userID + "@" + ServiceConstant.XMPP_SERVICE_NAME;
                     chat = ChatingService.createChat(sToID);
-                    chat.sendMessage(job.toString());
+                    chat.sendMessage(job.toString());*/
                   /*  MarkerOptions m =new MarkerOptions();
                     m.position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.dot));*/
                     //markerOptions.

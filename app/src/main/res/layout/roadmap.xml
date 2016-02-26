@@ -5,7 +5,6 @@
     android:keepScreenOn="true">
 
 
-
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.MapFragment"
@@ -30,11 +29,11 @@
         android:layout_alignParentTop="true"
         android:layout_alignTop="@+id/map"
         android:layout_centerHorizontal="true"
-        android:layout_marginRight="15dp"
         android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:layout_marginTop="15dp"
-        android:visibility="gone"
-        android:background="@drawable/background_tanspernt_black">
+        android:background="@drawable/background_tanspernt_black"
+        android:visibility="gone">
 
 
         <com.cabily.cabilydriver.widgets.CustomTextView
@@ -42,22 +41,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/map_lable_available_status"
             android:gravity="center"
+            android:text="@string/map_lable_available_status"
             android:textColor="#ffffff"
             android:textSize="18sp" />
 
     </RelativeLayout>
 
     <ImageButton
+        android:id="@+id/refresh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/refresh"
-        android:paddingTop="15dp"
-        android:src="@drawable/refresh1"
         android:layout_above="@+id/go_offline"
+        android:layout_alignEnd="@+id/go_offline"
         android:layout_alignRight="@+id/go_offline"
-        android:layout_alignEnd="@+id/go_offline" />
+        android:paddingTop="15dp"
+        android:src="@drawable/refresh1" />
 
 
 </RelativeLayout>

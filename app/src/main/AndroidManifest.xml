@@ -25,6 +25,7 @@
     <application
         android:name=".Utils.AppController"
         android:allowBackup="true"
+        android:keepScreenOn="true"
         android:icon="@drawable/applogo"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
