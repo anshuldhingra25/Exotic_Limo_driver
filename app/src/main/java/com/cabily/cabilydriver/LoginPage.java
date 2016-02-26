@@ -3,7 +3,6 @@ package com.cabily.cabilydriver;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.provider.Settings.Secure;
 import android.support.v7.app.ActionBar;
 import android.view.View;
@@ -12,13 +11,12 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.app.dao.LoginDetails;
-import com.app.xmpp.ChatingService;
 import com.app.gcm.GCMIntializer;
 import com.app.service.ServiceManager;
+import com.app.xmpp.ChatingService;
 import com.cabily.cabilydriver.Utils.GPSTracker;
 import com.cabily.cabilydriver.Utils.SessionManager;
 import com.cabily.cabilydriver.widgets.PkDialog;
@@ -36,8 +34,6 @@ import com.google.android.gms.location.LocationSettingsStatusCodes;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import me.drakeet.materialdialog.MaterialDialog;
 
 public class LoginPage extends BaseActivity implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
@@ -264,10 +260,12 @@ public class LoginPage extends BaseActivity implements View.OnClickListener, Goo
 
                 System.out.println("driverid--------------" + driver_id);
 
+                System.out.println("--------gcm id-------------"+key);
+
             }
             if (status.equalsIgnoreCase("1")) {
 
-                session.createLoginSession(driver_img, driver_id, driver_name, email, vehicle_number, vehicle_model, key, sec_key,gcmid);
+                session.createLoginSession(driver_img, driver_id, driver_name, email, vehicle_number, vehicle_model, key, sec_key,key);
                 session.setUserVehicle(vehicle_model);
 
                 ChatingService.startDriverAction(LoginPage.this);
@@ -275,7 +273,7 @@ public class LoginPage extends BaseActivity implements View.OnClickListener, Goo
                 slideLeft();
                 startActivity(i);
                 finish();
-                if (isalive.equalsIgnoreCase("No")) {
+               /* if (isalive.equalsIgnoreCase("No")) {
                     // Toast.makeText(getApplicationContext(), "Logged in  successfully", Toast.LENGTH_LONG).show();
                     session.createLoginSession(driver_img, driver_id, driver_name, email, vehicle_number, vehicle_model, key, sec_key,gcmid);
                     session.setUserVehicle(vehicle_model);
@@ -289,7 +287,7 @@ public class LoginPage extends BaseActivity implements View.OnClickListener, Goo
                 else
                 {
                     Alert(getResources().getString(R.string.action_alert_multidevicelogin), getResources().getString(R.string.action_alert_multideviceloginmsg));
-                }
+                }*/
             }
         }
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:id="@+id/layout_end_trip_header"
@@ -170,10 +170,10 @@
                 android:id="@+id/Enable_voice_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Enable Voice"
                 android:layout_above="@+id/begintrip_call"
                 android:layout_alignParentRight="true"
-                android:visibility="gone"/>
+                android:text="Enable Voice"
+                android:visibility="gone" />
 
 
         </RelativeLayout>
@@ -235,28 +235,42 @@
     <RelativeLayout
         android:id="@+id/layout_end_trip"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="45dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-       android:paddingLeft="60dp"
-        android:paddingRight="60dp"
-        android:paddingBottom="10dp"
-        >
+        android:layout_marginBottom="10dp">
 
 
-        <com.romainpiel.shimmer.ShimmerButton
-            android:id="@+id/btn_end_trip"
+        <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/app_color"
-            android:text="@string/lbel_endtrip"
-            android:layout_centerInParent="true"
-            android:layout_margin="2dp"
-            android:textStyle="bold"
-            android:textColor="#ffffff"
-            app:reflectionColor="#31c3e7"
-            android:textSize="18sp" />
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
 
+            <SeekBar
+                android:id="@+id/end_Trip_seek"
+                android:layout_width="fill_parent"
+                android:layout_height="45dp"
+                android:background="@drawable/red_slide_to_unlock_bg"
+                android:clickable="false"
+                android:max="100"
+                android:paddingTop="5dp"
+                android:progressDrawable="@android:color/transparent"
+                android:text=""
+                android:thumb="@drawable/slidetounlock_arrow" />
+
+            <com.romainpiel.shimmer.ShimmerButton
+                android:id="@+id/end_Trip_slider_button"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="70dp"
+                android:background="#00000000"
+                android:text="@string/lbel_endtrip"
+                android:textColor="#ffffff"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:reflectionColor="#31c3e7" />
+        </RelativeLayout>
 
     </RelativeLayout>
 

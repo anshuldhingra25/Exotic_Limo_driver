@@ -13,7 +13,6 @@
         android:background="@color/app_color">
 
 
-
         <com.cabily.cabilydriver.widgets.CustomTextView
             android:id="@+id/reide_requestTv"
             android:layout_width="wrap_content"
@@ -26,15 +25,17 @@
     </RelativeLayout>
 
     <ScrollView
-        android:layout_below="@+id/layout_reide_request_header"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/layout_reide_request_header"
+        android:background="#cdcdcd">
+
         <LinearLayout
             android:id="@+id/linearList"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:orientation="vertical"
-            android:layout_below="@+id/layout_reide_request_header" />
+            android:background="#cdcdcd"
+            android:orientation="vertical" />
     </ScrollView>
 
 </RelativeLayout>

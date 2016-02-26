@@ -1,6 +1,5 @@
 package com.cabily.cabilydriver;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -19,23 +18,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.app.service.ServiceConstant;
 import com.app.service.ServiceRequest;
-import com.cabily.cabilydriver.Utils.AppController;
 import com.cabily.cabilydriver.Utils.ConnectionDetector;
 import com.cabily.cabilydriver.Utils.SessionManager;
-import com.cabily.cabilydriver.Utils.VolleyErrorResponse;
 import com.cabily.cabilydriver.widgets.PkDialog;
 import com.github.jjobes.slidedatetimepicker.SlideDateTimeListener;
 import com.github.jjobes.slidedatetimepicker.SlideDateTimePicker;
-import com.romainpiel.shimmer.Shimmer;
-import com.romainpiel.shimmer.ShimmerButton;
 
 import org.json.JSONObject;
 
@@ -46,7 +37,6 @@ import java.util.Currency;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 import me.drakeet.materialdialog.MaterialDialog;
 
@@ -63,7 +53,7 @@ public class EndTrip_EnterDetails extends FragmentActivity {
     Dialog dialog;
     private EditText Et_hours, Et_minuts, Et_distance, Et_drop_location, Et_drop_time;
 
-    private ShimmerButton Bt_shimmer_endtrip;
+    private Button Bt_shimmer_endtrip;
     float initialX, initialY;
 
     private ServiceRequest mRequest;
@@ -77,8 +67,6 @@ public class EndTrip_EnterDetails extends FragmentActivity {
     private int googlerequestcode = 100;
     private   String Slattitude="";
     private String Slongitude="";
-
-    Shimmer shimmer;
 
     private String mins;
     private String secs;
@@ -267,7 +255,6 @@ public class EndTrip_EnterDetails extends FragmentActivity {
         // get user data from session
         HashMap<String, String> user = session.getUserDetails();
         driver_id = user.get(SessionManager.KEY_DRIVERID);
-        shimmer = new Shimmer();
 
         Intent i = getIntent();
         Str_rideid = i.getStringExtra("rideid");
@@ -282,11 +269,7 @@ public class EndTrip_EnterDetails extends FragmentActivity {
         Et_drop_location = (EditText) findViewById(R.id.arrived_tripdetail_droplocation_Et);
         Et_drop_time = (EditText) findViewById(R.id.arrived_tripdetail_droptime_Et);
         Rl_layout_back = (RelativeLayout) findViewById(R.id.layout_arrivd_detail_back);
-        Bt_shimmer_endtrip = (ShimmerButton)findViewById(R.id.btn_endtrip);
-
-        shimmer.start(Bt_shimmer_endtrip);
-
-
+        Bt_shimmer_endtrip = (Button)findViewById(R.id.btn_endtrip);
     }
 
 

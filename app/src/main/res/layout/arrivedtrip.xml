@@ -182,39 +182,41 @@
     <RelativeLayout
         android:id="@+id/layout_arrivedbtn"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="45dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-       >
+        android:layout_marginBottom="10dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <RelativeLayout
+            android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:paddingLeft="60dp"
-            android:paddingRight="60dp"
-            android:paddingBottom="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
 
-           >
-
+            <SeekBar
+                android:id="@+id/arrived_Trip_seek"
+                android:layout_width="fill_parent"
+                android:layout_height="45dp"
+                android:background="@drawable/blue_slide_to_unlock_bg"
+                android:clickable="false"
+                android:max="100"
+                android:paddingTop="5dp"
+                android:progressDrawable="@android:color/transparent"
+                android:text=""
+                android:thumb="@drawable/slidetounlock_arrow" />
 
             <com.romainpiel.shimmer.ShimmerButton
-                android:id="@+id/btn_arrived"
+                android:id="@+id/arrived_Trip_slider_button"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:layout_weight="1"
-                android:background="@color/app_color"
+                android:layout_marginLeft="70dp"
+                android:background="#00000000"
                 android:text="@string/arrivedtrip_arrivedtriptv_label"
                 android:textColor="#ffffff"
                 android:textSize="18sp"
                 android:textStyle="bold"
-
                 app:reflectionColor="#31c3e7" />
 
-
-        </LinearLayout>
-
+        </RelativeLayout>
     </RelativeLayout>
 
 

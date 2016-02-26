@@ -30,14 +30,12 @@ public interface ServiceConstant {
 
     //----------testing url live------------
 
-    String URL = "http://project.dectar.com/cabilydemo/";
+    String URL = "http://project.dectar.com/fortaxi/";
     String BASE_URL = URL+"api/v1/";
     String BASE_URL_v3 = URL+"api/v3/";
-
     String XMPP_HOST_URL = "67.219.149.186";
     String XMPP_SERVICE_NAME = "messaging.dectar.com";
-
-    String baseurl = "http://project.dectar.com/cabilydemo/";
+    String baseurl = "http://project.dectar.com/fortaxi/";
 
     String LOGIN_URL = BASE_URL + "provider/login";
  String Register_URL = baseurl + "driver/signup";

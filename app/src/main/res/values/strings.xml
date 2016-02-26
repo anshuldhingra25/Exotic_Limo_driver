@@ -47,7 +47,7 @@
 
      <!--ALerts-->
     <string name="cabily_driver_alert_lable_accept_Textview">ACCEPT</string>
-    <string name="cabily_driver_alet_lable_reject_Textview">REJECT</string>
+    <string name="cabily_driver_alet_lable_reject_Textview">DECLINE</string>
     <string name="dialog_go_offline">Are you sure you want to go offline?</string>
     <string name="dialog_go_yes">Yes</string>
     <string name="dialog_go_no">No</string>
@@ -189,7 +189,7 @@
     <!--Arrived-->
     <string name="arrivedtrip_info_label">Info</string>
     <string name="arrivedtrip_id_label">ID :</string>
-    <string name="arrivedtrip_arrivedtriptv_label">  > > \t  Slide to Arrived</string>
+    <string name="arrivedtrip_arrivedtriptv_label">Slide to Arrived</string>
     <string name="alert_canceld_label_title">Cancelled</string>
     <string name="alert_tripdetail_label_title">Trip Detail</string>
     <string name="alert_tripdetail_droplocation_label_title">Drop Location</string>
@@ -227,10 +227,14 @@
 
     <!--Begin Trip-->
     <string name="lbel_begintrip_label_cancel">Cancel</string>
-    <string name="lbel_begintrip"> > > \tSlide to Begin Trip</string>
+    <string name="lbel_begintrip">Slide to Begin Trip</string>
+    <string name="action_enter_drop_location">Enter drop location</string>
+    <string name="action_select_drop_location">Select drop location</string>
+    <string name="action_done">Done</string>
+
 
       <!--EndTrip-->
-    <string name="lbel_endtrip"> > > \tSlide to End Trip</string>
+    <string name="lbel_endtrip">Slide to End Trip</string>
     <string name="lbel_currentride">Current Ride</string>
     <string name="lbel_wait">Start wait</string>
     <string name="lbel_stopwait">Stop wait</string>

@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
+        android:gravity="center"
         android:text="@string/PleaseWait"
         android:textSize="20dp" />
 
@@ -22,7 +23,7 @@
         android:layout_below="@+id/text1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
-
+        android:gravity="center"
         android:text="@string/PaymentRequest"
         android:textSize="15dp"
 
@@ -49,7 +50,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/imageView9"
-
+        android:gravity="center"
         android:layout_marginTop="70dp"
         android:paddingLeft="17dp"
         android:text="@string/bepatient"
@@ -60,13 +61,12 @@
 
     <Button
         android:id="@+id/checkstatus"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-
         android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
         android:layout_marginBottom="20dp"
-        android:layout_toEndOf="@+id/text1"
-        android:layout_toRightOf="@+id/text1"
         android:background="@color/app_color"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"

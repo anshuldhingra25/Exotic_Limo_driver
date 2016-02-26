@@ -6,36 +6,36 @@
     android:id="@+id/Ll_ride_request_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#cdcdcd"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity">
+    android:padding="10dp">
 
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="wrap_content"
+        android:background="#cdcdcd">
 
         <RelativeLayout
             android:id="@+id/layout_alerts"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@color/light_gray"
-            android:layout_alignParentTop="true">
+            android:layout_alignParentTop="true"
+            android:background="#FFFFFF"
+            android:paddingBottom="8dp"
+            android:paddingRight="5dp">
+
             <RelativeLayout
                 android:id="@+id/layout_requst_alert_circulr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
-
 
                 <at.grabner.circleprogress.CircleProgressView
                     android:id="@+id/timer_circleView"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_alignParentLeft="true"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="5dp"
                     android:background="@drawable/progress_bar"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
@@ -51,14 +51,13 @@
                 android:id="@+id/layout_request_user_address_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/layout_requst_alert_circulr"
-                >
+                android:layout_toRightOf="@+id/layout_requst_alert_circulr">
 
                 <com.cabily.cabilydriver.widgets.CustomTextView
                     android:id="@+id/cabily_user_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="5dp"
                     android:layout_marginTop="5dp"
                     android:text="PICKUP REQUEST"
                     android:textColor="#cc0000"
@@ -66,48 +65,60 @@
 
                 <com.cabily.cabilydriver.widgets.CustomTextView
                     android:id="@+id/cabily_alert_address"
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@+id/cabily_user_address"
-                    android:layout_alignStart="@+id/cabily_user_address"
-
                     android:layout_below="@+id/cabily_user_address"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginTop="10dp"
-                    android:text="54663hdfhfd hfshs " />
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="4dp"
+                    android:gravity="fill"
+                    android:text=""
+                    android:textSize="12sp" />
 
 
                 <Button
                     android:id="@+id/cabily_driver_alert_accept_btn"
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    android:layout_height="37dp"
                     android:layout_alignLeft="@+id/cabily_user_address"
                     android:layout_alignStart="@+id/cabily_user_address"
                     android:layout_below="@+id/cabily_alert_address"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/custom_curv_button_green"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_toLeftOf="@+id/cabily_driver_alert_view"
+                    android:background="#31c3e7"
                     android:text="@string/cabily_driver_alert_lable_accept_Textview"
                     android:textColor="#ffffff"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:visibility="visible" />
+
+                <View
+                    android:id="@+id/cabily_driver_alert_view"
+                    android:layout_width="1px"
+                    android:layout_height="10dp"
+                    android:layout_below="@+id/cabily_alert_address"
+                    android:layout_centerHorizontal="true"
+                    android:background="#000000"
+                    android:visibility="invisible" />
 
 
                 <Button
                     android:id="@+id/cabily_driver_alert_reject_btn"
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    android:layout_height="37dp"
+                    android:layout_alignParentRight="true"
                     android:layout_below="@+id/cabily_alert_address"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_toLeftOf="@+id/cabily_driver_alert_view"
                     android:layout_toRightOf="@+id/cabily_driver_alert_accept_btn"
-                    android:background="@drawable/custom_curve_button_red"
+                    android:background="#000000"
                     android:text="@string/cabily_driver_alet_lable_reject_Textview"
                     android:textColor="#ffffff"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:visibility="visible" />
+
 
             </RelativeLayout>
 

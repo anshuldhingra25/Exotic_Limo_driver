@@ -17,20 +17,21 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
 import com.app.latlnginterpolation.LatLngInterpolator;
 import com.app.latlnginterpolation.MarkerAnimation;
+import com.app.service.ServiceConstant;
 import com.app.service.ServiceRequest;
 import com.app.xmpp.ChatingService;
-import com.app.service.ServiceConstant;
 import com.cabily.cabilydriver.Utils.ConnectionDetector;
 import com.cabily.cabilydriver.Utils.CurrencySymbolConverter;
 import com.cabily.cabilydriver.Utils.GPSTracker;
@@ -64,19 +65,22 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.romainpiel.shimmer.Shimmer;
 import com.romainpiel.shimmer.ShimmerButton;
+
 import org.jivesoftware.smack.chat.Chat;
 import org.json.JSONObject;
 import org.w3c.dom.Document;
+
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
+
 import me.drakeet.materialdialog.MaterialDialog;
 
 /**
  * Created by user88 on 10/29/2015.
  */
-public class EndTrip extends SubclassActivity implements com.google.android.gms.location.LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class EndTrip extends SubclassActivity implements com.google.android.gms.location.LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener , SeekBar.OnSeekBarChangeListener{
     private final static int REQUEST_LOCATION = 199;
     private PendingResult<LocationSettingsResult> result;
     private static final String TAG = "swipe";
@@ -90,9 +94,7 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
     private String Str_name = "", Str_mobilno = "", Str_rideid = "";
     private RelativeLayout alert_layout;
     private TextView alert_textview;
-    private ShimmerButton Bt_Shimmer_End_trip;
     private float initialX, initialY;
-    private Shimmer shimmer;
     private Marker currentMarkerto;
     public MarkerOptions markerto;
     private String droplocation[];
@@ -146,6 +148,12 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
     private PolylineOptions mPolylineOptions;
 
 
+    //Slider Design Declaration
+    SeekBar sliderSeekBar;
+    ShimmerButton Bt_slider;
+    Shimmer shimmer;
+
+
     static Chat chat;
 
     private void enableChat() {
@@ -187,70 +195,6 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
 
         //Starting Xmpp service
         ChatingService.startDriverAction(EndTrip.this);
-
-
-        Bt_Shimmer_End_trip.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                int action = event.getActionMasked();
-                switch (action) {
-
-                    case MotionEvent.ACTION_DOWN:
-                        initialX = event.getX();
-                        initialY = event.getY();
-
-                        Log.d(TAG, "Action was DOWN");
-                        break;
-
-                    case MotionEvent.ACTION_MOVE:
-                        Log.d(TAG, "Action was MOVE");
-                        break;
-
-                    case MotionEvent.ACTION_UP:
-                        float finalX = event.getX();
-                        float finalY = event.getY();
-                        Log.d(TAG, "Action was UP");
-                        if (initialX < finalX) {
-                            cd = new ConnectionDetector(EndTrip.this);
-                            isInternetPresent = cd.isConnectingToInternet();
-
-                            if (isInternetPresent) {
-                                PostRequest(ServiceConstant.endtrip_url);
-                                System.out.println("end------------------" + ServiceConstant.endtrip_url);
-                            } else {
-
-                                Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
-                            }
-
-
-                            Log.d(TAG, "Left to Right swipe performed");
-                        }
-
-                        if (initialX > finalX) {
-                            Log.d(TAG, "Right to Left swipe performed");
-                        }
-
-                        if (initialY < finalY) {
-                            Log.d(TAG, "Up to Down swipe performed");
-                        }
-
-                        if (initialY > finalY) {
-                            Log.d(TAG, "Down to Up swipe performed");
-                        }
-
-                        break;
-
-                    case MotionEvent.ACTION_CANCEL:
-                        Log.d(TAG, "Action was CANCEL");
-                        break;
-
-                    case MotionEvent.ACTION_OUTSIDE:
-                        Log.d(TAG, "Movement occurred outside bounds of current screen element");
-                        break;
-                }
-                return true;
-            }
-        });
 
 
         Tv_start_wait.setOnClickListener(new View.OnClickListener() {
@@ -305,7 +249,6 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
     private void initialize() {
         session = new SessionManager(EndTrip.this);
         gps = new GPSTracker(EndTrip.this);
-        shimmer = new Shimmer();
         // get user data from session
         HashMap<String, String> user = session.getUserDetails();
         driver_id = user.get(SessionManager.KEY_DRIVERID);
@@ -348,17 +291,25 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
         Tv_name = (TextView) findViewById(R.id.end_trip_name);
         Tv_mobilno = (TextView) findViewById(R.id.end_trip_mobilno);
         Tv_rideid = (TextView) findViewById(R.id.beginendtrip_rideid);
-        Bt_Shimmer_End_trip = (ShimmerButton) findViewById(R.id.btn_end_trip);
         Tv_start_wait = (TextView) findViewById(R.id.begin_waitingtime_tv_start);
         Tv_stop_wait = (TextView) findViewById(R.id.begin_waitingtime_tv_stop);
         timerValue = (TextView) findViewById(R.id.timerValue);
         layout_timer = (RelativeLayout) findViewById(R.id.layout_timer);
-        shimmer = new Shimmer();
-        shimmer.start(Bt_Shimmer_End_trip);
         alert_layout = (RelativeLayout) findViewById(R.id.end_trip_alert_layout);
         alert_textview = (TextView) findViewById(R.id.end_trip_alert_textView);
+
+        shimmer = new Shimmer();
+        sliderSeekBar = (SeekBar) findViewById(R.id.end_Trip_seek);
+        Bt_slider = (ShimmerButton) findViewById(R.id.end_Trip_slider_button);
+        shimmer.start(Bt_slider);
+
+        sliderSeekBar.setOnSeekBarChangeListener(this);
+
+
         Tv_name.setText(Str_name);
         Tv_mobilno.setText(Str_mobilno);
+
+
         //Tv_rideid.setText(Str_rideid);
 
     }
@@ -507,7 +458,7 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
                 if (drivermarker != null) {
                     drivermarker.remove();
                 }
-                drivermarker = googleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.orange)));
+                drivermarker = googleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.carmove)));
                 /*if (drivermarker != null && !isFirstTime) {
                     drivermarker.remove();
                     isFirstTime = true;
@@ -618,7 +569,8 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
     private class GetRouteTask extends AsyncTask<String, Void, String> {
 
         String response = "";
-
+        GMapV2GetRouteDirection v2GetRouteDirection = new GMapV2GetRouteDirection();
+        Document document;
         @Override
         protected void onPreExecute() {
         }
@@ -633,32 +585,34 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
 
         @Override
         protected void onPostExecute(String result) {
-            googleMap.clear();
-            ArrayList<LatLng> directionPoint = v2GetRouteDirection.getDirection(document);
-            PolylineOptions rectLine = new PolylineOptions().width(15).color(getResources().getColor(R.color.app_color));
-            for (int i = 0; i < directionPoint.size(); i++) {
-                rectLine.add(directionPoint.get(i));
-            }
-            Marker m[] = new Marker[2];
-            m[0] = googleMap.addMarker(new MarkerOptions().position(startlatlng).icon(BitmapDescriptorFactory.fromResource(R.drawable.flageimage2)));
-            m[1] = googleMap.addMarker(new MarkerOptions().position(destlatlng).icon(BitmapDescriptorFactory.fromResource(R.drawable.flagimage)));
+
+            try {
+                googleMap.clear();
+                ArrayList<LatLng> directionPoint = v2GetRouteDirection.getDirection(document);
+                PolylineOptions rectLine = new PolylineOptions().width(18).color(getResources().getColor(R.color.app_color));
+                for (int i = 0; i < directionPoint.size(); i++) {
+                    rectLine.add(directionPoint.get(i));
+                }
+                Marker m[] = new Marker[2];
+                m[0] = googleMap.addMarker(new MarkerOptions().position(startlatlng).icon(BitmapDescriptorFactory.fromResource(R.drawable.light_green_flag)));
+                m[1] = googleMap.addMarker(new MarkerOptions().position(destlatlng).icon(BitmapDescriptorFactory.fromResource(R.drawable.dark_green_flag)));
 
 
-            LatLngBounds.Builder builder = new LatLngBounds.Builder();
-            for (Marker marker : m) {
-                builder.include(marker.getPosition());
-            }
-            LatLngBounds bounds = builder.build();
+                LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                for (Marker marker : m) {
+                    builder.include(marker.getPosition());
+                }
+                LatLngBounds bounds = builder.build();
 
 
-            int padding = 262; // offset from edges of the map in pixels
-            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+                int padding = 100; // offset from edges of the map in pixels
+                CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
 
 
-            googleMap.moveCamera(cu);
+                googleMap.moveCamera(cu);
 
 
-            googleMap.animateCamera(cu);
+                googleMap.animateCamera(cu);
 
            /* markerOptions = new MarkerOptions();
             marker = new MarkerOptions();
@@ -667,21 +621,29 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
             currentMarker = googleMap.addMarker(marker);*/
 
 
-            // Adding route on the map
-            googleMap.addPolyline(rectLine);
-            markerOptions.position(destlatlng);
-            markerOptions.position(startlatlng);
-            markerOptions.draggable(true);
+                // Adding route on the map
+                googleMap.addPolyline(rectLine);
+                markerOptions.position(destlatlng);
+                markerOptions.position(startlatlng);
+                markerOptions.draggable(true);
 
-            //googleMap.addMarker(markerOptions);
+                //googleMap.addMarker(markerOptions);
          /*   googleMap.addMarker(new MarkerOptions()
                     .position(toposition)
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.man)));
             googleMap.addMarker(new MarkerOptions()
                     .position(fromPosition)
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.red_car)));*/
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
+
+
+
+
+
 
 
     public double getDistance(double lat1, double lon1, double lat2, double lon2) {
@@ -1510,9 +1472,54 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
 
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        if (progress > 95) {
+            seekBar.setThumb(getResources().getDrawable(R.drawable.slidetounlock_arrow));
+        }
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+        Bt_slider.setVisibility(View.INVISIBLE);
 
 
     }
 
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
+        shimmer = new Shimmer();
+        if (seekBar.getProgress() < 80) {
+            seekBar.setProgress(0);
+            sliderSeekBar.setBackgroundResource(R.drawable.red_slide_to_unlock_bg);
+            Bt_slider.setVisibility(View.VISIBLE);
+            Bt_slider.setText(getResources().getString(R.string.lbel_endtrip));
+            shimmer.start(Bt_slider);
+        } else if (seekBar.getProgress() > 90) {
+            seekBar.setProgress(100);
+            Bt_slider.setVisibility(View.VISIBLE);
+            Bt_slider.setText(getResources().getString(R.string.lbel_endtrip));
+            shimmer.start(Bt_slider);
+            sliderSeekBar.setVisibility(View.VISIBLE);
+            System.out.println("------------------sliding completed----------------");
+
+            cd = new ConnectionDetector(EndTrip.this);
+            isInternetPresent = cd.isConnectingToInternet();
+
+            if (isInternetPresent) {
+                PostRequest(ServiceConstant.endtrip_url);
+                System.out.println("end------------------" + ServiceConstant.endtrip_url);
+            } else {
+
+                Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
+            }
+        }
+    }
 
 }
