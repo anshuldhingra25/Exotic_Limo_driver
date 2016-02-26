@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:keepScreenOn="true">
 
 
     <RelativeLayout
@@ -15,12 +16,12 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="8dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:layout_marginTop="8dp"
             android:text=""
             android:textColor="#31c3e7"
-            android:textSize="17dp"/>
+            android:textSize="17dp" />
 
 
         <com.cabily.cabilydriver.widgets.CustomTextView
@@ -35,7 +36,7 @@
             android:gravity="center"
             android:text=""
             android:textColor="#8a000000"
-            android:textSize="15dp"/>
+            android:textSize="15dp" />
 
 
         <RelativeLayout
@@ -61,7 +62,7 @@
                     android:background="@color/app_color"
                     android:text=""
                     android:textColor="#ffffff"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <Button
                     android:id="@+id/custom_dialog_library_cancel_button"
@@ -73,7 +74,7 @@
                     android:text=""
                     android:textColor="#ffffff"
                     android:textSize="15sp"
-                    android:visibility="visible"/>
+                    android:visibility="visible" />
 
             </LinearLayout>
 

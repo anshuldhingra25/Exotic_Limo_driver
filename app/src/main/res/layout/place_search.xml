@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#ffffff">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:keepScreenOn="true">
 
 
     <RelativeLayout
@@ -26,7 +27,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="8dp"
                 android:background="@null"
-                android:src="@drawable/back_arrow"/>
+                android:src="@drawable/back_arrow" />
         </RelativeLayout>
 
         <EditText
@@ -47,17 +48,17 @@
             android:textColor="#ffffff"
             android:textColorHint="#ffffff"
             android:textCursorDrawable="@drawable/edittext_cursor_color_white"
-            android:textSize="14sp"/>
+            android:textSize="14sp" />
 
         <ProgressBar
+            android:id="@+id/location_search_progressBar"
             style="?android:attr/progressBarStyleSmall"
             android:layout_width="28dp"
             android:layout_height="28dp"
-            android:id="@+id/location_search_progressBar"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:visibility="invisible"/>
+            android:visibility="invisible" />
     </RelativeLayout>
 
     <View
@@ -65,7 +66,7 @@
         android:layout_width="fill_parent"
         android:layout_height="3dp"
         android:layout_below="@+id/location_search_actionbar_layout"
-        android:background="@xml/toolbar_shadow"/>
+        android:background="@xml/toolbar_shadow" />
 
     <RelativeLayout
         android:id="@+id/location_search_alert_layout"
@@ -85,7 +86,7 @@
             android:layout_marginRight="3dp"
             android:text="No Internet Connection"
             android:textColor="#FCC900"
-            android:textSize="13sp"/>
+            android:textSize="13sp" />
     </RelativeLayout>
 
 
@@ -96,7 +97,7 @@
         android:layout_below="@+id/location_search_alert_layout"
         android:layout_centerHorizontal="true"
         android:background="#ffffff"
-        android:visibility="visible"/>
+        android:visibility="visible" />
 
     <com.cabily.cabilydriver.widgets.CustomTextView
         android:id="@+id/location_search_empty_textview"
@@ -108,6 +109,6 @@
         android:text="@string/estimate_price_label_place_notAvailable"
         android:textColor="#666666"
         android:textSize="17sp"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 </RelativeLayout>
