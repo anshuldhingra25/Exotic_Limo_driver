@@ -458,7 +458,7 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
                 if (drivermarker != null) {
                     drivermarker.remove();
                 }
-                drivermarker = googleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.carmove)));
+                drivermarker = googleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.orange)));
                 /*if (drivermarker != null && !isFirstTime) {
                     drivermarker.remove();
                     isFirstTime = true;
@@ -473,13 +473,13 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
                     current_lon = location.getLongitude();
                     String sendlat = Double.valueOf(current_lat).toString();
                     String sendlng = Double.valueOf(current_lon).toString();
-                    /*if(job == null){
+                    if(job == null){
                         job = new JSONObject();
                     }
                     job.put("action", "driver_loc");
                     job.put("latitude", sendlat);
                     job.put("longitude", sendlng);
-                    job.put("ride_id", "");*/
+                    job.put("ride_id", "");
                    /* HashMap<String, String> jsonParams = new HashMap<String, String>();
                     jsonParams.put("action","driver_loc");
                     jsonParams.put("latitude",sendlat);
@@ -487,9 +487,9 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
                     jsonParams.put("ride_id","");*/
                     //  JSONObject job = new JSONObject();
                     // String sSenderID = "56b2f9d9219a4da531e0e59a";
-                  /*  String sToID = ContinuousRequestAdapter.userID + "@" + ServiceConstant.XMPP_SERVICE_NAME;
+                    String sToID = ContinuousRequestAdapter.userID + "@" + ServiceConstant.XMPP_SERVICE_NAME;
                     chat = ChatingService.createChat(sToID);
-                    chat.sendMessage(job.toString());*/
+                    chat.sendMessage(job.toString());
                   /*  MarkerOptions m =new MarkerOptions();
                     m.position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.dot));*/
                     //markerOptions.
@@ -569,8 +569,7 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
     private class GetRouteTask extends AsyncTask<String, Void, String> {
 
         String response = "";
-        GMapV2GetRouteDirection v2GetRouteDirection = new GMapV2GetRouteDirection();
-        Document document;
+
         @Override
         protected void onPreExecute() {
         }
@@ -585,34 +584,32 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
 
         @Override
         protected void onPostExecute(String result) {
-
-            try {
-                googleMap.clear();
-                ArrayList<LatLng> directionPoint = v2GetRouteDirection.getDirection(document);
-                PolylineOptions rectLine = new PolylineOptions().width(18).color(getResources().getColor(R.color.app_color));
-                for (int i = 0; i < directionPoint.size(); i++) {
-                    rectLine.add(directionPoint.get(i));
-                }
-                Marker m[] = new Marker[2];
-                m[0] = googleMap.addMarker(new MarkerOptions().position(startlatlng).icon(BitmapDescriptorFactory.fromResource(R.drawable.light_green_flag)));
-                m[1] = googleMap.addMarker(new MarkerOptions().position(destlatlng).icon(BitmapDescriptorFactory.fromResource(R.drawable.dark_green_flag)));
+            googleMap.clear();
+            ArrayList<LatLng> directionPoint = v2GetRouteDirection.getDirection(document);
+            PolylineOptions rectLine = new PolylineOptions().width(15).color(getResources().getColor(R.color.app_color));
+            for (int i = 0; i < directionPoint.size(); i++) {
+                rectLine.add(directionPoint.get(i));
+            }
+            Marker m[] = new Marker[2];
+            m[0] = googleMap.addMarker(new MarkerOptions().position(startlatlng).icon(BitmapDescriptorFactory.fromResource(R.drawable.flageimage2)));
+            m[1] = googleMap.addMarker(new MarkerOptions().position(destlatlng).icon(BitmapDescriptorFactory.fromResource(R.drawable.flagimage)));
 
 
-                LatLngBounds.Builder builder = new LatLngBounds.Builder();
-                for (Marker marker : m) {
-                    builder.include(marker.getPosition());
-                }
-                LatLngBounds bounds = builder.build();
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            for (Marker marker : m) {
+                builder.include(marker.getPosition());
+            }
+            LatLngBounds bounds = builder.build();
 
 
-                int padding = 100; // offset from edges of the map in pixels
-                CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+            int padding = 262; // offset from edges of the map in pixels
+            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
 
 
-                googleMap.moveCamera(cu);
+            googleMap.moveCamera(cu);
 
 
-                googleMap.animateCamera(cu);
+            googleMap.animateCamera(cu);
 
            /* markerOptions = new MarkerOptions();
             marker = new MarkerOptions();
@@ -621,29 +618,21 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
             currentMarker = googleMap.addMarker(marker);*/
 
 
-                // Adding route on the map
-                googleMap.addPolyline(rectLine);
-                markerOptions.position(destlatlng);
-                markerOptions.position(startlatlng);
-                markerOptions.draggable(true);
+            // Adding route on the map
+            googleMap.addPolyline(rectLine);
+            markerOptions.position(destlatlng);
+            markerOptions.position(startlatlng);
+            markerOptions.draggable(true);
 
-                //googleMap.addMarker(markerOptions);
+            //googleMap.addMarker(markerOptions);
          /*   googleMap.addMarker(new MarkerOptions()
                     .position(toposition)
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.man)));
             googleMap.addMarker(new MarkerOptions()
                     .position(fromPosition)
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.red_car)));*/
-            }catch (Exception e){
-                e.printStackTrace();
-            }
         }
     }
-
-
-
-
-
 
 
     public double getDistance(double lat1, double lon1, double lat2, double lon2) {
