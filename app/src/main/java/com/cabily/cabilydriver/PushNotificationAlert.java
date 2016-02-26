@@ -47,6 +47,7 @@ public class PushNotificationAlert extends BaseActivity {
 
                 } else if (action.equalsIgnoreCase("payment_paid")) {
                     Intent intent = new Intent(PushNotificationAlert.this, RatingsPage.class);
+                    intent.putExtra("rideid", rideid);
                     startActivity(intent);
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                     finish();
