@@ -169,6 +169,13 @@ public class DriverMapActivity extends ActivityHockeyApp implements View.OnClick
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        if (mGoogleApiClient != null)
+            mGoogleApiClient.disconnect();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         startLocationUpdates();
@@ -351,12 +358,6 @@ public class DriverMapActivity extends ActivityHockeyApp implements View.OnClick
 
     @Override
     public void onLocationChanged(Location location) {
-        this.myLocation = location;
-        System.out.println("locat-----------" + location);
-        if (myLocation != null && currentMarker != null) {
-            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            currentMarker.setPosition(latLng);
-        }
     }
 
     @Override
