@@ -1511,8 +1511,4 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
         }
     }
 
-
-
-
-
 }
