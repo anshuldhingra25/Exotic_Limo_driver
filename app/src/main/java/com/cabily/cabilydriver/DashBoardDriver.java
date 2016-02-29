@@ -69,7 +69,6 @@ public class DashBoardDriver extends Fragment implements View.OnClickListener, c
     private SessionManager session;
     private RoundedImageView user_img;
     private String driver_img = "", driver_name = "", vehicle_name = "", vehicle_no = "";
-
     private Dialog dialog;
     private StringRequest postrequest;
     private String driver_id = "";
@@ -181,7 +180,8 @@ public class DashBoardDriver extends Fragment implements View.OnClickListener, c
                 }
             }
         });
-
+        setLocationRequest();
+        buildGoogleApiClient();
         return parentView;
     }
 
@@ -200,6 +200,28 @@ public class DashBoardDriver extends Fragment implements View.OnClickListener, c
         dialog.show();
     }
 
+    private void setLocationRequest() {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(10000);
+        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
+
+    protected void startLocationUpdates() {
+        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+            LocationServices.FusedLocationApi.requestLocationUpdates(
+                    mGoogleApiClient, mLocationRequest, this);
+        }
+    }
+
+
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(getContext())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+    }
 
     private void initialize(View rootview) {
         session = new SessionManager(getActivity());
@@ -246,9 +268,13 @@ public class DashBoardDriver extends Fragment implements View.OnClickListener, c
         } else {
             Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
         }
-
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        System.gc();
+    }
 
     private void initilizeMap() {
         if (googleMap == null) {
@@ -277,12 +303,12 @@ public class DashBoardDriver extends Fragment implements View.OnClickListener, c
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
         } else {
-            alert_layout.setVisibility(View.VISIBLE);
-            alert_textview.setText(getResources().getString(R.string.alert_gpsEnable));
+            if(alert_layout != null && alert_textview != null){
+                alert_layout.setVisibility(View.VISIBLE);
+                alert_textview.setText(getResources().getString(R.string.alert_gpsEnable));
+            }
         }
-
         markerOptions = new MarkerOptions();
-
     }
 
     public static boolean isOnline = false;

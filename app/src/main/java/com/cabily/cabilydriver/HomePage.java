@@ -66,7 +66,7 @@ public class HomePage extends ActivityHockeyApp implements GoogleApiClient.Conne
             StrictMode.setThreadPolicy(policy);
             //your codes here
         }
-        web_update();
+        // web_update();
         gps = new GPSTracker(getApplicationContext());
         mGoogleApiClient = new GoogleApiClient.Builder(HomePage.this)
                 .addApi(LocationServices.API)

@@ -69,7 +69,9 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.romainpiel.shimmer.Shimmer;
 import com.romainpiel.shimmer.ShimmerButton;
 
+import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.chat.Chat;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Document;
 
@@ -127,7 +129,6 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
 
     public static ArrivedTrip arrivedTrip_class;
     private ServiceRequest mRequest;
-
     private String Suser_Id = "";
     private LocationRequest mLocationRequest;
     public static Location myLocation;
@@ -161,20 +162,7 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
             arrivedTripHandler.postDelayed(this, 600);
         }
     };
-    static Chat chat;
-
-    private void enableChat() {
-        ChatingService.startDriverAction(ArrivedTrip.this);
-        // String sSenderID = "56b2f9d9219a4da531e0e59a";
-        String sToID = ContinuousRequestAdapter.userID + "@" + ServiceConstant.XMPP_SERVICE_NAME;
-        chat = ChatingService.createChat(sToID);
-        ChatingService.setChatMessenger(new Messenger(new MessageHandler()));
-        ChatingService.enableChat();
-       /* try {
-            chat.sendMessage("MI_MESSAGE");
-        } catch (Exception e) {
-        }*/
-    }
+    Chat chat;
 
     public static class MessageHandler extends Handler {
         @Override
@@ -191,7 +179,6 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
         try {
             setLocationRequest();
             buildGoogleApiClient();
-            enableChat();
             initilizeMap();
         } catch (Exception e) {
         }
@@ -211,7 +198,6 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         });
-
 
 
         phone_call.setOnClickListener(new View.OnClickListener() {
@@ -288,7 +274,7 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
         Rl_layout_arrived = (RelativeLayout) findViewById(R.id.layout_arrivedbtn);
         Rl_layout_enable_voicenavigation = (RelativeLayout) findViewById(R.id.layout_arrived_Enable_voice);
 
-        shimmer=new Shimmer();
+        shimmer = new Shimmer();
         sliderSeekBar = (SeekBar) findViewById(R.id.arrived_Trip_seek);
         Bt_slider = (ShimmerButton) findViewById(R.id.arrived_Trip_slider_button);
         shimmer.start(Bt_slider);
@@ -298,7 +284,6 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
         Tv_Address.setText(Str_address);
         // Tv_RideId.setText(Str_RideId);
         Tv_usename.setText(Str_username);
-
 
 
     }
@@ -351,85 +336,9 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
             alert_layout.setVisibility(View.VISIBLE);
             alert_textview.setText(getResources().getString(R.string.alert_gpsEnable));
         }
-
         markerOptions = new MarkerOptions();
-
-
-        try {
-            System.out.println("to----------" + toPosition);
-            System.out.println("from----------" + fromPosition);
-            System.out.println("pickiplat----------" + Double.parseDouble(Str_pickUp_Lat));
-            System.out.println("picklong----------" + Double.parseDouble(Str_pickUp_Long));
-            fromPosition = new LatLng(MyCurrent_lat, MyCurrent_long);
-            toPosition = new LatLng(Double.parseDouble(Str_pickUp_Lat), Double.parseDouble(Str_pickUp_Long));
-            getRout(fromPosition, toPosition);
-            System.out.println("from------" + fromPosition);
-            System.out.println("to------" + toPosition);
-            marker = new MarkerOptions().position(new LatLng(MyCurrent_lat, MyCurrent_long));
-            marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.dark_green_flag));
-            currentMarker = googleMap.addMarker(marker);
-            if (fromPosition != null && toPosition != null) {
-                GetRouteTask getRoute = new GetRouteTask();
-                getRoute.execute();
-            }
-        } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), ERROR_TAG, Toast.LENGTH_SHORT).show();
-        }
     }
 
-
-    public void getRout(LatLng start, LatLng end) {
-        StringRequest stringRequest;
-        String url = "http://maps.googleapis.com/maps/api/directions/xml?"
-                + "origin=" + start.latitude + "," + start.longitude
-                + "&destination=" + end.latitude + "," + end.longitude
-                + "&sensor=false&units=metric&mode=driving";
-
-        stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                try {
-                    if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-                        Toast.makeText(context, "Unable to fetch data from server", Toast.LENGTH_LONG).show();
-                    } else if (error instanceof AuthFailureError) {
-                        Toast.makeText(context, "AuthFailureError", Toast.LENGTH_LONG).show();
-                    } else if (error instanceof ServerError) {
-                        Toast.makeText(context, "ServerError", Toast.LENGTH_LONG).show();
-                    } else if (error instanceof NetworkError) {
-                        Toast.makeText(context, "No Internet Connection", Toast.LENGTH_LONG).show();
-                    } else if (error instanceof ParseError) {
-                        Toast.makeText(context, "ParseError", Toast.LENGTH_LONG).show();
-                    }
-                } catch (Exception e) {
-                }
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                return new HashMap<String, String>();
-
-            }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<String, String>();
-                return headers;
-            }
-        };
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(5000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
-        RequestQueue mRequestQueue;
-        mRequestQueue = Volley.newRequestQueue(ArrivedTrip.this);
-        mRequestQueue.add(stringRequest);
-
-    }
 
     @Override
     public void onStart() {
@@ -452,55 +361,31 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
         if (myLocation != null) {
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()),
                     16));
-            MarkerOptions marker = new MarkerOptions();
-            marker.position(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
-            //  marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-            currentMarker = googleMap.addMarker(marker);
-            //postRequest(ServiceConstant.UPDATE_CURRENT_LOCATION);
-
-            System.out.println("online------------------" + ServiceConstant.UPDATE_CURRENT_LOCATION);
-
         }
 
     }
 
     MarkerOptions mm = new MarkerOptions();
     Marker drivermarker;
+    JSONObject job = new JSONObject();
 
     @Override
     public void onLocationChanged(Location location) {
-
         this.myLocation = location;
         System.out.println("locatbegintrip-----------" + location);
-        if (myLocation != null && currentMarker != null) {
+        if (myLocation != null) {
             try {
-                if (chat != null) {
-                    //LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                    //current_lat = location.getLatitude();
-                    // current_lon = location.getLongitude();
-                    // String sendlat = Double.valueOf(current_lat).toString();
-                    // String sendlng = Double.valueOf(current_lon).toString();
-                    // JSONObject job = new JSONObject();
-                    // job.accumulate("action", "driver_loc");
-                    // job.accumulate("latitude", sendlat);
-                    //job.accumulate("longitude", sendlng);
-                    // job.accumulate("ride_id", "");
-                    //String sToID = ContinuousRequestAdapter.userID + "@" + ServiceConstant.XMPP_SERVICE_NAME;
-                    // chat = ChatingService.createChat(sToID);
-                    // chat.sendMessage(job.toString());
-                    // if (drivermarker != null) {
-                    //     drivermarker.remove();
-                    // }
+                LatLng latLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+                drawRouteInMap();
+                sendLocationToTheUser(myLocation);
+                if (drivermarker != null) {
+                    drivermarker.remove();
                 }
                 drivermarker = googleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.orange)));
-
             } catch (Exception e) {
             }
             System.out.println("mylocatiobegintrip-----------" + myLocation);
-            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
-            current_lat = location.getLatitude();
-            current_lon = location.getLongitude();
 
         }
 
@@ -510,8 +395,55 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
             currentMarker.setPosition(latLng);
             System.out.println("latlaong---------------------------" + latLng);
             if (googleMap != null) {
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()),
-                        16));
+               // googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()),
+                //        16));
+            }
+        }
+    }
+
+    private void drawRouteInMap() {
+        try {
+            if(!isDrawnOnMap){
+                fromPosition = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+                toPosition = new LatLng(Double.parseDouble(Str_pickUp_Lat), Double.parseDouble(Str_pickUp_Long));
+                marker = new MarkerOptions().position(new LatLng(MyCurrent_lat, MyCurrent_long));
+                marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.dark_green_flag));
+                currentMarker = googleMap.addMarker(marker);
+                if (fromPosition != null && toPosition != null) {
+                    GetRouteTask getRoute = new GetRouteTask();
+                    getRoute.execute();
+                }
+            }else{
+            }
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), ERROR_TAG, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void sendLocationToTheUser(Location location) throws JSONException {
+        String sendlat = Double.valueOf(location.getLatitude()).toString();
+        String sendlng = Double.valueOf(location.getLongitude()).toString();
+        if(job == null){
+            job = new JSONObject();
+        }
+        job.put("action", "driver_loc");
+        job.put("latitude", sendlat);
+        job.put("longitude", sendlng);
+        job.put("ride_id", "");
+        String sToID = ContinuousRequestAdapter.userID + "@" + ServiceConstant.XMPP_SERVICE_NAME;
+        try {
+            if(chat  != null){
+                chat.sendMessage(job.toString());
+            }else{
+                chat = ChatingService.createChat(sToID);
+                chat.sendMessage(job.toString());
+            }
+        } catch (SmackException.NotConnectedException e) {
+            try {
+                chat = ChatingService.createChat(sToID);
+                chat.sendMessage(job.toString());
+            }catch (SmackException.NotConnectedException e1){
+                Toast.makeText(this,"Not Able to send data to the user Network Error",Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -519,7 +451,6 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
     }
-
     protected void onStop() {
         if (mGoogleApiClient != null) {
             mGoogleApiClient.disconnect();
@@ -531,9 +462,12 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if(chat != null){
+            chat.close();
+        }
 
     }
-
+    boolean isDrawnOnMap = false;
     private class GetRouteTask extends AsyncTask<String, Void, String> {
 
         String response = "";
@@ -566,18 +500,10 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
             markerOptions.position(toPosition);
             markerOptions.draggable(true);
             //googleMap.addMarker(markerOptions);
-
-
+            isDrawnOnMap = true;
             googleMap.addMarker(new MarkerOptions()
                     .position(toPosition)
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.light_green_flag)));
-          /* currentMarker =  googleMap.addMarker(new MarkerOptions()
-                    .position(fromPosition)
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.red_car)));*/
-
-            // currentMarker = googleMap.addMarker(marker);
-
-            //Show path in
             LatLngBounds.Builder builder = new LatLngBounds.Builder();
             builder.include(toPosition);
             builder.include(fromPosition);
@@ -596,8 +522,8 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
 
     private void setLocationRequest() {
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(10000);
-        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setInterval(1000);
+        mLocationRequest.setFastestInterval(1000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 

@@ -92,6 +92,7 @@ public class NavigationDrawer extends BaseActivity implements View.OnClickListen
     }
 
     private void showBackPressedDialog(final boolean isLogout) {
+        System.gc();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.dialog_app_exit)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {

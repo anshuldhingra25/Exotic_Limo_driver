@@ -29,14 +29,13 @@ public interface ServiceConstant {
   //  String baseurl = "http://192.168.1.251:8081/suresh/dectarfortaxi/";
 
     //----------testing url live------------
-
     String URL = "http://project.dectar.com/fortaxi/";
     String BASE_URL = URL+"api/v1/";
     String BASE_URL_v3 = URL+"api/v3/";
     String XMPP_HOST_URL = "67.219.149.186";
     String XMPP_SERVICE_NAME = "messaging.dectar.com";
     String baseurl = "http://project.dectar.com/fortaxi/";
-
+    
     String LOGIN_URL = BASE_URL + "provider/login";
     String Register_URL = baseurl + "app/driver/signup";
     String Register_Return_URL = baseurl + "app/driver/signup/success";
@@ -52,12 +51,11 @@ public interface ServiceConstant {
     String TRIP_LIST_REQUEST = BASE_URL+ "provider/my-trips/list";
     String TRIP_VIEW_REQUEST = BASE_URL+ "provider/my-trips/view";
     public static String loginurl = BASE_URL+"provider/login";
+    String DISTANCE_MATRIX_API="https://maps.googleapis.com/maps/api/distancematrix/json?key=AIzaSyC3fkcq8JkaA-rV0cop9Ud4ls3rHz4GVHE&origins=ORIGIN_STRING&destinations=DESTINATION_STRING";
 
 
     String place_search_url = "https://maps.googleapis.com/maps/api/place/autocomplete/json?types=geocode&key=AIzaSyA7EzKek44txQ083ZSFEvtEq3kipmg4v2c&input=";
     String GetAddressFrom_LatLong_url = "https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyA7EzKek44txQ083ZSFEvtEq3kipmg4v2c&placeid=";
-
-
     public static String forgotpassword = BASE_URL+"provider/forgot-password";
     public static String changepassword = BASE_URL+"provider/change-password";
     public static String driver_dashboard = BASE_URL+"provider/dashboard?";

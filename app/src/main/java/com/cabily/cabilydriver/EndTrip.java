@@ -66,7 +66,9 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.romainpiel.shimmer.Shimmer;
 import com.romainpiel.shimmer.ShimmerButton;
 
+import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.chat.Chat;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Document;
 
@@ -80,7 +82,7 @@ import me.drakeet.materialdialog.MaterialDialog;
 /**
  * Created by user88 on 10/29/2015.
  */
-public class EndTrip extends SubclassActivity implements com.google.android.gms.location.LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener , SeekBar.OnSeekBarChangeListener{
+public class EndTrip extends SubclassActivity implements com.google.android.gms.location.LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, SeekBar.OnSeekBarChangeListener {
     private final static int REQUEST_LOCATION = 199;
     private PendingResult<LocationSettingsResult> result;
     private static final String TAG = "swipe";
@@ -108,13 +110,11 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
     private ServiceRequest mRequest;
     private GoogleMap googleMap;
     private Dialog dialog;
-    StringRequest postrequest;
-    MediaPlayer mediaPlayer;
-
-    GMapV2GetRouteDirection v2GetRouteDirection;
-    Document document;
-    MarkerOptions markerOptions;
-
+    private StringRequest postrequest;
+    private MediaPlayer mediaPlayer;
+    private GMapV2GetRouteDirection v2GetRouteDirection;
+    private Document document;
+    private MarkerOptions markerOptions;
     private int mins;
     private int secs;
     private int milliseconds;
@@ -123,7 +123,6 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
     private GPSTracker gps;
     private LatLng fromPosition, toposition;
     private LatLng destlatlng, startlatlng;
-
     private double MyCurrent_lat = 0.0, MyCurrent_long = 0.0;
     private TextView timerValue;
     private RelativeLayout layout_timer;
@@ -139,38 +138,15 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
     LocationManager locationManager;
     Barcode.GeoPoint geoPoint;
     double location;
-
+    private String beginAddress;
+    private String endAddress;
     private String sCurrencySymbol = "";
-
     private String distance = "";
-
     private LatLng latLng;
     private PolylineOptions mPolylineOptions;
-
-
-    //Slider Design Declaration
-    SeekBar sliderSeekBar;
-    ShimmerButton Bt_slider;
-    Shimmer shimmer;
-
-
-    static Chat chat;
-
-    private void enableChat() {
-        ChatingService.startDriverAction(EndTrip.this);
-        //String sSenderID = "56b2f9d9219a4da531e0e59a";
-        String sSenderID = ContinuousRequestAdapter.userID;
-        String sToID = sSenderID + "@" + ServiceConstant.XMPP_SERVICE_NAME;
-        chat = ChatingService.createChat(sToID);
-        ChatingService.setChatMessenger(new Messenger(new MessageHandler()));
-        ChatingService.enableChat();
-      /*  try {
-       //     JSONObject job = new JSONObject();
-
-           // chat.sendMessage("MI_MESSAGE");
-        } catch (Exception e) {
-        }*/
-    }
+    private SeekBar sliderSeekBar;
+    private ShimmerButton Bt_slider;
+    private Shimmer shimmer;
 
     public static class MessageHandler extends Handler {
         @Override
@@ -184,34 +160,23 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.endtrip);
         initialize();
-
         try {
             setLocationRequest();
             buildGoogleApiClient();
-            enableChat();
             initilizeMap();
         } catch (Exception e) {
         }
-
-        //Starting Xmpp service
         ChatingService.startDriverAction(EndTrip.this);
-
-
         Tv_start_wait.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Tv_stop_wait.setVisibility(View.VISIBLE);
                 Tv_start_wait.setVisibility(View.GONE);
-
                 layout_timer.setVisibility(View.VISIBLE);
-
                 startTime = SystemClock.uptimeMillis();
                 customHandler.postDelayed(updateTimerThread, 0);
-
-
             }
         });
-
         Tv_stop_wait.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -223,27 +188,11 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
 
             }
         });
-
-
-      /*  Bt_Enable_voice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps?saddr=20.344,34.34&daddr=20.5666,45.345")); startActivity(intent);
-            }
-        });
-*/
-
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (chat != null) {
-            chat.close();
-        }
-
-        //ChatingService.disableChat();
-
     }
 
     private void initialize() {
@@ -253,14 +202,13 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
         HashMap<String, String> user = session.getUserDetails();
         driver_id = user.get(SessionManager.KEY_DRIVERID);
         v2GetRouteDirection = new GMapV2GetRouteDirection();
-
-
         Bundle b = getIntent().getExtras();
         if (b != null && b.containsKey("pickuplatlng")) {
             droplocation = b.getString("pickuplatlng").split(",");
             Log.d("LATLONG", droplocation.toString());
         }
         if (b != null && b.containsKey("startpoint")) {
+            beginAddress = b.getString("startpoint");
             startlocation = b.getString("startpoint").split(",");
             Log.d("LATLONGccccccc", startlocation.toString());
             try {
@@ -364,8 +312,8 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
 
     private void setLocationRequest() {
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(10000);
-        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setInterval(1000);
+        mLocationRequest.setFastestInterval(1000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
@@ -392,7 +340,7 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
     }
 
     @Override
-    public void onStop(){
+    public void onStop() {
         super.onStop();
         if (mGoogleApiClient != null)
             mGoogleApiClient.disconnect();
@@ -438,13 +386,14 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
 
     static LatLngInterpolator latLngInterpolator = new LatLngInterpolator.Spherical();
 
-    public static void updateMap(LatLng latLng,Marker drivermarker) {
+    public static void updateMap(LatLng latLng, Marker drivermarker) {
         try {
             MarkerAnimation.animateMarkerToICS(drivermarker, latLng, latLngInterpolator);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     JSONObject job;
 
     @Override
@@ -459,41 +408,7 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
                     drivermarker.remove();
                 }
                 drivermarker = googleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.orange)));
-                /*if (drivermarker != null && !isFirstTime) {
-                    drivermarker.remove();
-                    isFirstTime = true;
-                    drivermarker = googleMap.addMarker(new MarkerOptions()
-                            .position(latLng).draggable(true)
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.orange)));
-                }else{
-                    updateMap(latLng,drivermarker);
-                }*/
-                if (chat != null) {
-                    current_lat = location.getLatitude();
-                    current_lon = location.getLongitude();
-                    String sendlat = Double.valueOf(current_lat).toString();
-                    String sendlng = Double.valueOf(current_lon).toString();
-                    if(job == null){
-                        job = new JSONObject();
-                    }
-                    job.put("action", "driver_loc");
-                    job.put("latitude", sendlat);
-                    job.put("longitude", sendlng);
-                    job.put("ride_id", "");
-                   /* HashMap<String, String> jsonParams = new HashMap<String, String>();
-                    jsonParams.put("action","driver_loc");
-                    jsonParams.put("latitude",sendlat);
-                    jsonParams.put("longitude",sendlng);
-                    jsonParams.put("ride_id","");*/
-                    //  JSONObject job = new JSONObject();
-                    // String sSenderID = "56b2f9d9219a4da531e0e59a";
-                    String sToID = ContinuousRequestAdapter.userID + "@" + ServiceConstant.XMPP_SERVICE_NAME;
-                    chat = ChatingService.createChat(sToID);
-                    chat.sendMessage(job.toString());
-                  /*  MarkerOptions m =new MarkerOptions();
-                    m.position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.dot));*/
-                    //markerOptions.
-                }
+                sendLocationToUser(myLocation);
             } catch (Exception e) {
             }
 
@@ -546,6 +461,36 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
             }
             toposition = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
         }
+    }
+    Chat chat;
+    private void sendLocationToUser(Location location) throws JSONException {
+        String sendlat = Double.valueOf(location.getLatitude()).toString();
+        String sendlng = Double.valueOf( location.getLongitude()).toString();
+        if (job == null) {
+            job = new JSONObject();
+        }
+        job.put("action", "driver_loc");
+        job.put("latitude", sendlat);
+        job.put("longitude", sendlng);
+        job.put("ride_id", "");
+        String sToID = ContinuousRequestAdapter.userID + "@" + ServiceConstant.XMPP_SERVICE_NAME;
+        try {
+            if(chat  != null){
+                chat.sendMessage(job.toString());
+            }else{
+                chat = ChatingService.createChat(sToID);
+                chat.sendMessage(job.toString());
+            }
+        } catch (SmackException.NotConnectedException e) {
+            try {
+                chat = ChatingService.createChat(sToID);
+                chat.sendMessage(job.toString());
+            }catch (SmackException.NotConnectedException e1){
+                Toast.makeText(this,"Not Able to send data to the user Network Error",Toast.LENGTH_SHORT).show();
+            }
+        }
+
+
     }
 
     public static void midPoint(double lat1, double lon1, double lat2, double lon2) {
@@ -1462,8 +1407,6 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-
-
 
 
     @Override
