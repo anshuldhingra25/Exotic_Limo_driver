@@ -222,13 +222,10 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
 
                 String voice_curent_lat_long = MyCurrent_lat + "," + MyCurrent_long;
                 String voice_destination_lat_long = Str_pickUp_Lat + "," + Str_pickUp_Long;
-
                 System.out.println("----------fromPosition---------------" + voice_curent_lat_long);
                 System.out.println("----------toPosition---------------" + voice_destination_lat_long);
-
                 String locationUrl = "http://maps.google.com/maps?saddr=" + voice_curent_lat_long + "&daddr=" + voice_destination_lat_long;
                 System.out.println("----------locationUrl---------------" + locationUrl);
-
                 Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(locationUrl));
                 startActivity(intent);
             }
@@ -307,7 +304,6 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
         mDialog.show();
     }
 
-
     private void initilizeMap() {
         if (googleMap == null) {
             googleMap = ((MapFragment) ArrivedTrip.this.getFragmentManager().findFragmentById(R.id.arrived_trip_view_map)).getMap();
@@ -345,8 +341,6 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
         super.onStart();
         if (mGoogleApiClient != null)
             mGoogleApiClient.connect();
-
-
     }
 
 
@@ -381,24 +375,11 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
                 if (drivermarker != null) {
                     drivermarker.remove();
                 }
-                drivermarker = googleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.orange)));
+                drivermarker = googleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.carmove)));
             } catch (Exception e) {
             }
-            System.out.println("mylocatiobegintrip-----------" + myLocation);
-
-
         }
 
-        myLocation = location;
-        if (myLocation != null) {
-            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            currentMarker.setPosition(latLng);
-            System.out.println("latlaong---------------------------" + latLng);
-            if (googleMap != null) {
-               // googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()),
-                //        16));
-            }
-        }
     }
 
     private void drawRouteInMap() {

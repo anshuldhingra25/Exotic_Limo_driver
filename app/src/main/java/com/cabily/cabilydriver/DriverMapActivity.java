@@ -343,10 +343,13 @@ public class DriverMapActivity extends ActivityHockeyApp implements View.OnClick
         if (myLocation != null) {
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()),
                     16));
-            MarkerOptions marker = new MarkerOptions();
-            marker.position(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
-            marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.red_car));
-            currentMarker = googleMap.addMarker(marker);
+            //MarkerOptions marker = new MarkerOptions();
+            //marker.position(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
+            //marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.red_car));
+           // if(currentMarker != null){
+            //    currentMarker.remove();
+           // }
+           // currentMarker = googleMap.addMarker(marker);
             postRequest(ServiceConstant.UPDATE_CURRENT_LOCATION);
             System.out.println("online------------------" + ServiceConstant.UPDATE_CURRENT_LOCATION);
         }

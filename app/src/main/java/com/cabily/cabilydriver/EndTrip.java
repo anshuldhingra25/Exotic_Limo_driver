@@ -312,8 +312,8 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
 
     private void setLocationRequest() {
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(1000);
-        mLocationRequest.setFastestInterval(1000);
+        mLocationRequest.setInterval(2000);
+        mLocationRequest.setFastestInterval(2000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
@@ -407,7 +407,7 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
                 if (drivermarker != null) {
                     drivermarker.remove();
                 }
-                drivermarker = googleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.orange)));
+                drivermarker = googleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.carmove)));
                 sendLocationToUser(myLocation);
             } catch (Exception e) {
             }

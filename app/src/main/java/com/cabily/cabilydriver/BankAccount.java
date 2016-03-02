@@ -52,7 +52,6 @@ public class BankAccount extends FragmentHockeyApp implements View.OnClickListen
     private EditText holder_name, holder_address, account_no, bankname, branchname, branchaddress, ifsccode, routingno;
     private Button save_btn;
     private Dialog dialog;
-
     private ServiceRequest mRequest;
 
 

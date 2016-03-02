@@ -73,6 +73,7 @@ public class TripSummaryDetail extends SubclassActivity {
     private String sCurrencySymbol="";
 
    private String  Str_ride_distance="",Str_time_taken="",Str_wait_time="",Str_totalpaid="";
+    private String Str_totalbill;
     private ServiceRequest mRequest;
 
     private  String   Str_continue_ridedetail="";
@@ -264,7 +265,7 @@ public class TripSummaryDetail extends SubclassActivity {
         RelativeLayout layout_request_payment = (RelativeLayout)view.findViewById(R.id.layout_faresummery_requstpayment);
         RelativeLayout layout_receive_cash = (RelativeLayout)view.findViewById(R.id.fare_summery_receive_cash_layout);
 
-        tv_fare_totalamount.setText(Str_totalpaid);
+        tv_fare_totalamount.setText(Str_totalbill);
         tv_ridedistance.setText(Str_ride_distance);
         tv_timetaken.setText(Str_time_taken);
         tv_waittime.setText(Str_wait_time);
@@ -381,7 +382,7 @@ public class TripSummaryDetail extends SubclassActivity {
             public void onCompleteListener(String response) {
 
                 System.out.println("-------------tripdetail----------------" + response);
-                String Sstatus = "",Scurrency_code="", Str_ridestatus="",Str_rideid="",Smessage = "",Str_totalbill="",Str_coupon_code="",Str_cancel="",Str_wallet_usage="",Str_cabtype="",Str_drop_date="",
+                String Sstatus = "",Scurrency_code="", Str_ridestatus="",Str_rideid="",Smessage = "",Str_coupon_code="",Str_cancel="",Str_wallet_usage="",Str_cabtype="",Str_drop_date="",
                         trip_paid_status="",Str_continu_ride="";
                 Currency currencycode = null;
                 String Str_tipStatus="",Str_tipAmount="";

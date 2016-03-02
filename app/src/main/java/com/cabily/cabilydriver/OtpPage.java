@@ -69,11 +69,9 @@ public class OtpPage extends SubclassActivity {
         BT_otp_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(OtpPage.this,PaymentPage.class);
                 intent.putExtra("amount",Str_amount);
                 intent.putExtra("rideid",Str_rideId);
-
                 startActivity(intent);
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
 
