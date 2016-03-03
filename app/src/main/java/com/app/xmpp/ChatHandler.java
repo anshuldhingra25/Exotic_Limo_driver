@@ -103,8 +103,7 @@ public class ChatHandler {
         Intent intent = new Intent(context, PushNotificationAlert.class);
         intent.putExtra("Message", messageObject.getString("message"));
         intent.putExtra("Action", messageObject.getString("action"));
-      //  intent.putExtra("RideId", messageObject.getString("key1"));
-
+        intent.putExtra("RideId", messageObject.getString("key1"));
 
 
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -197,7 +197,7 @@
                 android:id="@+id/arrived_Trip_seek"
                 android:layout_width="fill_parent"
                 android:layout_height="45dp"
-                android:background="@drawable/blue_slide_to_unlock_bg"
+                android:background="@color/app_color"
                 android:clickable="false"
                 android:max="100"
                 android:paddingTop="5dp"
@@ -215,7 +215,7 @@
                 android:textColor="#ffffff"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:reflectionColor="#31c3e7" />
+                app:reflectionColor="@color/app_color" />
 
         </RelativeLayout>
     </RelativeLayout>

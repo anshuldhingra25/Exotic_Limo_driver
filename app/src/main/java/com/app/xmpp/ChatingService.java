@@ -174,7 +174,12 @@ public class ChatingService extends IntentService implements ChatManagerListener
             if (chatHandler == null) {
                 chatHandler = new ChatHandler(getApplicationContext(), this);
             }
-            chatHandler.onHandleChatMessage(message);
+            HashMap<String, String> online = session.getOnlineDetails();
+            String  checkonline = online.get(SessionManager.KEY_ONLINE);
+            if (checkonline.equalsIgnoreCase("1"))
+            {
+                chatHandler.onHandleChatMessage(message);
+            }
         } catch (Exception e) {
         }
     }
@@ -203,11 +208,20 @@ public class ChatingService extends IntentService implements ChatManagerListener
         return chat;
     }
 
+    public static void closeConnection(){
+        isConnected = false;
+        if(connection != null){
+            connection.disconnect();
+        }
+        connection = null;
+        chatManager = null;
+    }
+
 
     @Override
     public void onDestroy() {
-        isConnected = false;
         super.onDestroy();
+        closeConnection();
     }
 
     public static void setChatMessenger(Messenger messenger) {

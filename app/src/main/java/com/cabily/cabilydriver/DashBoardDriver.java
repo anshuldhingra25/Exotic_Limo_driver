@@ -64,6 +64,7 @@ import java.util.Locale;
 /**
  */
 public class DashBoardDriver extends Fragment implements View.OnClickListener, com.google.android.gms.location.LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+
     private static View parentView;
     private ResideMenu resideMenu;
     private SessionManager session;
@@ -92,7 +93,6 @@ public class DashBoardDriver extends Fragment implements View.OnClickListener, c
     private Currency currencycode2;
     private Currency currencycode;
 
-
     GPSTracker gps;
     private GoogleMap googleMap;
     private double MyCurrent_lat = 0.0, MyCurrent_long = 0.0;
@@ -108,10 +108,8 @@ public class DashBoardDriver extends Fragment implements View.OnClickListener, c
     private TextView Tv_lasttrip_ridetime, Tv_lasttrip_ridedate, Tv_lasttrip_earnings;
     private TextView Tv_today_earnings_onlinehours, Tv_todayearnigs_trips, Tv_todayearnings_earnings;
     private TextView Tv_todaytips_trips, Tv_todaytips_tips;
-
-    Shimmer shimmer;
+    private Shimmer shimmer;
     private RoundedImageView Im_driver_img;
-
     private double strlat, strlon;
     private RatingBar driver_rating;
 

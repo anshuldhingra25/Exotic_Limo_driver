@@ -581,6 +581,8 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
                         intent.putExtra("user_image", Str_user_img);
                         intent.putExtra("user_phoneno", Str_user_phoneno);
                         intent.putExtra("drop_location", str_drop_location);
+                        intent.putExtra("DropLatitude", Str_droplat);
+                        intent.putExtra("DropLongitude", Str_droplon);
                         String locationaddressstartingpoint = String.valueOf(MyCurrent_lat + "," + MyCurrent_long);
                         Log.d("myloc", locationaddressstartingpoint);
                         intent.putExtra("pickuplatlng", Str_droplat + "," + Str_droplon);

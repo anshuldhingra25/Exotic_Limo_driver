@@ -76,7 +76,6 @@ public class NavigationDrawer extends BaseActivity implements View.OnClickListen
         itemBankaccount.setOnClickListener(this);
         itemPaymentStatement.setOnClickListener(this);
         itemChangepassword.setOnClickListener(this);
-
         itemLogout.setOnClickListener(this);
         resideMenu.addMenuItem(itemHome, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemTripsummary, ResideMenu.DIRECTION_LEFT);
@@ -88,18 +87,16 @@ public class NavigationDrawer extends BaseActivity implements View.OnClickListen
 
     @Override
     public void onBackPressed() {
-        // showBackPressedDialog(false);
+        //super.onBackPressed();
+        showBackPressedDialog(false);
     }
 
     private void showBackPressedDialog(final boolean isLogout) {
         System.gc();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.dialog_app_exit)
+        builder.setMessage(R.string.dialog_app_exiting)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        if (isLogout) {
-                            logout();
-                        }
                         finish();
                     }
                 })

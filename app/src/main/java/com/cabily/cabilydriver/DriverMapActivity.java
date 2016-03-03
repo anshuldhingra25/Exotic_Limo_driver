@@ -285,6 +285,7 @@ public class DriverMapActivity extends ActivityHockeyApp implements View.OnClick
         System.out.println("availability-------------" + "No");
         System.out.println("offline driver_id-------------" + driverId);
         ServiceManager manager = new ServiceManager(this, updateAvailabilityServiceListener);
+        ChatingService.closeConnection();
         manager.makeServiceRequest(ServiceConstant.UPDATE_AVAILABILITY, Request.Method.POST, jsonParams);
     }
 
