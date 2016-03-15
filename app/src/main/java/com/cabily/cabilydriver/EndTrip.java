@@ -12,7 +12,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Messenger;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -148,6 +147,13 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
     private ShimmerButton Bt_slider;
     private Shimmer shimmer;
 
+    private String Str_Latitude = "", Str_longitude = "";
+
+    private final static int INTERVAL = 45000;
+    Handler mHandler;
+
+
+
     public static class MessageHandler extends Handler {
         @Override
         public void handleMessage(Message message) {
@@ -193,11 +199,14 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mHandler.removeCallbacks(mHandlerTask);
     }
 
     private void initialize() {
         session = new SessionManager(EndTrip.this);
         gps = new GPSTracker(EndTrip.this);
+        mHandler=new Handler();
+
         // get user data from session
         HashMap<String, String> user = session.getUserDetails();
         driver_id = user.get(SessionManager.KEY_DRIVERID);
@@ -258,7 +267,14 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
         Tv_mobilno.setText(Str_mobilno);
 
 
-        //Tv_rideid.setText(Str_rideid);
+        cd = new ConnectionDetector(EndTrip.this);
+        isInternetPresent = cd.isConnectingToInternet();
+        if (isInternetPresent) {
+            mHandlerTask.run();
+        } else {
+            Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
+        }
+
 
     }
 
@@ -307,7 +323,9 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
     @Override
     protected void onResume() {
         super.onResume();
+        mHandlerTask.run();
         startLocationUpdates();
+
     }
 
     private void setLocationRequest() {
@@ -344,6 +362,7 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
         super.onStop();
         if (mGoogleApiClient != null)
             mGoogleApiClient.disconnect();
+        mHandler.removeCallbacks(mHandlerTask);
     }
 
 
@@ -547,7 +566,7 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
             LatLngBounds bounds = builder.build();
 
 
-            int padding = 262; // offset from edges of the map in pixels
+            int padding = 100; // offset from edges of the map in pixels
             CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
 
 
@@ -593,6 +612,18 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
     }
 
 
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        System.gc();
+        if(chat != null){
+            chat.close();
+        }
+        mHandler.removeCallbacks(mHandlerTask);
+    }
+
+
     public void onConnectionFailed(ConnectionResult connectionResult) {
     }
 
@@ -619,6 +650,30 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
             customHandler.postDelayed(this, 0);
         }
 
+    };
+
+    Runnable mHandlerTask = new Runnable()
+    { @Override public void run() {
+
+            gps = new GPSTracker(EndTrip.this);
+            cd = new ConnectionDetector(EndTrip.this);
+            isInternetPresent = cd.isConnectingToInternet();
+            if(isInternetPresent)
+            {
+                if (gps != null && gps.canGetLocation() && gps.isgpsenabled()) {
+
+                    Str_Latitude = String.valueOf(gps.getLatitude());
+                    Str_longitude = String.valueOf(gps.getLongitude());
+
+                    postRequest_UpdateProviderLocation(ServiceConstant.UPDATE_CURRENT_LOCATION);
+                }
+            }else
+            {
+                Toast.makeText(EndTrip.this, getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+            }
+
+            mHandler.postDelayed(mHandlerTask, INTERVAL);
+        }
     };
 
 
@@ -1453,5 +1508,48 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
             }
         }
     }
+
+
+
+
+    //-----------------------Update current Location for notification  Post Request-----------------
+    private void postRequest_UpdateProviderLocation(String Url) {
+
+        HashMap<String, String> jsonParams = new HashMap<String, String>();
+        jsonParams.put("ride_id",Str_rideid);
+        jsonParams.put("latitude",Str_Latitude );
+        jsonParams.put("longitude",Str_longitude );
+        jsonParams.put("driver_id",driver_id);
+
+        System.out.println("-------------Endtripride_id----------------" + Str_longitude);
+        System.out.println("-------------Endtriplatitude----------------" + Str_Latitude);
+        System.out.println("-------------Endtriplongitude----------------" + Str_longitude);
+
+        System.out.println("-------------latlongupdate----------------" + Url);
+        mRequest = new ServiceRequest(EndTrip.this);
+        mRequest.makeServiceRequest(Url, Request.Method.POST, jsonParams, new ServiceRequest.ServiceListener() {
+            @Override
+            public void onCompleteListener(String response) {
+
+                Log.e("updatelocation", response);
+
+                System.out.println("-------------latlongupdate----------------" + response);
+
+            }
+
+            @Override
+            public void onErrorListener() {
+
+            }
+        });
+    }
+
+
+
+
+
+
+
+
 
 }
