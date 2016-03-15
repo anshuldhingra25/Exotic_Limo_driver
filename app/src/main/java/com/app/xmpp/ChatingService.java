@@ -44,7 +44,7 @@ public class ChatingService extends IntentService implements ChatManagerListener
     private static SessionManager session;
     private static ChatHandler chatHandler;
     private static Chat chat;
-    private static ChatManager chatManager;
+    private  static ChatManager chatManager;
     static boolean isChatEnabled;
     private static Messenger chatMessenger;
 
@@ -202,26 +202,27 @@ public class ChatingService extends IntentService implements ChatManagerListener
     }
 
     public static Chat createChat(String chatID) {
-        if (chatID != null && chatManager != null) {
-            chat = chatManager.createChat(chatID);
+        synchronized (ChatingService.class) {
+            if (chatID != null && chatManager != null) {
+                chat = chatManager.createChat(chatID);
+            }
+            return chat;
         }
-        return chat;
     }
 
     public static void closeConnection(){
-        isConnected = false;
-        if(connection != null){
-            connection.disconnect();
-        }
-        connection = null;
-        chatManager = null;
+        //isConnected = false;
+        //if(connection != null){
+        //connection.disconnect();
+       //}
+       //connection = null;
+       //chatManager = null;
     }
 
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        closeConnection();
     }
 
     public static void setChatMessenger(Messenger messenger) {

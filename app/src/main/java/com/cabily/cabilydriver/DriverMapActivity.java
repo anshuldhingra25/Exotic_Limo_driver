@@ -40,6 +40,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.HashMap;
 
@@ -229,18 +231,19 @@ public class DriverMapActivity extends ActivityHockeyApp implements View.OnClick
                 String response = (String) object;
                 JSONObject jobject = new JSONObject(response);
                 Str_status = jobject.getString("status");
-                if ("0".equalsIgnoreCase(Str_status)) {
-                }
-                JSONObject jobject2 = jobject.getJSONObject("response");
-                Str_availablestaus = jobject2.getString("availability");
-                Str_message = jobject2.getString("message");
-                Str_rideId = jobject2.getString("ride_id");
-                System.out.println("rideIDDresponse----------" + Str_rideId);
-                System.out.println("online----------" + response);
-                if (Str_availablestaus.equalsIgnoreCase("Unavailable")) {
-                    Rl_layout_available_status.setVisibility(View.VISIBLE);
-                } else {
-                    Rl_layout_available_status.setVisibility(View.GONE);
+                if ("1".equalsIgnoreCase(Str_status)) {
+                    JSONObject jobject2 = jobject.getJSONObject("response");
+                    Str_availablestaus = jobject2.getString("availability");
+                    Str_message = jobject2.getString("message");
+                    Str_rideId = jobject2.getString("ride_id");
+                    System.out.println("rideIDDresponse----------" + Str_rideId);
+                    System.out.println("online----------" + response);
+                    if (Str_availablestaus.equalsIgnoreCase("Unavailable")) {
+                        Rl_layout_available_status.setVisibility(View.VISIBLE);
+                    } else {
+                        Rl_layout_available_status.setVisibility(View.GONE);
+                    }
+                    //showVerifyStatus(jobject2);
                 }
             } catch (Exception e) {
             }
@@ -251,6 +254,19 @@ public class DriverMapActivity extends ActivityHockeyApp implements View.OnClick
 
         }
     };
+
+    private void showVerifyStatus(JSONObject object){
+        try {
+           String verify_status = object.getString("verify_status");
+            if("yes".equalsIgnoreCase(verify_status)){
+                findViewById(R.id.layout_verify_status).setVisibility(View.VISIBLE);
+            }else{
+                findViewById(R.id.layout_verify_status).setVisibility(View.GONE);
+            }
+        } catch (JSONException e) {
+            findViewById(R.id.layout_verify_status).setVisibility(View.GONE);
+        }
+    }
 
 
     private void initilizeMap() {

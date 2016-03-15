@@ -296,6 +296,7 @@
 
 
     <string name="map_lable_available_status">You have a pending trip / transaction.Please tap to view.Without resolving this you will not get ride requests</string>
+    <string name="map_lable_verify_status">Please verify the status of the in the admin panel</string>
 
 
     <!-- RIDE LATER Alert Dialog -->

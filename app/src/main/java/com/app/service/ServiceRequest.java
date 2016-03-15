@@ -123,22 +123,17 @@ public class ServiceRequest {
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-
-
                 System.out.println("-----------User-agent----------------"+ServiceConstant.useragent);
                 System.out.println("-----------apptype----------------"+ServiceConstant.cabily_AppType);
                 System.out.println("-----------driverid----------------"+userID);
                 System.out.println("-----------apptoken----------------"+gcmID);
-
                 Map<String, String> headers = new HashMap<String, String>();
                 headers.put("User-agent", ServiceConstant.useragent);
-                // headers.put("isapplication", ServiceConstant.isapplication);
+                //headers.put("isapplication", ServiceConstant.isapplication);
                 //headers.put("applanguage", ServiceConstant.applanguage);
                 headers.put("apptype", ServiceConstant.cabily_AppType);
                 headers.put("driverid", userID);
                 headers.put("apptoken", gcmID);
-
-
                 return headers;
             }
         };

@@ -97,6 +97,9 @@ public class NavigationDrawer extends BaseActivity implements View.OnClickListen
         builder.setMessage(R.string.dialog_app_exiting)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        if(isLogout){
+                            logout();
+                        }
                         finish();
                     }
                 })

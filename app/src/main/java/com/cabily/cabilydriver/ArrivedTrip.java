@@ -12,7 +12,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Messenger;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -22,19 +21,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkError;
-import com.android.volley.NoConnectionError;
-import com.android.volley.ParseError;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.ServerError;
-import com.android.volley.TimeoutError;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.app.service.ServiceConstant;
 import com.app.service.ServiceRequest;
 import com.app.xmpp.ChatingService;
@@ -77,7 +65,6 @@ import org.w3c.dom.Document;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 
 /**
@@ -140,11 +127,15 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
     private LatLng latLng;
     double previous_lat, previous_lon, current_lat, current_lon;
 
+    private String Str_Latitude = "", Str_longitude = "";
 
     //Slider Design Declaration
     SeekBar sliderSeekBar;
     ShimmerButton Bt_slider;
     Shimmer shimmer;
+
+    private final static int INTERVAL = 45000;
+    Handler mHandler;
 
 
     //-----------------------------code for car moving handler------------
@@ -235,11 +226,14 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
     }
 
 
+
     private void initialize() {
         session = new SessionManager(ArrivedTrip.this);
         gps = new GPSTracker(ArrivedTrip.this);
         v2GetRouteDirection = new GMapV2GetRouteDirection();
         arrivedTripHandler.post(arrivedTripRunnable);
+        mHandler=new Handler();
+
         HashMap<String, String> user = session.getUserDetails();
         driver_id = user.get(SessionManager.KEY_DRIVERID);
         alert_textview = (TextView) findViewById(R.id.arrivd_Tripaccpt_alert_textView);
@@ -260,6 +254,7 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
         System.out.println("KKKKKKK---------" + Str_droplat);
         Suser_Id = i.getStringExtra("UserId");
 
+        System.out.println("DERiverID----------------"+driver_id);
 
         System.out.println("UserId---------" + Suser_Id);
         System.out.println("adres---------" + Str_address);
@@ -283,6 +278,14 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
         Tv_usename.setText(Str_username);
 
 
+        cd = new ConnectionDetector(ArrivedTrip.this);
+        isInternetPresent = cd.isConnectingToInternet();
+        if (isInternetPresent) {
+            mHandler.post(mHandlerTask);
+        } else {
+            Alert(getResources().getString(R.string.alert_sorry_label_title), getResources().getString(R.string.alert_nointernet));
+        }
+
     }
 
     @Override
@@ -303,6 +306,32 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
         });
         mDialog.show();
     }
+
+
+    Runnable mHandlerTask = new Runnable()
+    { @Override public void run() {
+
+            gps = new GPSTracker(ArrivedTrip.this);
+            cd = new ConnectionDetector(ArrivedTrip.this);
+            isInternetPresent = cd.isConnectingToInternet();
+            if(isInternetPresent)
+            {
+                if (gps != null && gps.canGetLocation() && gps.isgpsenabled()) {
+
+                    Str_Latitude = String.valueOf(gps.getLatitude());
+                    Str_longitude = String.valueOf(gps.getLongitude());
+
+                    postRequest_UpdateProviderLocation(ServiceConstant.UPDATE_CURRENT_LOCATION);
+                }
+            }else
+            {
+                Toast.makeText(ArrivedTrip.this, getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+            }
+
+            mHandler.postDelayed(mHandlerTask, INTERVAL);
+        }
+    };
+
 
     private void initilizeMap() {
         if (googleMap == null) {
@@ -437,6 +466,7 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
             mGoogleApiClient.disconnect();
         }
         super.onStop();
+        mHandler.removeCallbacks(mHandlerTask);
     }
 
 
@@ -446,6 +476,7 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
         if(chat != null){
             chat.close();
         }
+        mHandler.removeCallbacks(mHandlerTask);
 
     }
     boolean isDrawnOnMap = false;
@@ -489,7 +520,7 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
             builder.include(toPosition);
             builder.include(fromPosition);
             LatLngBounds bounds = builder.build();
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 261));
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
 
         }
     }
@@ -499,6 +530,7 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
     protected void onResume() {
         super.onResume();
         startLocationUpdates();
+        mHandlerTask.run();
     }
 
     private void setLocationRequest() {
@@ -702,5 +734,49 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
         }
     }
 
+    //-----------------------Update current Location for notification  Post Request-----------------
+    private void postRequest_UpdateProviderLocation(String Url) {
+
+        HashMap<String, String> jsonParams = new HashMap<String, String>();
+        jsonParams.put("ride_id",Str_RideId);
+        jsonParams.put("latitude",Str_Latitude );
+        jsonParams.put("longitude",Str_longitude );
+        jsonParams.put("driver_id",driver_id);
+
+        System.out.println("-------------Arrivedsendrequestride_id----------------" + Str_RideId);
+        System.out.println("-------------Arrivedsendrequestlatitude----------------" + Str_Latitude );
+        System.out.println("-------------Arrivedsendrequestlongitude----------------" + Str_longitude);
+
+        System.out.println("-------------latlongupdate----------------" + Url);
+        mRequest = new ServiceRequest(ArrivedTrip.this);
+        mRequest.makeServiceRequest(Url, Request.Method.POST, jsonParams, new ServiceRequest.ServiceListener() {
+            @Override
+            public void onCompleteListener(String response) {
+
+                Log.e("updatelocation", response);
+
+                System.out.println("-------------latlongupdate----------------" + response);
+
+
+            }
+
+            @Override
+            public void onErrorListener() {
+
+            }
+        });
+    }
+
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        System.gc();
+        if(chat != null){
+            chat.close();
+        }
+        mHandler.removeCallbacks(mHandlerTask);
+    }
 
 }

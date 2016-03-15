@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00000000">
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_margin="50dp"
+        android:background="#ffffff">
+
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:fillViewport="true"
+            android:scrollbars="none">
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@xml/newtripalert_background">
+
+
+                <RelativeLayout
+                    android:id="@+id/layout_newtrip_header_message"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/app_color">
+
+                    <com.bexti.driver.widgets.CustomTextView
+                        android:id="@+id/newtrip_header_message"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="10dp"
+                        android:text="New Trips"
+                        android:textColor="#ffffff"
+                        android:textSize="18dp" />
+
+
+                </RelativeLayout>
+
+
+                <com.bexti.driver.Utils.RoundedImageView
+                    android:id="@+id/ridelater_userimage"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:layout_below="@+id/layout_newtrip_header_message"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/nouserimg" />
+
+
+                <com.bexti.driver.widgets.CustomTextView
+                    android:id="@+id/ridelater_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ridelater_userimage"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:gravity="right"
+                    android:text="ANITHA"
+                    android:textColor="#4e4e4e"
+                    android:textSize="18dp" />
+
+
+                <ImageView
+                    android:id="@+id/call_userimg"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_below="@+id/ridelater_username"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="15dp"
+                    android:src="@drawable/phonecall" />
+
+                <RatingBar
+                    android:id="@+id/ridelater_user_ratings"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/call_userimg"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:isIndicator="true"
+                    android:numStars="5" />
+
+
+                <com.bexti.driver.widgets.CustomTextView
+                    android:id="@+id/ridelater_useraddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ridelater_user_ratings"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_horizontal"
+                    android:text="4\/25, GMM St\nThousand Lights West, Thousand Lights\nChennai, Tamil Nadu 600006\n"
+                    android:textColor="#4e4e4e"
+                    android:textSize="14dp" />
+
+
+                <com.bexti.driver.widgets.CustomTextView
+                    android:id="@+id/ridelater_user_pickptime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ridelater_useraddress"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="8dp"
+                    android:text="10pm"
+                    android:textColor="#4e4e4e"
+                    android:textSize="16dp" />
+
+
+                <RelativeLayout
+                    android:id="@+id/layout_ridelater_alert_ok"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:layout_below="@+id/ridelater_user_pickptime"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/app_color">
+
+                    <com.bexti.driver.widgets.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="@string/alert_label_ok"
+                        android:textColor="#ffffff"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+
+        </ScrollView>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

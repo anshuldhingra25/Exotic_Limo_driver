@@ -23,6 +23,32 @@
         android:textColor="@android:color/white" />
 
     <RelativeLayout
+        android:id="@+id/layout_verify_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignTop="@+id/map"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/background_tanspernt_black"
+        android:visibility="gone">
+
+
+        <com.cabily.cabilydriver.widgets.CustomTextView
+            android:id="@+id/map_verify_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/map_lable_available_status"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/layout_available_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,6 +73,10 @@
             android:textSize="18sp" />
 
     </RelativeLayout>
+
+
+
+
 
     <ImageButton
         android:id="@+id/refresh"

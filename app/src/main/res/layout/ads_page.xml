@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00000000">
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:background="#82C5B8">
+
+        <ImageView
+            android:id="@+id/ads_page_close_imageView"
+            android:layout_width="37dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/add_closebtn" />
+
+        <com.bexti.driver.widgets.CustomTextView
+            android:id="@+id/ads_page_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ads_page_close_imageView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="Prem Kumar"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#343434"
+            android:textSize="20sp"
+            android:textStyle="italic" />
+
+        <RelativeLayout
+            android:id="@+id/ads_page_banner_relativeLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ads_page_title"
+            android:background="#82C5B8">
+
+            <ImageView
+                android:id="@+id/ads_page_banner_image"
+                android:layout_width="fill_parent"
+                android:layout_height="190dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:adjustViewBounds="true"
+                android:visibility="visible" />
+
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:id="@+id/ads_page_view"
+                android:background="#00000000"
+                android:visibility="gone"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+
+        </RelativeLayout>
+
+
+        <ImageView
+            android:id="@+id/ads_page_background_imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/ads_page_banner_relativeLayout"
+            android:src="@drawable/ads_bg_with_car" />
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="21dp"
+            android:minHeight="20dp"
+            android:layout_below="@+id/ads_page_banner_relativeLayout"
+            android:background="#343434">
+
+            <com.bexti.driver.widgets.CustomTextView
+                android:id="@+id/ads_page_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:text=""
+                android:textColor="#c5e0e4"
+                android:textSize="15sp" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+</RelativeLayout>

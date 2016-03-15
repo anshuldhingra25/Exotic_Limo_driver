@@ -98,12 +98,9 @@ public class ContinuousRequestAdapter {
         holder.circularProgressBar = (CircleProgressView) view.findViewById(R.id.timer_circleView);
         holder.Ll_ride_Requst_layout  = (LinearLayout)view.findViewById(R.id.Ll_ride_request_layout);
         view.setTag(holder);
-
         HashMap<String, Integer> user = sm.getRequestCount();
         req_count = user.get(SessionManager.KEY_COUNT);
-
         System.out.println("---------------req_count top-------------------"+req_count);
-
         holder.accept.setTag(holder);
         holder.decline.setTag(holder);
         holder.accept.setOnClickListener(acceptBtnlistener);
@@ -385,12 +382,9 @@ public class ContinuousRequestAdapter {
                             DriverAlertActivity.mediaPlayer.stop();
                         }
                     }
-
                     //req_count=req_count-1;
                     // sm.setRequestCount(req_count);
-
                     // timerCompletCallback.timerCompleteCallBack(holder);
-
                 }
             } catch (Exception e) {
             }
