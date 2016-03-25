@@ -12,6 +12,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -72,6 +73,8 @@ public class DriverMapActivity extends ActivityHockeyApp implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.roadmap);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         session = new SessionManager(DriverMapActivity.this);
         gps = new GPSTracker(this);
         HashMap<String, String> user = session.getUserDetails();
@@ -99,8 +102,6 @@ public class DriverMapActivity extends ActivityHockeyApp implements View.OnClick
         } catch (Exception e) {
 
         }
-        //Starting Xmpp service
-        ChatingService.startDriverAction(DriverMapActivity.this);
         final Button goOffline = (Button) findViewById(R.id.go_offline);
         Rl_layout_available_status = (RelativeLayout) findViewById(R.id.layout_available_status);
         Rl_layout_available_status.setOnClickListener(new View.OnClickListener() {
@@ -180,6 +181,7 @@ public class DriverMapActivity extends ActivityHockeyApp implements View.OnClick
     @Override
     protected void onResume() {
         super.onResume();
+        ChatingService.startDriverAction(DriverMapActivity.this);
         startLocationUpdates();
     }
 

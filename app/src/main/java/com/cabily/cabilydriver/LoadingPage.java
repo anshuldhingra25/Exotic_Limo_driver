@@ -149,9 +149,7 @@ public class LoadingPage extends SubclassActivity {
                     JSONObject object = new JSONObject(response);
                     Str_response = object.getString("response");
                     Str_status = object.getString("status");
-
                     JSONObject jb =object.getJSONObject("response");
-
                     String trip_waiting= jb.getString("trip_waiting");
                     String rating_pending= jb.getString("ratting_pending");
 

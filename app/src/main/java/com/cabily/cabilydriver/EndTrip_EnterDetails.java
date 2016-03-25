@@ -50,17 +50,12 @@ public class EndTrip_EnterDetails extends FragmentActivity {
     private Boolean isInternetPresent = false;
     private ConnectionDetector cd;
     private SessionManager session;
-    Dialog dialog;
+    private  Dialog dialog;
     private EditText Et_hours, Et_minuts, Et_distance, Et_drop_location, Et_drop_time;
-
     private Button Bt_shimmer_endtrip;
     float initialX, initialY;
-
     private ServiceRequest mRequest;
-
-
     private  String Str_status = "",Str_pickup_time="",Str_response="",Str_ridefare="",Str_timetaken="",Str_waitingtime="",Str_need_payment="",Str_currency="",Str_ride_distance="",str_recievecash="";
-
     private StringRequest postrequest;
     private String Str_rideid = "";
     private RelativeLayout Rl_layout_back;
@@ -278,11 +273,14 @@ public class EndTrip_EnterDetails extends FragmentActivity {
         super.onActivityResult(requestCode, resultCode, data);
         // check if the request code is same as what is passed  here it is 2
         if (requestCode == googlerequestcode) {
-            String Saddress = data.getStringExtra("address");
-            Slattitude  = data.getStringExtra("Lattitude");
-            Slongitude  = data.getStringExtra("Longitude");
-            System.out.println("msggoogleplace-------------" + Saddress);
-            Et_drop_location.setText(Saddress);
+            try{
+                String Saddress = data.getStringExtra("address");
+                Slattitude  = data.getStringExtra("Lattitude");
+                Slongitude  = data.getStringExtra("Longitude");
+                System.out.println("msggoogleplace-------------" + Saddress);
+                Et_drop_location.setText(Saddress);
+            }catch (Exception e){
+            }
         }
     }
 

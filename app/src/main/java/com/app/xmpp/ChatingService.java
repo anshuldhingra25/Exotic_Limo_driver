@@ -44,7 +44,7 @@ public class ChatingService extends IntentService implements ChatManagerListener
     private static SessionManager session;
     private static ChatHandler chatHandler;
     private static Chat chat;
-    private  static ChatManager chatManager;
+    private static ChatManager chatManager;
     static boolean isChatEnabled;
     private static Messenger chatMessenger;
 
@@ -175,9 +175,8 @@ public class ChatingService extends IntentService implements ChatManagerListener
                 chatHandler = new ChatHandler(getApplicationContext(), this);
             }
             HashMap<String, String> online = session.getOnlineDetails();
-            String  checkonline = online.get(SessionManager.KEY_ONLINE);
-            if (checkonline.equalsIgnoreCase("1"))
-            {
+            String checkonline = online.get(SessionManager.KEY_ONLINE);
+            if (checkonline.equalsIgnoreCase("1")) {
                 chatHandler.onHandleChatMessage(message);
             }
         } catch (Exception e) {
@@ -210,13 +209,11 @@ public class ChatingService extends IntentService implements ChatManagerListener
         }
     }
 
-    public static void closeConnection(){
-        //isConnected = false;
-        //if(connection != null){
-        //connection.disconnect();
-       //}
-       //connection = null;
-       //chatManager = null;
+    public static void closeConnection() {
+        isConnected = false;
+        if (connection != null) {
+            connection.disconnect();
+        }
     }
 
 

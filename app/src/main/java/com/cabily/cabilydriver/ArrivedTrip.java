@@ -15,6 +15,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -31,6 +32,7 @@ import com.cabily.cabilydriver.Utils.GPSTracker;
 import com.cabily.cabilydriver.Utils.SessionManager;
 import com.cabily.cabilydriver.adapter.ContinuousRequestAdapter;
 import com.cabily.cabilydriver.googlemappath.GMapV2GetRouteDirection;
+import com.cabily.cabilydriver.subclass.RealTimeActivity;
 import com.cabily.cabilydriver.subclass.SubclassActivity;
 import com.cabily.cabilydriver.widgets.PkDialog;
 import com.google.android.gms.common.ConnectionResult;
@@ -70,7 +72,7 @@ import java.util.HashMap;
 /**
  * Created by user88 on 10/28/2015.
  */
-public class ArrivedTrip extends SubclassActivity implements com.google.android.gms.location.LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, SeekBar.OnSeekBarChangeListener {
+public class ArrivedTrip extends RealTimeActivity implements com.google.android.gms.location.LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, SeekBar.OnSeekBarChangeListener {
     private static final String TAG = "swipe";
     private Context context;
     private SessionManager session;
@@ -113,14 +115,12 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
     private RelativeLayout alert_layout;
     private TextView alert_textview;
     private ImageView phone_call;
-
     public static ArrivedTrip arrivedTrip_class;
     private ServiceRequest mRequest;
     private String Suser_Id = "";
     private LocationRequest mLocationRequest;
     public static Location myLocation;
     private GoogleApiClient mGoogleApiClient;
-
     PendingResult<LocationSettingsResult> result;
     private Marker currentMarker;
     MarkerOptions marker;
@@ -165,6 +165,7 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.arrivedtrip);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         arrivedTrip_class = ArrivedTrip.this;
         initialize();
         try {
@@ -175,7 +176,6 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
         }
 
         //Starting Xmpp service
-        ChatingService.startDriverAction(ArrivedTrip.this);
         Rl_layout_userinfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -270,14 +270,10 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
         sliderSeekBar = (SeekBar) findViewById(R.id.arrived_Trip_seek);
         Bt_slider = (ShimmerButton) findViewById(R.id.arrived_Trip_slider_button);
         shimmer.start(Bt_slider);
-
         sliderSeekBar.setOnSeekBarChangeListener(this);
-
         Tv_Address.setText(Str_address);
         // Tv_RideId.setText(Str_RideId);
         Tv_usename.setText(Str_username);
-
-
         cd = new ConnectionDetector(ArrivedTrip.this);
         isInternetPresent = cd.isConnectingToInternet();
         if (isInternetPresent) {
@@ -436,11 +432,13 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
         if(job == null){
             job = new JSONObject();
         }
+
         job.put("action", "driver_loc");
         job.put("latitude", sendlat);
         job.put("longitude", sendlng);
-        job.put("ride_id", "");
-        String sToID = ContinuousRequestAdapter.userID + "@" + ServiceConstant.XMPP_SERVICE_NAME;
+        job.put("ride_id", Str_RideId);
+        builder.sendMessage(chatID,job.toString());
+        /*String sToID = ContinuousRequestAdapter.userID + "@" + ServiceConstant.XMPP_SERVICE_NAME;
         try {
             if(chat  != null){
                 chat.sendMessage(job.toString());
@@ -455,7 +453,7 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
             }catch (SmackException.NotConnectedException e1){
                 Toast.makeText(this,"Not Able to send data to the user Network Error",Toast.LENGTH_SHORT).show();
             }
-        }
+        }*/
     }
 
     @Override
@@ -481,20 +479,16 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
     }
     boolean isDrawnOnMap = false;
     private class GetRouteTask extends AsyncTask<String, Void, String> {
-
         String response = "";
-
         @Override
         protected void onPreExecute() {
         }
-
         @Override
         protected String doInBackground(String... urls) {
             //Get All Route values
             document = v2GetRouteDirection.getDocument(fromPosition, toPosition, GMapV2GetRouteDirection.MODE_DRIVING);
             response = "Success";
             return response;
-
         }
 
         @Override
@@ -535,6 +529,7 @@ public class ArrivedTrip extends SubclassActivity implements com.google.android.
 
     private void setLocationRequest() {
         mLocationRequest = new LocationRequest();
+        mLocationRequest.setSmallestDisplacement(5);
         mLocationRequest.setInterval(1000);
         mLocationRequest.setFastestInterval(1000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);

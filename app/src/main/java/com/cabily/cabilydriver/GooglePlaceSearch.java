@@ -118,11 +118,11 @@ public class GooglePlaceSearch extends Activity {
                         if (postrequest != null) {
                             postrequest.cancel();
                         }
-                       // Intent returnIntent = new Intent();
+                        // Intent returnIntent = new Intent();
                         //returnIntent.putExtra("Selected_location", Et_search.getText().toString());
                         //setResult(RESULT_OK, returnIntent);
                         //onBackPressed();
-                       // finish();
+                        // finish();
                         CitySearchRequest(ServiceConstant.place_search_url + Et_search.getText().toString().toLowerCase());
                     } else {
                         alert_layout.setVisibility(View.VISIBLE);
@@ -261,17 +261,18 @@ public class GooglePlaceSearch extends Activity {
 
     //-------------------Get Latitude and Longitude from Address(Place ID) Request----------------
     private void LatLongRequest(String Url) {
-
-        mdialog = new Dialog(GooglePlaceSearch.this);
-        mdialog.getWindow();
-        mdialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        mdialog.setContentView(R.layout.custom_loading);
-        mdialog.setCanceledOnTouchOutside(false);
-        mdialog.show();
-
+        try {
+            mdialog = new Dialog(GooglePlaceSearch.this);
+            mdialog.getWindow();
+            mdialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            mdialog.setContentView(R.layout.custom_loading);
+            mdialog.setCanceledOnTouchOutside(false);
+            mdialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         TextView dialog_title = (TextView) mdialog.findViewById(R.id.custom_loading_textview);
         dialog_title.setText(getResources().getString(R.string.action_loading));
-
         System.out.println("--------------LatLong url-------------------" + Url);
         postrequest = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>() {
             @Override

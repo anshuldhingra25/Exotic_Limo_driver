@@ -18,6 +18,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -37,6 +38,7 @@ import com.cabily.cabilydriver.Utils.GPSTracker;
 import com.cabily.cabilydriver.Utils.SessionManager;
 import com.cabily.cabilydriver.adapter.ContinuousRequestAdapter;
 import com.cabily.cabilydriver.googlemappath.GMapV2GetRouteDirection;
+import com.cabily.cabilydriver.subclass.RealTimeActivity;
 import com.cabily.cabilydriver.subclass.SubclassActivity;
 import com.cabily.cabilydriver.widgets.PkDialog;
 import com.google.android.gms.common.ConnectionResult;
@@ -81,7 +83,7 @@ import me.drakeet.materialdialog.MaterialDialog;
 /**
  * Created by user88 on 10/29/2015.
  */
-public class EndTrip extends SubclassActivity implements com.google.android.gms.location.LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, SeekBar.OnSeekBarChangeListener {
+public class EndTrip extends RealTimeActivity implements com.google.android.gms.location.LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, SeekBar.OnSeekBarChangeListener {
     private final static int REQUEST_LOCATION = 199;
     private PendingResult<LocationSettingsResult> result;
     private static final String TAG = "swipe";
@@ -165,6 +167,7 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.endtrip);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         initialize();
         try {
             setLocationRequest();
@@ -172,7 +175,6 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
             initilizeMap();
         } catch (Exception e) {
         }
-        ChatingService.startDriverAction(EndTrip.this);
         Tv_start_wait.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -231,14 +233,6 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
                 e.printStackTrace();
             }
         }
-      /*  if (isInternetPresent=true)
-        {
-         }else {
-            mediaPlayer = MediaPlayer.create(this,R.raw.jinngle);
-        }
-*/
-        //endTripHandler.post(endTripRunnable);
-        //---------------set polyline color and width----------------
         mPolylineOptions = new PolylineOptions();
         mPolylineOptions.color(Color.BLUE).width(10);
         Intent i = getIntent();
@@ -330,6 +324,7 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
 
     private void setLocationRequest() {
         mLocationRequest = new LocationRequest();
+        mLocationRequest.setSmallestDisplacement(5);
         mLocationRequest.setInterval(2000);
         mLocationRequest.setFastestInterval(2000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -491,8 +486,9 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
         job.put("action", "driver_loc");
         job.put("latitude", sendlat);
         job.put("longitude", sendlng);
-        job.put("ride_id", "");
-        String sToID = ContinuousRequestAdapter.userID + "@" + ServiceConstant.XMPP_SERVICE_NAME;
+        job.put("ride_id", Str_rideid);
+        builder.sendMessage(chatID,job.toString());
+        /*String sToID = ContinuousRequestAdapter.userID + "@" + ServiceConstant.XMPP_SERVICE_NAME;
         try {
             if(chat  != null){
                 chat.sendMessage(job.toString());
@@ -507,9 +503,7 @@ public class EndTrip extends SubclassActivity implements com.google.android.gms.
             }catch (SmackException.NotConnectedException e1){
                 Toast.makeText(this,"Not Able to send data to the user Network Error",Toast.LENGTH_SHORT).show();
             }
-        }
-
-
+        }*/
     }
 
     public static void midPoint(double lat1, double lon1, double lat2, double lon2) {

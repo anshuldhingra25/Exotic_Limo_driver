@@ -3,6 +3,7 @@ package com.cabily.cabilydriver;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -11,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.android.volley.Request;
+import com.app.cardscanner.CardScanner;
 import com.app.service.ServiceConstant;
 import com.app.service.ServiceManager;
 import com.cabily.cabilydriver.Utils.SessionManager;
@@ -18,6 +20,9 @@ import com.special.ResideMenu.ResideMenu;
 import com.special.ResideMenu.ResideMenuItem;
 
 import java.util.HashMap;
+
+import io.card.payment.CardIOActivity;
+import io.card.payment.CreditCard;
 
 /**
  */
@@ -30,6 +35,7 @@ public class NavigationDrawer extends BaseActivity implements View.OnClickListen
     private ResideMenuItem itemPaymentStatement;
     private ResideMenuItem itemChangepassword;
     private ResideMenuItem itemLogout;
+    private ResideMenuItem itemScanCard;
     private SessionManager session;
     private ActionBar actionBar;
 
@@ -46,7 +52,6 @@ public class NavigationDrawer extends BaseActivity implements View.OnClickListen
         actionBar.setIcon(R.drawable.drawer_icon);
         session = new SessionManager(NavigationDrawer.this);
         setUpMenu();
-
         if (savedInstanceState == null)
             changeFragment(new DashBoardDriver());
     }
@@ -71,17 +76,22 @@ public class NavigationDrawer extends BaseActivity implements View.OnClickListen
         itemPaymentStatement = new ResideMenuItem(this, R.drawable.icon_settings, "Payment Details");
         itemChangepassword = new ResideMenuItem(this,R.drawable.password_new,"Change Password");
         itemLogout = new ResideMenuItem(this, R.drawable.icon_settings, "Logout");
+        itemScanCard= new ResideMenuItem(this, R.drawable.icon_settings, "Scan Card");
         itemHome.setOnClickListener(this);
         itemTripsummary.setOnClickListener(this);
         itemBankaccount.setOnClickListener(this);
         itemPaymentStatement.setOnClickListener(this);
         itemChangepassword.setOnClickListener(this);
         itemLogout.setOnClickListener(this);
+        itemScanCard.setOnClickListener(this);
+
+
         resideMenu.addMenuItem(itemHome, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemTripsummary, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemBankaccount, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemPaymentStatement, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemChangepassword,ResideMenu.DIRECTION_LEFT);
+        resideMenu.addMenuItem(itemScanCard,ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemLogout, ResideMenu.DIRECTION_LEFT);
     }
 
@@ -133,9 +143,35 @@ public class NavigationDrawer extends BaseActivity implements View.OnClickListen
             changeFragment(new ChangePassWord());
         }  else if (view == itemLogout) {
             showBackPressedDialog(true);
+        } else if (view == itemScanCard) {
+            CardScanner cardScanner = new CardScanner(this);
+            cardScanner.startScanActivityResult();
         }
         resideMenu.closeMenu();
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CardScanner.MY_SCAN_REQUEST_CODE) {
+            String resultDisplayStr = "";
+            if (data != null && data.hasExtra(CardIOActivity.EXTRA_SCAN_RESULT)) {
+                CreditCard scanResult = data.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT);
+                resultDisplayStr = "Card Number: " + scanResult.getRedactedCardNumber() + "\n";
+                if (scanResult.isExpiryValid()) {
+                    resultDisplayStr += "Expiration Date: " + scanResult.expiryMonth + "/" + scanResult.expiryYear + "\n";
+                }
+                if (scanResult.cvv != null) {
+                    // Never log or display a CVV
+                    resultDisplayStr += "CVV has " + scanResult.cvv.length() + " digits.\n";
+                }
+                if (scanResult.postalCode != null) {
+                    resultDisplayStr += "Postal Code: " + scanResult.postalCode + "\n";
+                }
+            }else{
+                resultDisplayStr = "Scan was canceled.";
+            }
+        }
     }
 
     private void logout() {

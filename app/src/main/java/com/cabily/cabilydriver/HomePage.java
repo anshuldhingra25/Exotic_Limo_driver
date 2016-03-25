@@ -1,5 +1,6 @@
 package com.cabily.cabilydriver;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +11,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -51,12 +54,24 @@ public class HomePage extends ActivityHockeyApp implements GoogleApiClient.Conne
     private PendingResult<LocationSettingsResult> result;
     private final static int REQUEST_LOCATION = 199;
     private String package_name = "com.cabily.cabilydriver";
+    private final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 2313;
+
+    private void onRequestRunTimePermission(){
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+        }
+    }
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homepage);
+        onRequestRunTimePermission();
         mSignIn = (Button) findViewById(R.id.btn_signin);
         mRegister = (Button) findViewById(R.id.btn_register);
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
